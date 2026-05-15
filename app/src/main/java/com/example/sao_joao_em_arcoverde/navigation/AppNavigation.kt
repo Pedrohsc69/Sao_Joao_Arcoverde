@@ -3,6 +3,7 @@ package com.example.sao_joao_em_arcoverde.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import com.example.sao_joao_em_arcoverde.screens.home.HomeScreen
 import com.example.sao_joao_em_arcoverde.screens.welcome.WelcomeScreen
 
 @Composable
@@ -12,8 +13,23 @@ fun AppNavigation() {
     }
 
     if (hasStarted.value) {
-        // Na próxima etapa, substituiremos isso pela HomeScreen real.
-        HomeScreen()
+        HomeScreen(
+            onScheduleClick = {
+                // Próxima etapa: navegar para Programação
+            },
+            onMapClick = {
+                // Etapa futura: navegar para Mapa
+            },
+            onMoreClick = {
+                // Etapa futura: navegar para Mais Opções
+            },
+            onSearchClick = {
+                // Etapa futura: implementar pesquisa
+            },
+            onMenuClick = {
+                // Etapa futura: menu lateral, se o grupo decidir manter
+            }
+        )
     } else {
         WelcomeScreen(
             onStartClick = {
