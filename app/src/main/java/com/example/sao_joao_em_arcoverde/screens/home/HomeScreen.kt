@@ -147,7 +147,8 @@ private fun HomeHeader(
             Text(
                 text = "2026",
                 color = TextSecondary,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold
             )
         }
 
