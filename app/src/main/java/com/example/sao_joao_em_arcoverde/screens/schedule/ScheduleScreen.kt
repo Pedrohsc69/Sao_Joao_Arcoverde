@@ -186,10 +186,10 @@ private fun ScheduleHeader(
             )
 
             Text(
-                text = "2026",
+                text = "PROGRAMAÇÃO",
                 color = TextSecondary,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Light
             )
         }
 

@@ -145,10 +145,10 @@ private fun HomeHeader(
             )
 
             Text(
-                text = "2026",
+                text = "INÍCIO",
                 color = TextSecondary,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Light
             )
         }
 
