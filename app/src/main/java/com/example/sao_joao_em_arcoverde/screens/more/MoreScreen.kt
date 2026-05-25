@@ -393,7 +393,7 @@ private fun FooterInfo(
             Spacer(modifier = Modifier.width(6.dp))
 
             Text(
-                text = "VERSÃO 3.4.0 (2026)",
+                text = "VERSÃO 1.0.0 (2026)",
                 color = TextSecondary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold

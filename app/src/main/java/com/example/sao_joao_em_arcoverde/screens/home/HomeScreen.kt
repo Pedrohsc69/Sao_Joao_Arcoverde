@@ -23,6 +23,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AttachMoney
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.Lightbulb
 import androidx.compose.material.icons.rounded.Map
@@ -180,27 +181,12 @@ private fun LiveStageCard(
         Column(
             modifier = Modifier.padding(18.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(50))
-                        .background(RedAccent)
-                        .padding(horizontal = 10.dp, vertical = 4.dp)
-                ) {
-                    Text(
-                        text = "AO VIVO",
-                        color = TextPrimary,
-                        style = MaterialTheme.typography.labelLarge
-                    )
-                }
-            }
+
 
             Spacer(modifier = Modifier.height(18.dp))
 
             Text(
-                text = "Palco Principal",
+                text = "Prefeitura de Arcoverde",
                 color = TextPrimary,
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold
@@ -212,7 +198,7 @@ private fun LiveStageCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.Place,
+                    imageVector = Icons.Rounded.AttachMoney,
                     contentDescription = null,
                     tint = GoldPrimary,
                     modifier = Modifier.size(18.dp)
@@ -221,7 +207,7 @@ private fun LiveStageCard(
                 Spacer(modifier = Modifier.width(6.dp))
 
                 Text(
-                    text = "13 a 24 de Junho · Praça Sérgio Magalhães",
+                    text = "Patrocinadores",
                     color = TextSecondary,
                     style = MaterialTheme.typography.bodyMedium
                 )

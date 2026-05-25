@@ -3,11 +3,11 @@ package com.example.sao_joao_em_arcoverde.data.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Artist(
+data class Sponsor(
     val id: String,
     val name: String,
-    val genre: String,
-    val description: String,
-    val imageUrl: String? = null,
-    val isFeatured: Boolean = false
+    val category: String,
+    val description: String? = null,
+    val logoUrl: String? = null,
+    val websiteUrl: String? = null
 )

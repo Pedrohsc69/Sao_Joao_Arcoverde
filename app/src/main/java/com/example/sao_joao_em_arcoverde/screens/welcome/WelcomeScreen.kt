@@ -82,11 +82,6 @@ private fun WelcomeContent(
     Column(
         modifier = modifier
             .padding(horizontal = 24.dp, vertical = 20.dp)
-            .border(
-                width = 1.dp,
-                color = BorderGold,
-                shape = RoundedCornerShape(28.dp)
-            )
             .padding(horizontal = 20.dp, vertical = 26.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -211,13 +206,12 @@ private fun WelcomeTitle(
 ) {
     Text(
         text = buildAnnotatedString {
-            append("Bem-vindo\nao\n")
+            append("Bem-vindo ao\n")
             withStyle(
                 style = SpanStyle(color = GoldPrimary)
             ) {
-                append("São João")
+                append("São João em Arcoverde!")
             }
-            append("\nde\nArcoverde!")
         },
         style = MaterialTheme.typography.displayLarge,
         color = TextPrimary,
