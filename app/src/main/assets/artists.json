@@ -1,0 +1,394 @@
+[
+  {
+    "id": "artist_coco_das_irmas_lopes",
+    "name": "Coco das Irmãs Lopes",
+    "genre": "Coco de Roda/Cultura Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_flavio_jose",
+    "name": "Flávio José",
+    "genre": "Forró Pé de Serra/Xote",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": true
+  },
+  {
+    "id": "artist_alceu_valenca",
+    "name": "Alceu Valença",
+    "genre": "MPB Nordestina/Forró/Frevo",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": true
+  },
+  {
+    "id": "artist_pv_calado",
+    "name": "PV Calado",
+    "genre": "Forró/Festa Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_junior_e_jorge",
+    "name": "Junior e Jorge",
+    "genre": "Sertanejo/Forró",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_lipe_lucena",
+    "name": "Lipe Lucena",
+    "genre": "Forró/Piseiro",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_festival_de_quadrilhas",
+    "name": "Festival de Quadrilhas",
+    "genre": "Quadrilha Junina/Cultura Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_jucie",
+    "name": "Juciê",
+    "genre": "Forró/Festa Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_ze_vaqueiro",
+    "name": "Zé Vaqueiro",
+    "genre": "Forró Eletrônico/Piseiro",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": true
+  },
+  {
+    "id": "artist_nattan",
+    "name": "Nattan",
+    "genre": "Forró Eletrônico/Pisadinha",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": true
+  },
+  {
+    "id": "artist_fernandinha",
+    "name": "Fernandinha",
+    "genre": "Forró/Festa Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_eric_land",
+    "name": "Eric Land",
+    "genre": "Forró Eletrônico",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_vitor_fernandes",
+    "name": "Vitor Fernandes",
+    "genre": "Forró/Piseiro",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_maciel_kure",
+    "name": "Maciel Kurê",
+    "genre": "Forró/Festa Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_iguinho_e_lulinha",
+    "name": "Iguinho e Lulinha",
+    "genre": "Forró/Arrocha",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_wesley_safadao",
+    "name": "Wesley Safadão",
+    "genre": "Forró Eletrônico",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": true
+  },
+  {
+    "id": "artist_dani_aguiar",
+    "name": "Dani Aguiar",
+    "genre": "Forró/Festa Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_talita_mel",
+    "name": "Talita Mel",
+    "genre": "Forró/Festa Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_priscila_senna",
+    "name": "Priscila Senna",
+    "genre": "Brega Romântico",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": true
+  },
+  {
+    "id": "artist_mayana_neiva",
+    "name": "Mayana Neiva",
+    "genre": "Forró/Festa Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_edy_e_nathan",
+    "name": "Edy e Nathan",
+    "genre": "Forró/Sertanejo",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_fabinho_testado",
+    "name": "Fabinho Testado",
+    "genre": "Forró/Piseiro",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_ciro_santos",
+    "name": "Ciro Santos",
+    "genre": "Forró/Festa Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_assisao",
+    "name": "Assisão",
+    "genre": "Forró Pé de Serra",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_super_oara",
+    "name": "Super Oara",
+    "genre": "Brega/Forró",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_capital_do_sol",
+    "name": "Capital do Sol",
+    "genre": "Forró das Antigas",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_felipe_amorim",
+    "name": "Felipe Amorim",
+    "genre": "Forró Eletrônico/Piseiro",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": true
+  },
+  {
+    "id": "artist_coco_fulo_do_barro",
+    "name": "Coco Fulô do Barro",
+    "genre": "Coco de Roda/Cultura Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_geraldinho_lins",
+    "name": "Geraldinho Lins",
+    "genre": "Forró",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_garota_safada",
+    "name": "Garota Safada",
+    "genre": "Forró Eletrônico",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": true
+  },
+  {
+    "id": "artist_coco_raizes_de_arcoverde",
+    "name": "Coco Raízes de Arcoverde",
+    "genre": "Coco de Roda/Cultura Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_george_silva",
+    "name": "George Silva",
+    "genre": "Forró/Festa Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_jorge_de_altinho",
+    "name": "Jorge de Altinho",
+    "genre": "Forró Pé de Serra",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": true
+  },
+  {
+    "id": "artist_cordel_do_fogo_encantado",
+    "name": "Cordel do Fogo Encantado",
+    "genre": "Cultura Popular/Experimental",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": true
+  },
+  {
+    "id": "artist_joao_vaqueiro",
+    "name": "João Vaqueiro",
+    "genre": "Forró/Piseiro",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_magnificos",
+    "name": "Magníficos",
+    "genre": "Forró das Antigas",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_xand_aviao",
+    "name": "Xand Avião",
+    "genre": "Forró Eletrônico",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": true
+  },
+  {
+    "id": "artist_will",
+    "name": "Will",
+    "genre": "Forró/Festa Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_nagila_ferreira",
+    "name": "Nágila Ferreira",
+    "genre": "Forró/Festa Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_joao_gomes",
+    "name": "João Gomes",
+    "genre": "Piseiro/Forró",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": true
+  },
+  {
+    "id": "artist_ycaro_andrade",
+    "name": "Ycaro Andrade",
+    "genre": "Forró/Festa Popular",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_harry_estigado",
+    "name": "Harry Estigado",
+    "genre": "Forró/Piseiro",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_nathanzinho_lima",
+    "name": "Nathanzinho Lima",
+    "genre": "Forró/Piseiro",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_flavio_leandro",
+    "name": "Flávio Leandro",
+    "genre": "Forró Pé de Serra",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_noda_de_caju",
+    "name": "Noda de Caju",
+    "genre": "Forró das Antigas",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_limao_com_mel",
+    "name": "Limão com Mel",
+    "genre": "Forró das Antigas",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": true
+  },
+  {
+    "id": "artist_carlos_e_fabio",
+    "name": "Carlos e Fábio",
+    "genre": "Sertanejo/Forró",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_forrozao_chacal",
+    "name": "Forrozão Chacal",
+    "genre": "Forró",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_matheus_e_kauan",
+    "name": "Matheus e Kauan",
+    "genre": "Sertanejo",
+    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "imageUrl": null,
+    "isFeatured": true
+  }
+]
