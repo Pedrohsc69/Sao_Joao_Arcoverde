@@ -29,21 +29,21 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Whatshot
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.sao_joao_em_arcoverde.data.model.FestivalDay
+import com.example.sao_joao_em_arcoverde.data.model.Schedule
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
 import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
@@ -56,20 +56,14 @@ import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDarkVariant
 import com.example.sao_joao_em_arcoverde.ui.theme.TextPrimary
 import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
 
-private data class FestivalDay(
-    val month: String,
-    val day: String
-)
-
-private data class ScheduleItem(
-    val time: String,
-    val artist: String,
-    val genre: String,
-    val isHeadliner: Boolean = false
-)
-
 @Composable
 fun ScheduleScreen(
+    festivalDays: List<FestivalDay>,
+    selectedDate: String?,
+    scheduleItems: List<Schedule>,
+    isLoading: Boolean,
+    errorMessage: String?,
+    onDayClick: (String) -> Unit,
     onHomeClick: () -> Unit,
     onMapClick: () -> Unit,
     onMoreClick: () -> Unit,
@@ -107,53 +101,77 @@ fun ScheduleScreen(
 
             Spacer(modifier = Modifier.height(14.dp))
 
-            DaySelector()
+            DaySelector(
+                days = festivalDays,
+                selectedDate = selectedDate,
+                onDayClick = onDayClick
+            )
 
             Spacer(modifier = Modifier.height(18.dp))
 
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                StageSection(
-                    title = "Palco Multicultural",
-                    items = listOf(
-                        ScheduleItem(
-                            time = "20:00",
-                            artist = "Alceu Valença",
-                            genre = "Forró Tradicional",
-                            isHeadliner = true
-                        ),
-                        ScheduleItem(
-                            time = "22:30",
-                            artist = "Cordel do Fogo Encantado",
-                            genre = "Experimental"
-                        ),
-                        ScheduleItem(
-                            time = "01:00",
-                            artist = "Maciel Melo",
-                            genre = "Xote"
-                        )
-                    )
+            ScheduleContent(
+                scheduleItems = scheduleItems,
+                isLoading = isLoading,
+                errorMessage = errorMessage,
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun ScheduleContent(
+    scheduleItems: List<Schedule>,
+    isLoading: Boolean,
+    errorMessage: String?,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+    ) {
+        when {
+            isLoading -> {
+                Text(
+                    text = "Carregando programação...",
+                    color = TextSecondary,
+                    style = MaterialTheme.typography.bodyMedium
                 )
+            }
 
-                Spacer(modifier = Modifier.height(18.dp))
-
-                StageSection(
-                    title = "Polo da Poesia",
-                    items = listOf(
-                        ScheduleItem(
-                            time = "18:00",
-                            artist = "Repentistas Locais",
-                            genre = "Cultura Popular"
-                        )
-                    )
+            errorMessage != null -> {
+                Text(
+                    text = "Não foi possível carregar a programação.",
+                    color = RedAccent,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold
                 )
+            }
 
-                Spacer(modifier = Modifier.height(18.dp))
+            scheduleItems.isEmpty() -> {
+                Text(
+                    text = "Nenhuma atração encontrada para este dia.",
+                    color = TextSecondary,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
 
-                HighlightCard()
+            else -> {
+                val scheduleByStage = scheduleItems.groupBy { it.stageName }
+
+                scheduleByStage.forEach { (stageName, items) ->
+                    StageSection(
+                        title = stageName,
+                        items = items
+                    )
+
+                    Spacer(modifier = Modifier.height(18.dp))
+                }
+
+                HighlightCard(
+                    scheduleItems = scheduleItems
+                )
 
                 Spacer(modifier = Modifier.height(20.dp))
             }
@@ -173,23 +191,28 @@ private fun ScheduleHeader(
             .padding(top = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        CircleIconButton(
+            icon = Icons.Rounded.Menu,
+            contentDescription = "Abrir menu",
+            onClick = onMenuClick
+        )
 
         Column(
             modifier = Modifier.weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "SÃO JOÃO EM ARCOVERDE",
+                text = "SÃO JOÃO",
                 color = GoldPrimary,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Black
             )
 
             Text(
-                text = "PROGRAMAÇÃO",
+                text = "ARCOVERDE",
                 color = TextSecondary,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Light
+                fontWeight = FontWeight.Bold
             )
         }
 
@@ -203,20 +226,11 @@ private fun ScheduleHeader(
 
 @Composable
 private fun DaySelector(
+    days: List<FestivalDay>,
+    selectedDate: String?,
+    onDayClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val days = listOf(
-        FestivalDay(month = "JUN", day = "13"),
-        FestivalDay(month = "JUN", day = "14"),
-        FestivalDay(month = "JUN", day = "15"),
-        FestivalDay(month = "JUN", day = "16"),
-        FestivalDay(month = "JUN", day = "17")
-    )
-
-    val selectedDay = remember {
-        mutableStateOf(days.first())
-    }
-
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -226,9 +240,9 @@ private fun DaySelector(
         days.forEach { day ->
             DayChip(
                 day = day,
-                selected = day == selectedDay.value,
+                selected = day.date == selectedDate,
                 onClick = {
-                    selectedDay.value = day
+                    onDayClick(day.date)
                 }
             )
         }
@@ -270,7 +284,7 @@ private fun DayChip(
         )
 
         Text(
-            text = day.day,
+            text = day.dayNumber,
             color = contentColor,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Black
@@ -281,7 +295,7 @@ private fun DayChip(
 @Composable
 private fun StageSection(
     title: String,
-    items: List<ScheduleItem>,
+    items: List<Schedule>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -321,7 +335,7 @@ private fun StageSection(
 
 @Composable
 private fun ScheduleCard(
-    item: ScheduleItem,
+    item: Schedule,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -355,7 +369,7 @@ private fun ScheduleCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = item.artist,
+                    text = item.artistName,
                     color = TextPrimary,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Black,
@@ -401,8 +415,8 @@ private fun ScheduleCard(
 @Composable
 private fun GenreBadge(
     text: String,
-    backgroundColor: androidx.compose.ui.graphics.Color,
-    contentColor: androidx.compose.ui.graphics.Color,
+    backgroundColor: Color,
+    contentColor: Color,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -422,8 +436,12 @@ private fun GenreBadge(
 
 @Composable
 private fun HighlightCard(
+    scheduleItems: List<Schedule>,
     modifier: Modifier = Modifier
 ) {
+    val headliner = scheduleItems.lastOrNull { it.isHeadliner }
+        ?: scheduleItems.lastOrNull()
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -465,7 +483,11 @@ private fun HighlightCard(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "Não perca o show de encerramento! 🎉",
+                    text = if (headliner != null) {
+                        "Não perca: ${headliner.artistName} às ${headliner.time}"
+                    } else {
+                        "Confira a programação completa do dia."
+                    },
                     color = TextPrimary,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold

@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
+import com.example.sao_joao_em_arcoverde.data.model.Schedule
 import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
 import com.example.sao_joao_em_arcoverde.ui.theme.BlueAccent
 import com.example.sao_joao_em_arcoverde.ui.theme.BorderGold
@@ -62,13 +63,16 @@ import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
 
 @Composable
 fun HomeScreen(
+    todaySchedule: List<Schedule>,
+    isLoading: Boolean,
+    errorMessage: String?,
     onScheduleClick: () -> Unit,
     onMapClick: () -> Unit,
     onMoreClick: () -> Unit,
     onSearchClick: () -> Unit,
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier
-) {
+){
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = BackgroundDark,
@@ -103,7 +107,11 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(18.dp))
 
-            TodayOnStageSection()
+            TodayOnStageSection(
+                todaySchedule = todaySchedule,
+                isLoading = isLoading,
+                errorMessage = errorMessage
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -218,6 +226,9 @@ private fun LiveStageCard(
 
 @Composable
 private fun TodayOnStageSection(
+    todaySchedule: List<Schedule>,
+    isLoading: Boolean,
+    errorMessage: String?,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -230,27 +241,46 @@ private fun TodayOnStageSection(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Row(
-            modifier = Modifier.horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            ArtistTimeCard(
-                time = "19:00",
-                artist = "Alceu Valença",
-                rhythm = "Forró"
-            )
+        when {
+            isLoading -> {
+                Text(
+                    text = "Carregando programação...",
+                    color = TextSecondary,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
 
-            ArtistTimeCard(
-                time = "21:30",
-                artist = "Geraldo Azevedo",
-                rhythm = "Xote"
-            )
+            errorMessage != null -> {
+                Text(
+                    text = "Não foi possível carregar a programação.",
+                    color = RedAccent,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold
+                )
+            }
 
-            ArtistTimeCard(
-                time = "00:00",
-                artist = "Elba Ramalho",
-                rhythm = "Baião"
-            )
+            todaySchedule.isEmpty() -> {
+                Text(
+                    text = "Nenhuma atração encontrada para hoje.",
+                    color = TextSecondary,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            else -> {
+                Row(
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    todaySchedule.forEach { schedule ->
+                        ArtistTimeCard(
+                            time = schedule.time,
+                            artist = schedule.artistName,
+                            rhythm = schedule.genre
+                        )
+                    }
+                }
+            }
         }
     }
 }

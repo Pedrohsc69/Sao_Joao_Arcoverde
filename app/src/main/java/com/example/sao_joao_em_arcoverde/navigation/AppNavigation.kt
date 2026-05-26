@@ -3,10 +3,14 @@ package com.example.sao_joao_em_arcoverde.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import com.example.sao_joao_em_arcoverde.screens.home.HomeScreen
-import com.example.sao_joao_em_arcoverde.screens.map.MapScreen
+import androidx.compose.ui.platform.LocalContext
+import com.example.sao_joao_em_arcoverde.data.local.AppDatabase
+import com.example.sao_joao_em_arcoverde.data.repository.FestivalRepository
+import com.example.sao_joao_em_arcoverde.data.seed.FestivalSeedLoader
+import com.example.sao_joao_em_arcoverde.screens.home.HomeRoute
+import com.example.sao_joao_em_arcoverde.screens.map.MapRoute
 import com.example.sao_joao_em_arcoverde.screens.more.MoreScreen
-import com.example.sao_joao_em_arcoverde.screens.schedule.ScheduleScreen
+import com.example.sao_joao_em_arcoverde.screens.schedule.ScheduleRoute
 import com.example.sao_joao_em_arcoverde.screens.welcome.WelcomeScreen
 
 private enum class AppRoute {
@@ -19,6 +23,26 @@ private enum class AppRoute {
 
 @Composable
 fun AppNavigation() {
+    val context = LocalContext.current
+
+    val database = remember {
+        AppDatabase.getInstance(context)
+    }
+
+    val seedLoader = remember {
+        FestivalSeedLoader(
+            context = context,
+            database = database
+        )
+    }
+
+    val festivalRepository = remember {
+        FestivalRepository(
+            database = database,
+            seedLoader = seedLoader
+        )
+    }
+
     val currentRoute = remember {
         mutableStateOf(AppRoute.Welcome)
     }
@@ -33,7 +57,8 @@ fun AppNavigation() {
         }
 
         AppRoute.Home -> {
-            HomeScreen(
+            HomeRoute(
+                repository = festivalRepository,
                 onScheduleClick = {
                     currentRoute.value = AppRoute.Schedule
                 },
@@ -53,7 +78,8 @@ fun AppNavigation() {
         }
 
         AppRoute.Schedule -> {
-            ScheduleScreen(
+            ScheduleRoute(
+                repository = festivalRepository,
                 onHomeClick = {
                     currentRoute.value = AppRoute.Home
                 },
@@ -73,7 +99,8 @@ fun AppNavigation() {
         }
 
         AppRoute.Map -> {
-            MapScreen(
+            MapRoute(
+                repository = festivalRepository,
                 onHomeClick = {
                     currentRoute.value = AppRoute.Home
                 },

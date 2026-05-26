@@ -1,13 +1,14 @@
 package com.example.sao_joao_em_arcoverde.screens.map
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -20,27 +21,33 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.DirectionsBus
+import androidx.compose.material.icons.rounded.Hotel
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.LocalHospital
-import androidx.compose.material.icons.rounded.Map
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.MyLocation
 import androidx.compose.material.icons.rounded.Place
 import androidx.compose.material.icons.rounded.Restaurant
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Security
 import androidx.compose.material.icons.rounded.TheaterComedy
+import androidx.compose.material.icons.rounded.TravelExplore
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +57,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.sao_joao_em_arcoverde.data.model.MapPoint
+import com.example.sao_joao_em_arcoverde.data.model.MapPointType
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
 import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
@@ -63,16 +72,16 @@ import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDarkVariant
 import com.example.sao_joao_em_arcoverde.ui.theme.TextPrimary
 import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
 
-private data class MapPoint(
-    val title: String,
-    val icon: ImageVector,
-    val color: Color,
-    val offsetX: Int,
-    val offsetY: Int
-)
-
 @Composable
 fun MapScreen(
+    mapPoints: List<MapPoint>,
+    selectedType: MapPointType?,
+    selectedPoint: MapPoint?,
+    isLoading: Boolean,
+    errorMessage: String?,
+    onTypeClick: (MapPointType) -> Unit,
+    onPointClick: (MapPoint) -> Unit,
+    onDismissSelectedPoint: () -> Unit,
     onHomeClick: () -> Unit,
     onScheduleClick: () -> Unit,
     onMoreClick: () -> Unit,
@@ -110,11 +119,72 @@ fun MapScreen(
 
             Spacer(modifier = Modifier.height(14.dp))
 
-            EventMapCard()
+            MapContent(
+                mapPoints = mapPoints,
+                selectedType = selectedType,
+                isLoading = isLoading,
+                errorMessage = errorMessage,
+                onTypeClick = onTypeClick,
+                onPointClick = onPointClick
+            )
+        }
+    }
+
+    if (selectedPoint != null) {
+        MapPointBottomSheet(
+            point = selectedPoint,
+            onDismiss = onDismissSelectedPoint
+        )
+    }
+}
+
+@Composable
+private fun MapContent(
+    mapPoints: List<MapPoint>,
+    selectedType: MapPointType?,
+    isLoading: Boolean,
+    errorMessage: String?,
+    onTypeClick: (MapPointType) -> Unit,
+    onPointClick: (MapPoint) -> Unit
+) {
+    when {
+        isLoading -> {
+            Text(
+                text = "Carregando pontos do mapa...",
+                color = TextSecondary,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
+        errorMessage != null -> {
+            Text(
+                text = "Não foi possível carregar os pontos do mapa.",
+                color = RedAccent,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        mapPoints.isEmpty() -> {
+            Text(
+                text = "Nenhum ponto encontrado para esta categoria.",
+                color = TextSecondary,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
+        else -> {
+            EventMapCard(
+                mapPoints = mapPoints,
+                onPointClick = onPointClick
+            )
 
             Spacer(modifier = Modifier.height(14.dp))
 
-            EventLegendCard()
+            EventLegendCard(
+                selectedType = selectedType,
+                onTypeClick = onTypeClick
+            )
 
             Spacer(modifier = Modifier.height(14.dp))
 
@@ -122,7 +192,10 @@ fun MapScreen(
 
             Spacer(modifier = Modifier.height(18.dp))
 
-            MapQuickAccessSection()
+            MapQuickAccessSection(
+                mapPoints = mapPoints,
+                onPointClick = onPointClick
+            )
         }
     }
 }
@@ -139,23 +212,28 @@ private fun MapHeader(
             .padding(top = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        CircleIconButton(
+            icon = Icons.Rounded.Menu,
+            contentDescription = "Abrir menu",
+            onClick = onMenuClick
+        )
 
         Column(
             modifier = Modifier.weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "SÃO JOÃO EM ARCOVERDE",
+                text = "SÃO JOÃO",
                 color = GoldPrimary,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Black
             )
 
             Text(
-                text = "MAPA",
+                text = "ARCOVERDE",
                 color = TextSecondary,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Light
+                fontWeight = FontWeight.Bold
             )
         }
 
@@ -169,38 +247,11 @@ private fun MapHeader(
 
 @Composable
 private fun EventMapCard(
+    mapPoints: List<MapPoint>,
+    onPointClick: (MapPoint) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val points = listOf(
-        MapPoint(
-            title = "Palco Principal",
-            icon = Icons.Rounded.TheaterComedy,
-            color = RedAccent,
-            offsetX = 142,
-            offsetY = 54
-        ),
-        MapPoint(
-            title = "Informações",
-            icon = Icons.Rounded.Info,
-            color = BlueAccent,
-            offsetX = 54,
-            offsetY = 116
-        ),
-        MapPoint(
-            title = "Alimentação",
-            icon = Icons.Rounded.Restaurant,
-            color = GoldPrimary,
-            offsetX = 236,
-            offsetY = 112
-        ),
-        MapPoint(
-            title = "Saúde",
-            icon = Icons.Rounded.LocalHospital,
-            color = GreenAccent,
-            offsetX = 226,
-            offsetY = 36
-        )
-    )
+    val visiblePoints = mapPoints.take(8)
 
     Card(
         modifier = modifier
@@ -223,17 +274,30 @@ private fun EventMapCard(
         ) {
             MapGrid()
 
-            points.forEach { point ->
+            visiblePoints.forEachIndexed { index, point ->
                 MapMarker(
                     point = point,
+                    onClick = {
+                        onPointClick(point)
+                    },
                     modifier = Modifier.offset(
-                        x = point.offsetX.dp,
-                        y = point.offsetY.dp
+                        x = markerOffsetX(index).dp,
+                        y = markerOffsetY(index).dp
                     )
                 )
             }
         }
     }
+}
+
+private fun markerOffsetX(index: Int): Int {
+    val values = listOf(132, 36, 214, 92, 236, 154, 22, 184)
+    return values[index % values.size]
+}
+
+private fun markerOffsetY(index: Int): Int {
+    val values = listOf(42, 112, 108, 174, 34, 142, 44, 194)
+    return values[index % values.size]
 }
 
 @Composable
@@ -273,22 +337,27 @@ private fun MapGrid(
 @Composable
 private fun MapMarker(
     point: MapPoint,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val metadata = point.type.metadata()
+
     Column(
-        modifier = modifier.width(88.dp),
+        modifier = modifier
+            .width(92.dp)
+            .clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
             modifier = Modifier
                 .size(42.dp)
                 .clip(CircleShape)
-                .background(point.color),
+                .background(metadata.color),
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = point.icon,
-                contentDescription = point.title,
+                imageVector = metadata.icon,
+                contentDescription = point.name,
                 tint = BackgroundDark,
                 modifier = Modifier.size(24.dp)
             )
@@ -303,10 +372,11 @@ private fun MapMarker(
                 .padding(horizontal = 6.dp, vertical = 3.dp)
         ) {
             Text(
-                text = point.title,
+                text = point.name,
                 color = TextPrimary,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                maxLines = 1
             )
         }
     }
@@ -314,8 +384,21 @@ private fun MapMarker(
 
 @Composable
 private fun EventLegendCard(
+    selectedType: MapPointType?,
+    onTypeClick: (MapPointType) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val legendTypes = listOf(
+        MapPointType.STAGE,
+        MapPointType.FOOD,
+        MapPointType.HEALTH,
+        MapPointType.INFO,
+        MapPointType.SECURITY,
+        MapPointType.HOTEL,
+        MapPointType.TOURISM,
+        MapPointType.TRANSPORT
+    )
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -345,7 +428,7 @@ private fun EventLegendCard(
 
                 Icon(
                     imageVector = Icons.Rounded.Close,
-                    contentDescription = "Fechar legenda",
+                    contentDescription = "Limpar filtro",
                     tint = TextSecondary,
                     modifier = Modifier.size(20.dp)
                 )
@@ -353,57 +436,61 @@ private fun EventLegendCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            FlowRow(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(14.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+            Row(
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                LegendItem(
-                    color = RedAccent,
-                    label = "Palco Principal"
-                )
-
-                LegendItem(
-                    color = GoldPrimary,
-                    label = "Alimentação"
-                )
-
-                LegendItem(
-                    color = BlueAccent,
-                    label = "Informações"
-                )
-
-                LegendItem(
-                    color = GreenAccent,
-                    label = "Posto Médico"
-                )
+                legendTypes.forEach { type ->
+                    LegendChip(
+                        type = type,
+                        selected = selectedType == type,
+                        onClick = {
+                            onTypeClick(type)
+                        }
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun LegendItem(
-    color: Color,
-    label: String,
+private fun LegendChip(
+    type: MapPointType,
+    selected: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val metadata = type.metadata()
+
     Row(
-        modifier = modifier,
+        modifier = modifier
+            .clip(RoundedCornerShape(50))
+            .background(
+                if (selected) metadata.color.copy(alpha = 0.28f)
+                else SurfaceDarkVariant
+            )
+            .border(
+                width = 1.dp,
+                color = if (selected) metadata.color else BorderGold,
+                shape = RoundedCornerShape(50)
+            )
+            .clickable(onClick = onClick)
+            .padding(horizontal = 10.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
                 .size(10.dp)
                 .clip(CircleShape)
-                .background(color)
+                .background(metadata.color)
         )
 
         Spacer(modifier = Modifier.width(6.dp))
 
         Text(
-            text = label,
-            color = TextSecondary,
+            text = metadata.label,
+            color = TextPrimary,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold
         )
@@ -416,7 +503,7 @@ private fun LocateMeButton(
 ) {
     Button(
         onClick = {
-            // Etapa futura: solicitar permissão de localização e centralizar no mapa real.
+            // Etapa futura: solicitar permissão de localização e centralizar no OSMDroid.
         },
         modifier = modifier
             .fillMaxWidth()
@@ -445,8 +532,12 @@ private fun LocateMeButton(
 
 @Composable
 private fun MapQuickAccessSection(
+    mapPoints: List<MapPoint>,
+    onPointClick: (MapPoint) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val quickPoints = mapPoints.take(6)
+
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -459,55 +550,44 @@ private fun MapQuickAccessSection(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            QuickAccessCard(
-                title = "Palco Principal",
-                icon = Icons.Rounded.TheaterComedy,
-                color = RedAccent,
-                modifier = Modifier.weight(1f)
-            )
+            quickPoints.chunked(2).forEach { rowItems ->
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    rowItems.forEach { point ->
+                        QuickAccessCard(
+                            point = point,
+                            onClick = {
+                                onPointClick(point)
+                            },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
 
-            QuickAccessCard(
-                title = "Saúde",
-                icon = Icons.Rounded.LocalHospital,
-                color = GreenAccent,
-                modifier = Modifier.weight(1f)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            QuickAccessCard(
-                title = "Informações",
-                icon = Icons.Rounded.Info,
-                color = BlueAccent,
-                modifier = Modifier.weight(1f)
-            )
-
-            QuickAccessCard(
-                title = "Alimentação",
-                icon = Icons.Rounded.Restaurant,
-                color = GoldPrimary,
-                modifier = Modifier.weight(1f)
-            )
+                    if (rowItems.size == 1) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
 private fun QuickAccessCard(
-    title: String,
-    icon: ImageVector,
-    color: Color,
+    point: MapPoint,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val metadata = point.type.metadata()
+
     Card(
-        modifier = modifier.height(76.dp),
+        modifier = modifier
+            .height(76.dp)
+            .clickable(onClick = onClick),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
             containerColor = SurfaceDarkVariant
@@ -520,21 +600,172 @@ private fun QuickAccessCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = icon,
-                contentDescription = title,
-                tint = color,
+                imageVector = metadata.icon,
+                contentDescription = point.name,
+                tint = metadata.color,
                 modifier = Modifier.size(28.dp)
             )
 
             Spacer(modifier = Modifier.width(8.dp))
 
             Text(
-                text = title,
+                text = point.name,
                 color = TextPrimary,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Black
+                fontWeight = FontWeight.Black,
+                maxLines = 2
             )
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun MapPointBottomSheet(
+    point: MapPoint,
+    onDismiss: () -> Unit
+) {
+    val metadata = point.type.metadata()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+        containerColor = SurfaceDark,
+        contentColor = TextPrimary
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 22.dp)
+                .padding(bottom = 28.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(44.dp)
+                        .clip(CircleShape)
+                        .background(metadata.color),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = metadata.icon,
+                        contentDescription = point.name,
+                        tint = BackgroundDark,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        text = point.name,
+                        color = TextPrimary,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Black
+                    )
+
+                    Text(
+                        text = metadata.label,
+                        color = metadata.color,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = point.description,
+                color = TextSecondary,
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Spacer(modifier = Modifier.height(18.dp))
+
+            Text(
+                text = if (point.latitude != null && point.longitude != null) {
+                    "Coordenadas disponíveis para uso no mapa real."
+                } else {
+                    "Coordenadas ainda não cadastradas. Este ponto será posicionado com precisão na etapa do OSMDroid."
+                },
+                color = TextSecondary,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+private data class MapPointTypeMetadata(
+    val label: String,
+    val color: Color,
+    val icon: ImageVector
+)
+
+private fun MapPointType.metadata(): MapPointTypeMetadata {
+    return when (this) {
+        MapPointType.STAGE -> MapPointTypeMetadata(
+            label = "Palcos/Polos",
+            color = RedAccent,
+            icon = Icons.Rounded.TheaterComedy
+        )
+
+        MapPointType.FOOD -> MapPointTypeMetadata(
+            label = "Alimentação",
+            color = GoldPrimary,
+            icon = Icons.Rounded.Restaurant
+        )
+
+        MapPointType.HEALTH -> MapPointTypeMetadata(
+            label = "Saúde",
+            color = GreenAccent,
+            icon = Icons.Rounded.LocalHospital
+        )
+
+        MapPointType.INFO -> MapPointTypeMetadata(
+            label = "Informações",
+            color = BlueAccent,
+            icon = Icons.Rounded.Info
+        )
+
+        MapPointType.SECURITY -> MapPointTypeMetadata(
+            label = "Segurança",
+            color = RedAccent,
+            icon = Icons.Rounded.Security
+        )
+
+        MapPointType.HOTEL -> MapPointTypeMetadata(
+            label = "Hotéis",
+            color = BlueAccent,
+            icon = Icons.Rounded.Hotel
+        )
+
+        MapPointType.TOURISM -> MapPointTypeMetadata(
+            label = "Turismo",
+            color = GreenAccent,
+            icon = Icons.Rounded.TravelExplore
+        )
+
+        MapPointType.TRANSPORT -> MapPointTypeMetadata(
+            label = "Transporte",
+            color = GoldPrimary,
+            icon = Icons.Rounded.DirectionsBus
+        )
+
+        MapPointType.OTHER -> MapPointTypeMetadata(
+            label = "Outros",
+            color = TextSecondary,
+            icon = Icons.Rounded.Place
+        )
     }
 }
 
@@ -561,4 +792,3 @@ private fun CircleIconButton(
         )
     }
 }
-

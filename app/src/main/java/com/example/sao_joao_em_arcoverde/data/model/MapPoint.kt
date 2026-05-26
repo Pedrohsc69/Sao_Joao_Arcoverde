@@ -21,5 +21,6 @@ enum class MapPointType {
     SECURITY,
     HOTEL,
     TOURISM,
+    TRANSPORT,
     OTHER
 }
