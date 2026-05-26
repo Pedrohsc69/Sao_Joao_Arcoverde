@@ -1,0 +1,44 @@
+[
+  {
+    "id": "contact_samu_192",
+    "name": "SAMU",
+    "phone": "192",
+    "description": "Serviço de Atendimento Móvel de Urgência. Acione em casos de urgência médica, mal súbito, acidentes com vítimas, desmaios, dor intensa ou suspeita de infarto/AVC.",
+    "type": "MEDICAL"
+  },
+  {
+    "id": "contact_policia_militar_190",
+    "name": "Polícia Militar",
+    "phone": "190",
+    "description": "Atendimento policial emergencial. Acione em situações de violência, ameaça, furto, roubo, confusão generalizada ou risco imediato à segurança.",
+    "type": "POLICE"
+  },
+  {
+    "id": "contact_bombeiros_193",
+    "name": "Corpo de Bombeiros",
+    "phone": "193",
+    "description": "Atendimento a incêndios, resgates, acidentes, salvamentos, vazamentos de gás, pessoas presas ou situações com risco físico imediato.",
+    "type": "FIRE_DEPARTMENT"
+  },
+  {
+    "id": "contact_defesa_civil_199",
+    "name": "Defesa Civil",
+    "phone": "199",
+    "description": "Atendimento para situações de desastre, alagamentos, deslizamentos, estruturas com risco de queda e outras ocorrências de proteção civil.",
+    "type": "OTHER"
+  },
+  {
+    "id": "contact_policia_civil_197",
+    "name": "Polícia Civil",
+    "phone": "197",
+    "description": "Canal para ocorrências e orientações relacionadas à Polícia Civil. Use para registro ou encaminhamento de situações não imediatas após controle do risco.",
+    "type": "POLICE"
+  },
+  {
+    "id": "contact_disque_denuncia_181",
+    "name": "Disque-Denúncia",
+    "phone": "181",
+    "description": "Canal para denúncias. Pode ser usado para informar atividades suspeitas, crimes ou situações de risco sem caráter de socorro imediato.",
+    "type": "OTHER"
+  }
+]

@@ -1,0 +1,202 @@
+[
+  {
+    "id": "map_point_palco_principal_praca_sergio_magalhaes",
+    "name": "Palco Principal — Praça Sérgio Magalhães",
+    "type": "STAGE",
+    "description": "Principal área de shows do São João de Arcoverde 2026. Local usado para a programação do Palco Principal. Endereço/referência: Praça Sérgio Magalhães, Centro, Arcoverde-PE.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_secretaria_turismo_eventos",
+    "name": "Secretaria de Turismo e Eventos",
+    "type": "INFO",
+    "description": "Ponto institucional de referência turística. Endereço: Av. Dom Pedro II, 330, Centro, anexo à Casa das Juventudes, antigo Colégio Rio Branco. Contato informado pela Prefeitura: (87) 3821-9093.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_hospital_regional_arcoverde",
+    "name": "Hospital Regional de Arcoverde",
+    "type": "HEALTH",
+    "description": "Unidade hospitalar de referência. Endereço informado pela Prefeitura: Av. Agamenon Magalhães, s/n, Centro. Contato: (87) 3821-8300.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_hospital_memorial_arcoverde",
+    "name": "Hospital Memorial Arcoverde",
+    "type": "HEALTH",
+    "description": "Unidade hospitalar. Endereço informado pela Prefeitura: Av. José Bonifácio, 1121, São Cristóvão. Contato: (87) 3821-8100.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_psf_dr_carlos_bradley",
+    "name": "P.S.F Dr. Carlos Bradley",
+    "type": "HEALTH",
+    "description": "Unidade de saúde. Endereço informado pela Prefeitura: Rua Martins Júnior, 152 A. Contato: (87) 3821-0089.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_policlinica_paulo_rabello",
+    "name": "Policlínica Doutor Paulo Rabello — Boa Esperança",
+    "type": "HEALTH",
+    "description": "Policlínica municipal. Endereço informado pela Prefeitura: Av. Argentina, Lotes 09, 10 e 11, Quadra K, Loteamento JK, s/n. Contatos: (87) 3822-2855 / (87) 3821-9010.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_centro_saude_mulher",
+    "name": "Centro de Saúde da Mulher",
+    "type": "HEALTH",
+    "description": "Unidade de saúde. Endereço informado pela Prefeitura: Praça Presidente Kennedy, 455, São Cristóvão. Contato: (87) 3822-4024.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_delegacia_municipal_policia_civil",
+    "name": "Delegacia Municipal de Polícia Civil de Arcoverde",
+    "type": "SECURITY",
+    "description": "Delegacia municipal. Endereço informado pela Prefeitura: Rua Henrique Dias, 200, Centro. Contatos: (87) 3821-8584 / (87) 3821-8586 / (87) 3821-8582.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_3_bpm_arcoverde",
+    "name": "3º BPM — Polícia Militar",
+    "type": "SECURITY",
+    "description": "Batalhão da Polícia Militar. Endereço informado pela Prefeitura: Av. Osvaldo Cruz, s/n, Bairro Coronel Siqueira Campos. Contatos: (87) 3821-8233 / (87) 3821-8227 / (87) 9.9978-2567.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_terminal_rodoviario_arcoverde",
+    "name": "Terminal Rodoviário de Arcoverde",
+    "type": "TRANSPORT",
+    "description": "Terminal rodoviário. Endereço: Av. José Bonifácio, 300, São Cristóvão, Arcoverde-PE. Contato informado: (87) 3821-1956.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_ibiza_center_hotel",
+    "name": "Ibiza Center Hotel",
+    "type": "HOTEL",
+    "description": "Hotel listado pela Prefeitura de Arcoverde. Endereço: Av. José Magalhães de França, 18, 1º andar. Contatos: (87) 2159-0603 / (87) 9.9811-3903.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_ibis_arcoverde",
+    "name": "ibis Arcoverde",
+    "type": "HOTEL",
+    "description": "Hotel econômico da rede ibis em Arcoverde. Informação pública indica estrutura com quartos funcionais, Wi-Fi, café da manhã, bar/restaurante e estacionamento.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_max_hotel",
+    "name": "Max Hotel",
+    "type": "HOTEL",
+    "description": "Hotel listado entre opções populares de hospedagem em Arcoverde. Referência pública: localizado diretamente na BR-232.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_lw_hotel",
+    "name": "LW Hotel",
+    "type": "HOTEL",
+    "description": "Hotel listado entre opções de hospedagem em Arcoverde. Referência pública: hotel de 3 estrelas com 29 quartos, próximo à Igreja Matriz.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_hotel_cruzeiro",
+    "name": "Hotel Cruzeiro",
+    "type": "HOTEL",
+    "description": "Hotel listado entre opções de hospedagem em Arcoverde em plataformas de viagem.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_dom_preto_espaco_gourmet",
+    "name": "Dom Preto Espaço Gourmet",
+    "type": "FOOD",
+    "description": "Restaurante/cafeteria listado pela Prefeitura. Endereço: Dr. Carlos H. Bradley, nº 54. Especialidade: cafeteria, sobremesas, lanches, bebidas e comida típica. Contato: (87) 9.9154-0876.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_la_sebastiana",
+    "name": "La Sebastiana",
+    "type": "FOOD",
+    "description": "Restaurante/bistrô em Arcoverde. Endereço divulgado em perfil público: Praça da Bandeira, 142, Arcoverde-PE.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_restaurante_verdes_arcos",
+    "name": "Restaurante Verdes Arcos",
+    "type": "FOOD",
+    "description": "Restaurante listado entre opções bem avaliadas em Arcoverde. Categoria pública: brasileira/sul-americana.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_churrascaria_2000",
+    "name": "Churrascaria 2000",
+    "type": "FOOD",
+    "description": "Restaurante/churrascaria listado entre opções de alimentação em Arcoverde.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_pizzaria_spazzio",
+    "name": "Pizzaria Spazzio",
+    "type": "FOOD",
+    "description": "Pizzaria listada entre opções de alimentação em Arcoverde.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_cinema_rio_branco",
+    "name": "Cinema Rio Branco",
+    "type": "TOURISM",
+    "description": "Atrativo cultural e histórico de Arcoverde. A Prefeitura descreve o Cinema Rio Branco como um dos marcos históricos da cidade.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_estacao_ferroviaria",
+    "name": "Estação Ferroviária",
+    "type": "TOURISM",
+    "description": "Atrativo cultural e histórico de Arcoverde. A Estação Ferroviária é listada pela Prefeitura entre os pontos de interesse da cidade.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_casa_cardeal_arcoverde",
+    "name": "Casa do Cardeal Arcoverde",
+    "type": "TOURISM",
+    "description": "Atrativo histórico ligado à memória do Cardeal Arcoverde, listado pela Prefeitura entre pontos culturais/históricos do município.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_alto_cruzeiro",
+    "name": "Alto do Cruzeiro",
+    "type": "TOURISM",
+    "description": "Ponto turístico e cultural associado à vista panorâmica da cidade e à cultura popular local.",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "id": "map_point_morro_santa_cruz",
+    "name": "Morro da Santa Cruz",
+    "type": "TOURISM",
+    "description": "Ponto turístico conhecido pela vista panorâmica de Arcoverde.",
+    "latitude": null,
+    "longitude": null
+  }
+]

@@ -19,6 +19,7 @@ enum class MapPointType {
     HEALTH,
     INFO,
     SECURITY,
-    PARKING,
+    HOTEL,
+    TOURISM,
     OTHER
 }
