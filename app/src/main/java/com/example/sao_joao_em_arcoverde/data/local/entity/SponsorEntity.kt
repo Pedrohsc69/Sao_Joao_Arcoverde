@@ -5,17 +5,17 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "map_points",
+    tableName = "sponsors",
     indices = [
-        Index(value = ["type"])
+        Index(value = ["category"])
     ]
 )
-data class MapPointEntity(
+data class SponsorEntity(
     @PrimaryKey
     val id: String,
     val name: String,
-    val type: String,
-    val description: String,
-    val latitude: Double?,
-    val longitude: Double?
+    val category: String,
+    val description: String?,
+    val logoUrl: String?,
+    val websiteUrl: String?
 )

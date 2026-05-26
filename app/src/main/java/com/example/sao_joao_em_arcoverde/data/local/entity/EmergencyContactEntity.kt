@@ -5,17 +5,16 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "map_points",
+    tableName = "emergency_contacts",
     indices = [
         Index(value = ["type"])
     ]
 )
-data class MapPointEntity(
+data class EmergencyContactEntity(
     @PrimaryKey
     val id: String,
     val name: String,
-    val type: String,
+    val phone: String,
     val description: String,
-    val latitude: Double?,
-    val longitude: Double?
+    val type: String
 )
