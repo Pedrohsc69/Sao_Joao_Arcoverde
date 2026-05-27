@@ -3,7 +3,8 @@
     "id": "artist_coco_das_irmas_lopes",
     "name": "Coco das Irmãs Lopes",
     "genre": "Coco de Roda/Cultura Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Grupo de cultura popular ligado ao coco de roda, expressão tradicional presente no ciclo junino e na identidade musical de Arcoverde. A apresentação valoriza canto, percussão, dança e memória popular nordestina.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -11,7 +12,8 @@
     "id": "artist_flavio_jose",
     "name": "Flávio José",
     "genre": "Forró Pé de Serra/Xote",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Flávio José Marcelino Remígio é cantor, compositor e sanfoneiro paraibano, natural de Monteiro. Conhecido como um dos grandes nomes do forró pé de serra e do xote, iniciou-se na música ainda criança e tem forte influência de Luiz Gonzaga e Dominguinhos.",
+    "birthDate": "1951-09-01",
     "imageUrl": null,
     "isFeatured": true
   },
@@ -19,7 +21,8 @@
     "id": "artist_alceu_valenca",
     "name": "Alceu Valença",
     "genre": "MPB Nordestina/Forró/Frevo",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Alceu Paiva Valença é cantor, compositor, músico e multi-instrumentista pernambucano, natural de São Bento do Una. Sua obra mistura MPB, forró, baião, frevo, maracatu, rock e referências da cultura popular nordestina.",
+    "birthDate": "1946-07-01",
     "imageUrl": null,
     "isFeatured": true
   },
@@ -27,7 +30,8 @@
     "id": "artist_pv_calado",
     "name": "PV Calado",
     "genre": "Forró/Festa Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "PV Calado é atração da programação do São João de Arcoverde associada ao repertório regional junino. Atua no circuito de shows populares do Nordeste, com apresentação voltada ao forró e à música de festa.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -35,7 +39,8 @@
     "id": "artist_junior_e_jorge",
     "name": "Junior e Jorge",
     "genre": "Sertanejo/Forró",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Junior e Jorge é dupla presente na programação do São João de Arcoverde, com repertório voltado ao entretenimento popular, forró e sonoridades regionais. A apresentação integra a grade do Palco Principal.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -43,7 +48,8 @@
     "id": "artist_lipe_lucena",
     "name": "Lipe Lucena",
     "genre": "Forró/Piseiro",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Lipe Lucena é cantor incluído na programação do Palco Principal do São João de Arcoverde. Seu repertório está associado ao forró contemporâneo e à música popular de festa, dialogando com o público junino.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -51,7 +57,8 @@
     "id": "artist_festival_de_quadrilhas",
     "name": "Festival de Quadrilhas",
     "genre": "Quadrilha Junina/Cultura Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "O Festival de Quadrilhas representa uma atração cultural coletiva da programação, dedicada à dança junina, figurinos, coreografias, tradição popular e disputa entre grupos de quadrilha.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -59,7 +66,8 @@
     "id": "artist_jucie",
     "name": "Juciê",
     "genre": "Forró/Festa Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Juciê é atração regional da programação, associada ao repertório de forró e música nordestina. A apresentação reforça a presença de artistas locais e regionais no São João de Arcoverde.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -67,7 +75,8 @@
     "id": "artist_ze_vaqueiro",
     "name": "Zé Vaqueiro",
     "genre": "Forró Eletrônico/Piseiro",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "José Jacson de Siqueira dos Santos Junior, conhecido como Zé Vaqueiro, é cantor e compositor pernambucano natural de Ouricuri. Tornou-se um dos principais nomes da nova geração do piseiro, com destaque nacional a partir de 2020.",
+    "birthDate": "1999-01-20",
     "imageUrl": null,
     "isFeatured": true
   },
@@ -75,7 +84,8 @@
     "id": "artist_nattan",
     "name": "Nattan",
     "genre": "Forró Eletrônico/Pisadinha",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Natanael Cesário dos Santos, conhecido como Nattan ou Nattanzinho, é cantor e compositor cearense natural de Sobral. É um dos nomes de maior projeção do forró eletrônico contemporâneo.",
+    "birthDate": "1998-08-17",
     "imageUrl": null,
     "isFeatured": true
   },
@@ -83,7 +93,8 @@
     "id": "artist_fernandinha",
     "name": "Fernandinha",
     "genre": "Forró/Festa Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Fernandinha é atração da programação do São João de Arcoverde, com repertório voltado ao forró, à música popular nordestina e ao contexto das festas juninas.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -91,7 +102,8 @@
     "id": "artist_eric_land",
     "name": "Eric Land",
     "genre": "Forró Eletrônico",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Eric Bezerra Mota Rocha, conhecido como Eric Land, é cantor e compositor cearense de forró e piseiro. Natural de Fortaleza, ganhou projeção nacional na década de 2020 com repertório dançante e parcerias no cenário do forró atual.",
+    "birthDate": "1995-07-27",
     "imageUrl": null,
     "isFeatured": false
   },
@@ -99,7 +111,8 @@
     "id": "artist_vitor_fernandes",
     "name": "Vitor Fernandes",
     "genre": "Forró/Piseiro",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "John Vitor Ferreira de Sousa, conhecido como Vitor Fernandes, é cantor e compositor pernambucano natural de Petrolina. Chamado de Rei do Piseiro, tornou-se referência no forró e no piseiro contemporâneo.",
+    "birthDate": "1996-12-07",
     "imageUrl": null,
     "isFeatured": false
   },
@@ -107,7 +120,8 @@
     "id": "artist_maciel_kure",
     "name": "Maciel Kurê",
     "genre": "Forró/Festa Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Maciel Kurê é atração regional da programação do São João de Arcoverde, com repertório ligado ao forró e à música nordestina. Sua presença contribui para valorizar artistas do circuito cultural local e regional.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -115,7 +129,8 @@
     "id": "artist_iguinho_e_lulinha",
     "name": "Iguinho e Lulinha",
     "genre": "Forró/Arrocha",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Iguinho & Lulinha é dupla brasileira de forró e piseiro formada pelos irmãos Wingles Belem Marques, o Iguinho, e Willas Belem Marques, o Lulinha, naturais de Canindé de São Francisco. A dupla ganhou destaque nacional com o hit Coração Acelera.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -123,7 +138,8 @@
     "id": "artist_wesley_safadao",
     "name": "Wesley Safadão",
     "genre": "Forró Eletrônico",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Wesley Oliveira da Silva, conhecido como Wesley Safadão, é cantor, produtor musical e empresário cearense, natural de Fortaleza. Ganhou projeção à frente da banda Garota Safada e consolidou carreira solo no forró eletrônico.",
+    "birthDate": "1988-09-06",
     "imageUrl": null,
     "isFeatured": true
   },
@@ -131,7 +147,8 @@
     "id": "artist_dani_aguiar",
     "name": "Dani Aguiar",
     "genre": "Forró/Festa Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Dani Aguiar é atração da programação do São João de Arcoverde, com repertório voltado ao forró, à música popular de festa e às sonoridades contemporâneas do período junino.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -139,7 +156,8 @@
     "id": "artist_talita_mel",
     "name": "Talita Mel",
     "genre": "Forró/Festa Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Talita Mel é cantora incluída na programação do Palco Principal, com atuação voltada ao entretenimento popular, forró e repertório junino.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -147,7 +165,8 @@
     "id": "artist_priscila_senna",
     "name": "Priscila Senna",
     "genre": "Brega Romântico",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Priscila da Silva Sena, conhecida como Priscila Senna, é cantora pernambucana natural de Olinda. Tornou-se conhecida como voz de destaque do brega pernambucano e integrou a banda Musa antes de consolidar carreira solo.",
+    "birthDate": "1990-11-13",
     "imageUrl": null,
     "isFeatured": true
   },
@@ -155,7 +174,8 @@
     "id": "artist_mayana_neiva",
     "name": "Mayana Neiva",
     "genre": "Forró/Festa Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Mayana Neiva é atração da programação do São João de Arcoverde, com repertório associado ao forró e à música popular nordestina no contexto das festas juninas.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -163,7 +183,8 @@
     "id": "artist_edy_e_nathan",
     "name": "Edy e Nathan",
     "genre": "Forró/Sertanejo",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Edy e Nathan é dupla presente na grade do Palco Principal, com proposta musical voltada ao público de festa e ao repertório regional junino.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -171,7 +192,8 @@
     "id": "artist_fabinho_testado",
     "name": "Fabinho Testado",
     "genre": "Forró/Piseiro",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Fabinho Testado é cantor e compositor pernambucano natural de Belém de São Francisco. Destacou-se no forró contemporâneo também por composições gravadas por outros artistas e por repertório ligado à vaquejada e ao piseiro.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -179,7 +201,8 @@
     "id": "artist_ciro_santos",
     "name": "Ciro Santos",
     "genre": "Forró/Festa Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Ciro Santos é atração da programação do São João de Arcoverde, com repertório de forró e música regional. Sua participação compõe a noite dedicada a artistas populares e tradicionais no Palco Principal.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -187,7 +210,8 @@
     "id": "artist_assisao",
     "name": "Assisão",
     "genre": "Forró Pé de Serra",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Francisco de Assis Nogueira, conhecido como Assisão, é cantor e compositor pernambucano de Serra Talhada. É um nome tradicional do forró, reconhecido pela dedicação à música nordestina e à cultura sertaneja.",
+    "birthDate": "1941-05-05",
     "imageUrl": null,
     "isFeatured": false
   },
@@ -195,7 +219,8 @@
     "id": "artist_super_oara",
     "name": "Super Oara",
     "genre": "Brega/Forró",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "A Super OARA, Orquestra Arcoverdense de Ritmos Americanos, é uma tradicional orquestra de Arcoverde criada em 1958. O grupo é conhecido por bailes, repertório popular e presença marcante na memória cultural da cidade.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -203,7 +228,8 @@
     "id": "artist_capital_do_sol",
     "name": "Capital do Sol",
     "genre": "Forró das Antigas",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Capital do Sol é banda cearense de forró eletrônico fundada em Fortaleza, com trajetória associada ao forró das antigas e a sucessos românticos populares no Nordeste.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -211,7 +237,8 @@
     "id": "artist_felipe_amorim",
     "name": "Felipe Amorim",
     "genre": "Forró Eletrônico/Piseiro",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Luiz Felipe Amorim do Nascimento, conhecido como Felipe Amorim, é cantor e compositor cearense natural de Fortaleza. Sua carreira mistura forró, piseiro, funk, sertanejo, pop e elementos eletrônicos, com projeção nacional a partir de 2021.",
+    "birthDate": "1996-09-21",
     "imageUrl": null,
     "isFeatured": true
   },
@@ -219,7 +246,8 @@
     "id": "artist_coco_fulo_do_barro",
     "name": "Coco Fulô do Barro",
     "genre": "Coco de Roda/Cultura Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Coco Fulô do Barro é grupo de cultura popular ligado ao coco e às manifestações tradicionais nordestinas. A apresentação valoriza ritmo, canto, dança e identidade cultural regional.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -227,7 +255,8 @@
     "id": "artist_geraldinho_lins",
     "name": "Geraldinho Lins",
     "genre": "Forró",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Geraldo Pereira Lins Filho, conhecido como Geraldinho Lins, é cantor, compositor e jornalista pernambucano, natural de Serra Talhada. Sua trajetória no forró ganhou força a partir dos anos 1990, com repertório junino e romântico.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -235,7 +264,8 @@
     "id": "artist_garota_safada",
     "name": "Garota Safada",
     "genre": "Forró Eletrônico",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Garota Safada é banda brasileira de forró eletrônico criada em Fortaleza. O grupo ganhou grande projeção nas regiões Norte e Nordeste, especialmente no período em que Wesley Safadão esteve à frente dos vocais.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": true
   },
@@ -243,7 +273,8 @@
     "id": "artist_coco_raizes_de_arcoverde",
     "name": "Coco Raízes de Arcoverde",
     "genre": "Coco de Roda/Cultura Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Coco Raízes de Arcoverde é grupo representativo da tradição do samba de coco de Arcoverde. Sua apresentação valoriza percussão, dança, canto coletivo e a memória cultural do sertão pernambucano.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -251,7 +282,8 @@
     "id": "artist_george_silva",
     "name": "George Silva",
     "genre": "Forró/Festa Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "George Silva é atração da programação do São João de Arcoverde, com repertório associado ao forró e à música regional no contexto das festas juninas.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -259,7 +291,8 @@
     "id": "artist_jorge_de_altinho",
     "name": "Jorge de Altinho",
     "genre": "Forró Pé de Serra",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Jorge Assis de Assunção, conhecido como Jorge de Altinho, é cantor e compositor pernambucano natural de Olinda. É um dos nomes tradicionais do forró, autor e intérprete de canções marcantes do repertório nordestino.",
+    "birthDate": "1952-06-03",
     "imageUrl": null,
     "isFeatured": true
   },
@@ -267,7 +300,8 @@
     "id": "artist_cordel_do_fogo_encantado",
     "name": "Cordel do Fogo Encantado",
     "genre": "Cultura Popular/Experimental",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Cordel do Fogo Encantado é grupo cênico-musical brasileiro fundado em Arcoverde, Pernambuco, em 1997. Mistura poesia, teatro, percussão, ritmos afro-indígenas, cultura popular e sonoridades contemporâneas.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": true
   },
@@ -275,7 +309,8 @@
     "id": "artist_joao_vaqueiro",
     "name": "João Vaqueiro",
     "genre": "Forró/Piseiro",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "João Vaqueiro é atração da programação do São João de Arcoverde, com repertório voltado à vaquejada, ao forró e ao entretenimento popular nordestino.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -283,7 +318,8 @@
     "id": "artist_magnificos",
     "name": "Magníficos",
     "genre": "Forró das Antigas",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Magníficos é banda brasileira de forró eletrônico formada em 1995 na cidade de Monteiro, Paraíba. Consolidou-se como um dos principais nomes do forró romântico, com sucessos nacionais desde a década de 1990.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -291,7 +327,8 @@
     "id": "artist_xand_aviao",
     "name": "Xand Avião",
     "genre": "Forró Eletrônico",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "José Alexandre da Silva Filho, conhecido como Xand Avião, é cantor, compositor e empresário brasileiro natural de Itaú, Rio Grande do Norte. Ficou conhecido como vocalista da banda Aviões do Forró e depois consolidou carreira solo.",
+    "birthDate": "1982-03-24",
     "imageUrl": null,
     "isFeatured": true
   },
@@ -299,7 +336,8 @@
     "id": "artist_will",
     "name": "Will",
     "genre": "Forró/Festa Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Will é atração da programação do São João de Arcoverde, com apresentação no Palco Principal e repertório voltado ao forró, piseiro e música popular de festa.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -307,7 +345,8 @@
     "id": "artist_nagila_ferreira",
     "name": "Nágila Ferreira",
     "genre": "Forró/Festa Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Nágila Ferreira é cantora presente na programação do São João de Arcoverde, com repertório voltado à música regional, forró e entretenimento junino.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -315,7 +354,8 @@
     "id": "artist_joao_gomes",
     "name": "João Gomes",
     "genre": "Piseiro/Forró",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "João Fernando Gomes Valério, conhecido como João Gomes, é cantor e compositor pernambucano natural de Serrita. Ganhou destaque nacional com forró, piseiro e MPB, tornando-se um dos principais nomes da nova geração nordestina.",
+    "birthDate": "2002-07-31",
     "imageUrl": null,
     "isFeatured": true
   },
@@ -323,7 +363,8 @@
     "id": "artist_ycaro_andrade",
     "name": "Ycaro Andrade",
     "genre": "Forró/Festa Popular",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Ycaro Andrade é atração da programação do Palco Principal do São João de Arcoverde, com repertório associado ao forró, piseiro e música popular nordestina.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -331,7 +372,8 @@
     "id": "artist_harry_estigado",
     "name": "Harry Estigado",
     "genre": "Forró/Piseiro",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Harry Estigado é cantor e criador de conteúdo brasileiro, conhecido pela presença digital e por repertório ligado ao entretenimento popular. Também atua em shows com proposta de forró e música de festa.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -339,7 +381,8 @@
     "id": "artist_nathanzinho_lima",
     "name": "Nathanzinho Lima",
     "genre": "Forró/Piseiro",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Natã Lima Nascimento, conhecido como Natanzinho Lima, é cantor e compositor sergipano natural de Itabaiana. Seu repertório mistura piseiro, arrocha, brega e influências do forró.",
+    "birthDate": "2002-11-17",
     "imageUrl": null,
     "isFeatured": false
   },
@@ -347,7 +390,8 @@
     "id": "artist_flavio_leandro",
     "name": "Flávio Leandro",
     "genre": "Forró Pé de Serra",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Francisco Flávio Leandro Furtado, conhecido como Flávio Leandro, é cantor e compositor pernambucano natural de Bodocó. Chamado de poeta cantador, tem obra fortemente ligada ao forró e à cultura sertaneja.",
+    "birthDate": "1969-10-25",
     "imageUrl": null,
     "isFeatured": false
   },
@@ -355,7 +399,8 @@
     "id": "artist_noda_de_caju",
     "name": "Noda de Caju",
     "genre": "Forró das Antigas",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Noda de Caju é banda brasileira de forró eletrônico formada em 1996 em Arcoverde, Pernambuco. Ficou conhecida nacionalmente no movimento do forró romântico e do forró das antigas, com sucessos marcantes nas décadas de 1990 e 2000.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -363,7 +408,8 @@
     "id": "artist_limao_com_mel",
     "name": "Limão com Mel",
     "genre": "Forró das Antigas",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Limão com Mel é banda brasileira de forró eletrônico formada em 1993 em Salgueiro, Pernambuco. Tornou-se uma das principais referências do forró romântico, com sucessos como Anjo Querubim e De Janeiro a Janeiro.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": true
   },
@@ -371,7 +417,8 @@
     "id": "artist_carlos_e_fabio",
     "name": "Carlos e Fábio",
     "genre": "Sertanejo/Forró",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Carlos e Fábio é dupla presente na programação do São João de Arcoverde, com repertório voltado ao público de festa e às sonoridades do forró e da música regional.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -379,7 +426,8 @@
     "id": "artist_forrozao_chacal",
     "name": "Forrozão Chacal",
     "genre": "Forró",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Forrozão Chacal é atração da programação do São João de Arcoverde, com repertório voltado ao forró tradicional, forró de festa e animação popular junina.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": false
   },
@@ -387,7 +435,8 @@
     "id": "artist_matheus_e_kauan",
     "name": "Matheus e Kauan",
     "genre": "Sertanejo",
-    "description": "Atração confirmada no Palco Principal do São João de Arcoverde 2026.",
+    "description": "Matheus & Kauan é dupla sertaneja formada pelos irmãos Matheus Aleixo Pinto Rosa e Osvaldo Pinto Rosa Filho, o Kauan, naturais de Itapuranga, Goiás. A dupla ganhou projeção nacional com sucessos do sertanejo universitário.",
+    "birthDate": null,
     "imageUrl": null,
     "isFeatured": true
   }

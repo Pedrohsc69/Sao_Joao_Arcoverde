@@ -212,36 +212,25 @@ private fun MapHeader(
             .padding(top = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        CircleIconButton(
-            icon = Icons.Rounded.Menu,
-            contentDescription = "Abrir menu",
-            onClick = onMenuClick
-        )
-
         Column(
             modifier = Modifier.weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "SÃO JOÃO",
+                text = "SÃO JOÃO EM ARCOVERDE",
                 color = GoldPrimary,
                 style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Black
+                fontWeight = FontWeight.Black,
+                letterSpacing = androidx.compose.ui.unit.TextUnit.Unspecified
             )
 
             Text(
-                text = "ARCOVERDE",
+                text = "MAPA",
                 color = TextSecondary,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Light
             )
         }
-
-        CircleIconButton(
-            icon = Icons.Rounded.Search,
-            contentDescription = "Pesquisar",
-            onClick = onSearchClick
-        )
     }
 }
 

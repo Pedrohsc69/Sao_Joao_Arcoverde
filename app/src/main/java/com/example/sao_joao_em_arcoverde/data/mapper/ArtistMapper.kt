@@ -9,6 +9,7 @@ fun ArtistEntity.toModel(): Artist {
         name = name,
         genre = genre,
         description = description,
+        birthDate = birthDate,
         imageUrl = imageUrl,
         isFeatured = isFeatured
     )
@@ -20,6 +21,7 @@ fun Artist.toEntity(): ArtistEntity {
         name = name,
         genre = genre,
         description = description,
+        birthDate = birthDate,
         imageUrl = imageUrl,
         isFeatured = isFeatured
     )

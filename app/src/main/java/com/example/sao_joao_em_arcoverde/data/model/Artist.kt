@@ -8,6 +8,7 @@ data class Artist(
     val name: String,
     val genre: String,
     val description: String,
+    val birthDate: String? = null,
     val imageUrl: String? = null,
     val isFeatured: Boolean = false
 )

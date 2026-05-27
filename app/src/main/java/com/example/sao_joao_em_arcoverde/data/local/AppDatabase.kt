@@ -26,8 +26,8 @@ import com.example.sao_joao_em_arcoverde.data.local.entity.SponsorEntity
         EmergencyContactEntity::class,
         SponsorEntity::class
     ],
-    version = 1,
-    exportSchema = true
+    version = 2,
+    exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 

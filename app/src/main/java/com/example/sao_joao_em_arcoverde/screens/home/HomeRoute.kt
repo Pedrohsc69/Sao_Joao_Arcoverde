@@ -18,6 +18,7 @@ fun HomeRoute(
     repository: FestivalRepository,
     onScheduleClick: () -> Unit,
     onMapClick: () -> Unit,
+    onArtistsClick: () -> Unit,
     onMoreClick: () -> Unit,
     onSearchClick: () -> Unit,
     onMenuClick: () -> Unit
@@ -51,6 +52,7 @@ fun HomeRoute(
         errorMessage = uiState.value.errorMessage,
         onScheduleClick = onScheduleClick,
         onMapClick = onMapClick,
+        onArtistsClick = onArtistsClick,
         onMoreClick = onMoreClick,
         onSearchClick = onSearchClick,
         onMenuClick = onMenuClick

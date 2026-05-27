@@ -73,6 +73,7 @@ import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
 private enum class MorePanel {
     NOTIFICATIONS,
     HISTORY,
+    ARTISTS,
     SECURITY_HEALTH,
     EMERGENCY_CONTACTS,
     SPONSORS,
@@ -95,6 +96,7 @@ fun MoreScreen(
     onHomeClick: () -> Unit,
     onScheduleClick: () -> Unit,
     onMapClick: () -> Unit,
+    onArtistsClick: () -> Unit,
     onSearchClick: () -> Unit,
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -178,7 +180,11 @@ fun MoreScreen(
                             emergencyContactsCount = emergencyContacts.size,
                             sponsorsCount = sponsors.size,
                             onOptionClick = { panel ->
-                                selectedPanel.value = panel
+                                if (panel == MorePanel.ARTISTS) {
+                                    onArtistsClick()
+                                } else {
+                                    selectedPanel.value = panel
+                                }
                             }
                         )
                     }
@@ -221,28 +227,23 @@ private fun MoreHeader(
             .padding(top = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        CircleIconButton(
-            icon = Icons.Rounded.Menu,
-            contentDescription = "Abrir menu",
-            onClick = onMenuClick
-        )
-
         Column(
             modifier = Modifier.weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "SÃO JOÃO",
+                text = "SÃO JOÃO EM ARCOVERDE",
                 color = GoldPrimary,
                 style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Black
+                fontWeight = FontWeight.Black,
+                letterSpacing = androidx.compose.ui.unit.TextUnit.Unspecified
             )
 
             Text(
-                text = "ARCOVERDE",
+                text = "MAIS OPÇÕES",
                 color = TextSecondary,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Light
             )
         }
 
@@ -273,6 +274,12 @@ private fun MoreOptionsList(
             icon = Icons.Rounded.MenuBook,
             iconColor = GreenAccent,
             panel = MorePanel.HISTORY
+        ),
+        MoreOption(
+            title = "Artistas",
+            icon = Icons.Rounded.Star,
+            iconColor = GoldPrimary,
+            panel = MorePanel.ARTISTS
         ),
         MoreOption(
             title = "Segurança e Saúde",
@@ -516,6 +523,14 @@ private fun MorePanelBottomSheet(
                 MorePanel.NOTIFICATIONS -> NotificationsContent()
 
                 MorePanel.HISTORY -> HistoryContent()
+
+                MorePanel.ARTISTS -> {
+                    Text(
+                        text = "A tela de artistas é aberta em uma página própria.",
+                        color = TextSecondary,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
 
                 MorePanel.SECURITY_HEALTH -> SecurityHealthContent(
                     emergencyContacts = emergencyContacts

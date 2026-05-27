@@ -11,6 +11,7 @@ import com.example.sao_joao_em_arcoverde.screens.home.HomeRoute
 import com.example.sao_joao_em_arcoverde.screens.map.MapRoute
 import com.example.sao_joao_em_arcoverde.screens.more.MoreRoute
 import com.example.sao_joao_em_arcoverde.screens.schedule.ScheduleRoute
+import com.example.sao_joao_em_arcoverde.screens.artists.ArtistsRoute
 import com.example.sao_joao_em_arcoverde.screens.welcome.WelcomeScreen
 
 private enum class AppRoute {
@@ -18,7 +19,8 @@ private enum class AppRoute {
     Home,
     Schedule,
     Map,
-    More
+    More,
+    Artists
 }
 
 @Composable
@@ -61,6 +63,9 @@ fun AppNavigation() {
                 repository = festivalRepository,
                 onScheduleClick = {
                     currentRoute.value = AppRoute.Schedule
+                },
+                onArtistsClick = {
+                    currentRoute.value = AppRoute.Artists
                 },
                 onMapClick = {
                     currentRoute.value = AppRoute.Map
@@ -119,6 +124,27 @@ fun AppNavigation() {
             )
         }
 
+        AppRoute.Artists -> {
+            ArtistsRoute(
+                repository = festivalRepository,
+                onBackClick = {
+                    currentRoute.value = AppRoute.More
+                },
+                onHomeClick = {
+                    currentRoute.value = AppRoute.Home
+                },
+                onScheduleClick = {
+                    currentRoute.value = AppRoute.Schedule
+                },
+                onMapClick = {
+                    currentRoute.value = AppRoute.Map
+                },
+                onMoreClick = {
+                    currentRoute.value = AppRoute.More
+                }
+            )
+        }
+
         AppRoute.More -> {
             MoreRoute(
                 repository = festivalRepository,
@@ -130,6 +156,9 @@ fun AppNavigation() {
                 },
                 onMapClick = {
                     currentRoute.value = AppRoute.Map
+                },
+                onArtistsClick = {
+                    currentRoute.value = AppRoute.Artists
                 },
                 onSearchClick = {
                     // Etapa futura: implementar pesquisa

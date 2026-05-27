@@ -68,6 +68,7 @@ fun HomeScreen(
     errorMessage: String?,
     onScheduleClick: () -> Unit,
     onMapClick: () -> Unit,
+    onArtistsClick: () -> Unit,
     onMoreClick: () -> Unit,
     onSearchClick: () -> Unit,
     onMenuClick: () -> Unit,
@@ -117,7 +118,8 @@ fun HomeScreen(
 
             ExploreFestivalSection(
                 onScheduleClick = onScheduleClick,
-                onMapClick = onMapClick
+                onMapClick = onMapClick,
+                onArtistsClick = onArtistsClick
             )
 
             Spacer(modifier = Modifier.height(18.dp))
@@ -161,11 +163,6 @@ private fun HomeHeader(
             )
         }
 
-        CircleIconButton(
-            icon = Icons.Rounded.Search,
-            contentDescription = "Pesquisar",
-            onClick = onSearchClick
-        )
     }
 }
 
@@ -293,7 +290,7 @@ private fun ArtistTimeCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.width(122.dp),
+        modifier = modifier.width(180.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = SurfaceDarkVariant
@@ -337,6 +334,7 @@ private fun ArtistTimeCard(
 private fun ExploreFestivalSection(
     onScheduleClick: () -> Unit,
     onMapClick: () -> Unit,
+    onArtistsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -381,9 +379,7 @@ private fun ExploreFestivalSection(
             backgroundColor = RedAccent.copy(alpha = 0.18f),
             iconColor = RedAccent,
             modifier = Modifier.fillMaxWidth(),
-            onClick = {
-                // Etapa futura: tela ou seção de artistas
-            }
+            onClick = onArtistsClick
         )
     }
 }

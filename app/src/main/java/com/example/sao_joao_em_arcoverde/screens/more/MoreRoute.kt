@@ -21,6 +21,7 @@ fun MoreRoute(
     onHomeClick: () -> Unit,
     onScheduleClick: () -> Unit,
     onMapClick: () -> Unit,
+    onArtistsClick: () -> Unit,
     onSearchClick: () -> Unit,
     onMenuClick: () -> Unit
 ) {
@@ -56,6 +57,7 @@ fun MoreRoute(
         onHomeClick = onHomeClick,
         onScheduleClick = onScheduleClick,
         onMapClick = onMapClick,
+        onArtistsClick = onArtistsClick,
         onSearchClick = onSearchClick,
         onMenuClick = onMenuClick
     )
