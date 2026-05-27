@@ -25,7 +25,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.Menu
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import com.example.sao_joao_em_arcoverde.data.model.TeamMember
 import androidx.compose.material.icons.rounded.MenuBook
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.Phone
@@ -89,6 +94,7 @@ private data class MoreOption(
 
 @Composable
 fun MoreScreen(
+    developers: List<TeamMember>,
     emergencyContacts: List<EmergencyContact>,
     sponsors: List<Sponsor>,
     isLoading: Boolean,
@@ -97,6 +103,7 @@ fun MoreScreen(
     onScheduleClick: () -> Unit,
     onMapClick: () -> Unit,
     onArtistsClick: () -> Unit,
+    onAboutAppClick: () -> Unit,
     onSearchClick: () -> Unit,
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -140,6 +147,11 @@ fun MoreScreen(
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
             ) {
+                DevelopersSection(
+                    developers = developers
+                )
+                Spacer(modifier = Modifier.height(22.dp))
+
                 Text(
                     text = "Mais Opções",
                     color = TextPrimary,
@@ -180,10 +192,10 @@ fun MoreScreen(
                             emergencyContactsCount = emergencyContacts.size,
                             sponsorsCount = sponsors.size,
                             onOptionClick = { panel ->
-                                if (panel == MorePanel.ARTISTS) {
-                                    onArtistsClick()
-                                } else {
-                                    selectedPanel.value = panel
+                                when (panel) {
+                                    MorePanel.ARTISTS -> onArtistsClick()
+                                    MorePanel.ABOUT -> onAboutAppClick()
+                                    else -> selectedPanel.value = panel
                                 }
                             }
                         )
@@ -410,17 +422,6 @@ private fun ActionButtonsRow(
             color = RedAccent,
             onClick = {
                 // Etapa futura: abrir intent de compartilhamento.
-            }
-        )
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        ActionCircleButton(
-            icon = Icons.Rounded.VolumeUp,
-            contentDescription = "Controle de som",
-            color = GreenAccent,
-            onClick = {
-                // Etapa futura: ativar/desativar sons ou acessibilidade sonora.
             }
         )
     }
@@ -842,5 +843,104 @@ private fun CircleIconButton(
             tint = TextPrimary,
             modifier = Modifier.size(24.dp)
         )
+    }
+}
+
+@Composable
+private fun DevelopersSection(
+    developers: List<TeamMember>,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = "Desenvolvedores",
+            color = TextPrimary,
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Black
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        Text(
+            text = "Equipe responsável pelo desenvolvimento do aplicativo.",
+            color = TextSecondary,
+            style = MaterialTheme.typography.bodyMedium
+        )
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(
+                items = developers,
+                key = { member -> member.name }
+            ) { member ->
+                DeveloperCard(member = member)
+            }
+        }
+    }
+}
+
+@Composable
+private fun DeveloperCard(
+    member: TeamMember,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+            .width(148.dp)
+            .height(168.dp)
+            .border(
+                width = 1.dp,
+                color = BorderGold,
+                shape = RoundedCornerShape(20.dp)
+            ),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = SurfaceDark
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = member.photoResId),
+                contentDescription = member.name,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(82.dp)
+                    .clip(CircleShape)
+                    .border(
+                        width = 2.dp,
+                        color = GoldPrimary,
+                        shape = CircleShape
+                    )
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = member.name,
+                color = TextPrimary,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Black,
+                maxLines = 2
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = member.role,
+                color = TextSecondary,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }

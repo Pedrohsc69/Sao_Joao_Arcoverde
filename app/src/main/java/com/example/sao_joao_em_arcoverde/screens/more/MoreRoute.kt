@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import com.example.sao_joao_em_arcoverde.data.model.EmergencyContact
 import com.example.sao_joao_em_arcoverde.data.model.Sponsor
 import com.example.sao_joao_em_arcoverde.data.repository.FestivalRepository
+import com.example.sao_joao_em_arcoverde.data.static.AppInfoProvider
 
 private data class MoreUiState(
     val isLoading: Boolean = true,
@@ -22,6 +23,7 @@ fun MoreRoute(
     onScheduleClick: () -> Unit,
     onMapClick: () -> Unit,
     onArtistsClick: () -> Unit,
+    onAboutAppClick: () -> Unit,
     onSearchClick: () -> Unit,
     onMenuClick: () -> Unit
 ) {
@@ -50,6 +52,7 @@ fun MoreRoute(
     }
 
     MoreScreen(
+        developers = AppInfoProvider.developers,
         emergencyContacts = uiState.value.emergencyContacts,
         sponsors = uiState.value.sponsors,
         isLoading = uiState.value.isLoading,
@@ -58,6 +61,7 @@ fun MoreRoute(
         onScheduleClick = onScheduleClick,
         onMapClick = onMapClick,
         onArtistsClick = onArtistsClick,
+        onAboutAppClick = onAboutAppClick,
         onSearchClick = onSearchClick,
         onMenuClick = onMenuClick
     )

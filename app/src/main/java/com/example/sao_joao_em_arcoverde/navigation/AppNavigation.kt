@@ -12,6 +12,7 @@ import com.example.sao_joao_em_arcoverde.screens.map.MapRoute
 import com.example.sao_joao_em_arcoverde.screens.more.MoreRoute
 import com.example.sao_joao_em_arcoverde.screens.schedule.ScheduleRoute
 import com.example.sao_joao_em_arcoverde.screens.artists.ArtistsRoute
+import com.example.sao_joao_em_arcoverde.screens.about.AboutAppRoute
 import com.example.sao_joao_em_arcoverde.screens.welcome.WelcomeScreen
 
 private enum class AppRoute {
@@ -20,7 +21,8 @@ private enum class AppRoute {
     Schedule,
     Map,
     More,
-    Artists
+    Artists,
+    AboutApp
 }
 
 @Composable
@@ -73,6 +75,7 @@ fun AppNavigation() {
                 onMoreClick = {
                     currentRoute.value = AppRoute.More
                 },
+
                 onSearchClick = {
                     // Etapa futura: implementar pesquisa
                 },
@@ -145,6 +148,26 @@ fun AppNavigation() {
             )
         }
 
+        AppRoute.AboutApp -> {
+            AboutAppRoute(
+                onBackClick = {
+                    currentRoute.value = AppRoute.More
+                },
+                onHomeClick = {
+                    currentRoute.value = AppRoute.Home
+                },
+                onScheduleClick = {
+                    currentRoute.value = AppRoute.Schedule
+                },
+                onMapClick = {
+                    currentRoute.value = AppRoute.Map
+                },
+                onMoreClick = {
+                    currentRoute.value = AppRoute.More
+                }
+            )
+        }
+
         AppRoute.More -> {
             MoreRoute(
                 repository = festivalRepository,
@@ -159,6 +182,9 @@ fun AppNavigation() {
                 },
                 onArtistsClick = {
                     currentRoute.value = AppRoute.Artists
+                },
+                onAboutAppClick = {
+                    currentRoute.value = AppRoute.AboutApp
                 },
                 onSearchClick = {
                     // Etapa futura: implementar pesquisa
