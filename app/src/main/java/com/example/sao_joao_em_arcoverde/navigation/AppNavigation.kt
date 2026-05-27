@@ -9,7 +9,7 @@ import com.example.sao_joao_em_arcoverde.data.repository.FestivalRepository
 import com.example.sao_joao_em_arcoverde.data.seed.FestivalSeedLoader
 import com.example.sao_joao_em_arcoverde.screens.home.HomeRoute
 import com.example.sao_joao_em_arcoverde.screens.map.MapRoute
-import com.example.sao_joao_em_arcoverde.screens.more.MoreScreen
+import com.example.sao_joao_em_arcoverde.screens.more.MoreRoute
 import com.example.sao_joao_em_arcoverde.screens.schedule.ScheduleRoute
 import com.example.sao_joao_em_arcoverde.screens.welcome.WelcomeScreen
 
@@ -120,7 +120,8 @@ fun AppNavigation() {
         }
 
         AppRoute.More -> {
-            MoreScreen(
+            MoreRoute(
+                repository = festivalRepository,
                 onHomeClick = {
                     currentRoute.value = AppRoute.Home
                 },

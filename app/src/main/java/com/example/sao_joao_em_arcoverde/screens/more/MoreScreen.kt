@@ -37,11 +37,16 @@ import androidx.compose.material.icons.rounded.Sync
 import androidx.compose.material.icons.rounded.VolumeUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,6 +54,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.sao_joao_em_arcoverde.data.model.EmergencyContact
+import com.example.sao_joao_em_arcoverde.data.model.EmergencyContactType
+import com.example.sao_joao_em_arcoverde.data.model.Sponsor
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
 import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
@@ -62,14 +70,28 @@ import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDarkVariant
 import com.example.sao_joao_em_arcoverde.ui.theme.TextPrimary
 import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
 
+private enum class MorePanel {
+    NOTIFICATIONS,
+    HISTORY,
+    SECURITY_HEALTH,
+    EMERGENCY_CONTACTS,
+    SPONSORS,
+    ABOUT
+}
+
 private data class MoreOption(
     val title: String,
     val icon: ImageVector,
-    val iconColor: Color
+    val iconColor: Color,
+    val panel: MorePanel
 )
 
 @Composable
 fun MoreScreen(
+    emergencyContacts: List<EmergencyContact>,
+    sponsors: List<Sponsor>,
+    isLoading: Boolean,
+    errorMessage: String?,
     onHomeClick: () -> Unit,
     onScheduleClick: () -> Unit,
     onMapClick: () -> Unit,
@@ -77,6 +99,10 @@ fun MoreScreen(
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val selectedPanel = remember {
+        mutableStateOf<MorePanel?>(null)
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = BackgroundDark,
@@ -129,7 +155,34 @@ fun MoreScreen(
 
                 Spacer(modifier = Modifier.height(18.dp))
 
-                MoreOptionsList()
+                when {
+                    isLoading -> {
+                        Text(
+                            text = "Carregando informações...",
+                            color = TextSecondary,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+
+                    errorMessage != null -> {
+                        Text(
+                            text = "Não foi possível carregar as informações adicionais.",
+                            color = RedAccent,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    else -> {
+                        MoreOptionsList(
+                            emergencyContactsCount = emergencyContacts.size,
+                            sponsorsCount = sponsors.size,
+                            onOptionClick = { panel ->
+                                selectedPanel.value = panel
+                            }
+                        )
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(18.dp))
 
@@ -142,6 +195,17 @@ fun MoreScreen(
                 Spacer(modifier = Modifier.height(20.dp))
             }
         }
+    }
+
+    selectedPanel.value?.let { panel ->
+        MorePanelBottomSheet(
+            panel = panel,
+            emergencyContacts = emergencyContacts,
+            sponsors = sponsors,
+            onDismiss = {
+                selectedPanel.value = null
+            }
+        )
     }
 }
 
@@ -157,23 +221,28 @@ private fun MoreHeader(
             .padding(top = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        CircleIconButton(
+            icon = Icons.Rounded.Menu,
+            contentDescription = "Abrir menu",
+            onClick = onMenuClick
+        )
 
         Column(
             modifier = Modifier.weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "SÃO JOÃO EM ARCOVERDE",
+                text = "SÃO JOÃO",
                 color = GoldPrimary,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Black
             )
 
             Text(
-                text = "MAIS OPÇÕES",
+                text = "ARCOVERDE",
                 color = TextSecondary,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Light
+                fontWeight = FontWeight.Bold
             )
         }
 
@@ -187,38 +256,47 @@ private fun MoreHeader(
 
 @Composable
 private fun MoreOptionsList(
+    emergencyContactsCount: Int,
+    sponsorsCount: Int,
+    onOptionClick: (MorePanel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val options = listOf(
         MoreOption(
             title = "Notificações",
             icon = Icons.Rounded.Notifications,
-            iconColor = GoldPrimary
+            iconColor = GoldPrimary,
+            panel = MorePanel.NOTIFICATIONS
         ),
         MoreOption(
             title = "História do São João",
             icon = Icons.Rounded.MenuBook,
-            iconColor = GreenAccent
+            iconColor = GreenAccent,
+            panel = MorePanel.HISTORY
         ),
         MoreOption(
             title = "Segurança e Saúde",
             icon = Icons.Rounded.Security,
-            iconColor = RedAccent
+            iconColor = RedAccent,
+            panel = MorePanel.SECURITY_HEALTH
         ),
         MoreOption(
-            title = "Contatos de Emergência",
+            title = "Contatos de Emergência ($emergencyContactsCount)",
             icon = Icons.Rounded.Phone,
-            iconColor = BlueAccent
+            iconColor = BlueAccent,
+            panel = MorePanel.EMERGENCY_CONTACTS
         ),
         MoreOption(
-            title = "Patrocinadores",
+            title = "Patrocinadores ($sponsorsCount)",
             icon = Icons.Rounded.Star,
-            iconColor = GoldPrimary
+            iconColor = GoldPrimary,
+            panel = MorePanel.SPONSORS
         ),
         MoreOption(
             title = "Sobre o App",
             icon = Icons.Rounded.Info,
-            iconColor = BlueAccent
+            iconColor = BlueAccent,
+            panel = MorePanel.ABOUT
         )
     )
 
@@ -230,7 +308,7 @@ private fun MoreOptionsList(
             MoreOptionCard(
                 option = option,
                 onClick = {
-                    // Etapa futura: abrir tela ou modal específico da opção.
+                    onOptionClick(option.panel)
                 }
             )
         }
@@ -330,6 +408,14 @@ private fun ActionButtonsRow(
 
         Spacer(modifier = Modifier.width(16.dp))
 
+        ActionCircleButton(
+            icon = Icons.Rounded.VolumeUp,
+            contentDescription = "Controle de som",
+            color = GreenAccent,
+            onClick = {
+                // Etapa futura: ativar/desativar sons ou acessibilidade sonora.
+            }
+        )
     }
 }
 
@@ -393,12 +479,330 @@ private fun FooterInfo(
             Spacer(modifier = Modifier.width(6.dp))
 
             Text(
-                text = "VERSÃO 1.0.0 (2026)",
+                text = "VERSÃO 3.4.0 (2026)",
                 color = TextSecondary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun MorePanelBottomSheet(
+    panel: MorePanel,
+    emergencyContacts: List<EmergencyContact>,
+    sponsors: List<Sponsor>,
+    onDismiss: () -> Unit
+) {
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+        containerColor = SurfaceDark,
+        contentColor = TextPrimary
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 22.dp)
+                .padding(bottom = 28.dp)
+        ) {
+            when (panel) {
+                MorePanel.NOTIFICATIONS -> NotificationsContent()
+
+                MorePanel.HISTORY -> HistoryContent()
+
+                MorePanel.SECURITY_HEALTH -> SecurityHealthContent(
+                    emergencyContacts = emergencyContacts
+                )
+
+                MorePanel.EMERGENCY_CONTACTS -> EmergencyContactsContent(
+                    emergencyContacts = emergencyContacts
+                )
+
+                MorePanel.SPONSORS -> SponsorsContent(
+                    sponsors = sponsors
+                )
+
+                MorePanel.ABOUT -> AboutAppContent()
+            }
+        }
+    }
+}
+
+@Composable
+private fun NotificationsContent() {
+    SheetTitle(
+        title = "Notificações",
+        icon = Icons.Rounded.Notifications,
+        color = GoldPrimary
+    )
+
+    Spacer(modifier = Modifier.height(14.dp))
+
+    Text(
+        text = "Esta área será usada para configurar lembretes de shows, avisos da programação e alertas importantes do evento.",
+        color = TextSecondary,
+        style = MaterialTheme.typography.bodyMedium
+    )
+}
+
+@Composable
+private fun HistoryContent() {
+    SheetTitle(
+        title = "História do São João",
+        icon = Icons.Rounded.MenuBook,
+        color = GreenAccent
+    )
+
+    Spacer(modifier = Modifier.height(14.dp))
+
+    Text(
+        text = "Conteúdo histórico ainda será complementado pelo grupo. Esta seção pode apresentar a tradição junina de Arcoverde, seus polos culturais, artistas locais e a importância da festa para o sertão pernambucano.",
+        color = TextSecondary,
+        style = MaterialTheme.typography.bodyMedium
+    )
+}
+
+@Composable
+private fun SecurityHealthContent(
+    emergencyContacts: List<EmergencyContact>
+) {
+    SheetTitle(
+        title = "Segurança e Saúde",
+        icon = Icons.Rounded.Security,
+        color = RedAccent
+    )
+
+    Spacer(modifier = Modifier.height(14.dp))
+
+    Text(
+        text = "Em caso de emergência, procure apoio das equipes no evento ou acione os canais oficiais abaixo.",
+        color = TextSecondary,
+        style = MaterialTheme.typography.bodyMedium
+    )
+
+    Spacer(modifier = Modifier.height(14.dp))
+
+    val priorityContacts = emergencyContacts.filter {
+        it.type == EmergencyContactType.MEDICAL ||
+                it.type == EmergencyContactType.POLICE ||
+                it.type == EmergencyContactType.FIRE_DEPARTMENT
+    }
+
+    ContactList(
+        contacts = priorityContacts.ifEmpty { emergencyContacts }
+    )
+}
+
+@Composable
+private fun EmergencyContactsContent(
+    emergencyContacts: List<EmergencyContact>
+) {
+    SheetTitle(
+        title = "Contatos de Emergência",
+        icon = Icons.Rounded.Phone,
+        color = BlueAccent
+    )
+
+    Spacer(modifier = Modifier.height(14.dp))
+
+    ContactList(
+        contacts = emergencyContacts
+    )
+}
+
+@Composable
+private fun SponsorsContent(
+    sponsors: List<Sponsor>
+) {
+    SheetTitle(
+        title = "Patrocinadores",
+        icon = Icons.Rounded.Star,
+        color = GoldPrimary
+    )
+
+    Spacer(modifier = Modifier.height(14.dp))
+
+    if (sponsors.isEmpty()) {
+        Text(
+            text = "Nenhum patrocinador cadastrado até o momento. Quando o arquivo sponsors.json for preenchido, esta seção será atualizada automaticamente.",
+            color = TextSecondary,
+            style = MaterialTheme.typography.bodyMedium
+        )
+    } else {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            sponsors.forEach { sponsor ->
+                SponsorCard(sponsor = sponsor)
+            }
+        }
+    }
+}
+
+@Composable
+private fun AboutAppContent() {
+    SheetTitle(
+        title = "Sobre o App",
+        icon = Icons.Rounded.Info,
+        color = BlueAccent
+    )
+
+    Spacer(modifier = Modifier.height(14.dp))
+
+    Text(
+        text = "Aplicativo desenvolvido pelo Grupo 6 como guia digital do São João de Arcoverde. O app reúne programação, mapa, pontos úteis, contatos de emergência e informações adicionais do festival.",
+        color = TextSecondary,
+        style = MaterialTheme.typography.bodyMedium
+    )
+
+    Spacer(modifier = Modifier.height(10.dp))
+
+    Text(
+        text = "Stack: Kotlin, Jetpack Compose, Material 3, Navigation, Room, DataStore, Kotlinx Serialization e OSMDroid.",
+        color = TextSecondary,
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.Bold
+    )
+}
+
+@Composable
+private fun ContactList(
+    contacts: List<EmergencyContact>
+) {
+    if (contacts.isEmpty()) {
+        Text(
+            text = "Nenhum contato cadastrado.",
+            color = TextSecondary,
+            style = MaterialTheme.typography.bodyMedium
+        )
+        return
+    }
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        contacts.forEach { contact ->
+            ContactCard(contact = contact)
+        }
+    }
+}
+
+@Composable
+private fun ContactCard(
+    contact: EmergencyContact,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = SurfaceDarkVariant
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(14.dp)
+        ) {
+            Text(
+                text = "${contact.name} — ${contact.phone}",
+                color = TextPrimary,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Black
+            )
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Text(
+                text = contact.description,
+                color = TextSecondary,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+}
+
+@Composable
+private fun SponsorCard(
+    sponsor: Sponsor,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = SurfaceDarkVariant
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(14.dp)
+        ) {
+            Text(
+                text = sponsor.name,
+                color = TextPrimary,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Black
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = sponsor.category,
+                color = GoldPrimary,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold
+            )
+
+            sponsor.description?.let { description ->
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Text(
+                    text = description,
+                    color = TextSecondary,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SheetTitle(
+    title: String,
+    icon: ImageVector,
+    color: Color
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(42.dp)
+                .clip(CircleShape)
+                .background(color),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = title,
+                tint = BackgroundDark,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+        Text(
+            text = title,
+            color = TextPrimary,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Black
+        )
     }
 }
 
