@@ -16,6 +16,19 @@ import com.example.sao_joao_em_arcoverde.screens.about.AboutAppRoute
 import com.example.sao_joao_em_arcoverde.screens.history.HistoryRoute
 import com.example.sao_joao_em_arcoverde.screens.welcome.WelcomeScreen
 import com.example.sao_joao_em_arcoverde.screens.sponsors.SponsorsRoute
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import com.example.sao_joao_em_arcoverde.data.preferences.AppPreferencesRepository
+import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
+import com.example.sao_joao_em_arcoverde.ui.theme.GoldPrimary
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 private enum class AppRoute {
     Welcome,
@@ -32,6 +45,12 @@ private enum class AppRoute {
 @Composable
 fun AppNavigation() {
     val context = LocalContext.current
+
+    val coroutineScope = rememberCoroutineScope()
+
+    val appPreferencesRepository = remember {
+        AppPreferencesRepository(context.applicationContext)
+    }
 
     val database = remember {
         AppDatabase.getInstance(context)
@@ -52,10 +71,35 @@ fun AppNavigation() {
     }
 
     val currentRoute = remember {
-        mutableStateOf(AppRoute.Welcome)
+        mutableStateOf<AppRoute?>(null)
+    }
+
+    LaunchedEffect(Unit) {
+        val hasSeenWelcome = appPreferencesRepository.hasSeenWelcomeFlow.first()
+
+        currentRoute.value = if (hasSeenWelcome) {
+            AppRoute.Home
+        } else {
+            AppRoute.Welcome
+        }
     }
 
     when (currentRoute.value) {
+        null -> {
+            NavigationLoadingScreen()
+        }
+
+        AppRoute.Welcome -> {
+            WelcomeScreen(
+                onStartClick = {
+                    coroutineScope.launch {
+                        appPreferencesRepository.setHasSeenWelcome(true)
+                        currentRoute.value = AppRoute.Home
+                    }
+                }
+            )
+        }
+
         AppRoute.Welcome -> {
             WelcomeScreen(
                 onStartClick = {
@@ -245,5 +289,19 @@ fun AppNavigation() {
                 }
             )
         }
+    }
+}
+
+@Composable
+private fun NavigationLoadingScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(BackgroundDark),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(
+            color = GoldPrimary
+        )
     }
 }
