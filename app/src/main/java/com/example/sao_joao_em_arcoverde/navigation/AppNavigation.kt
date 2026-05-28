@@ -13,7 +13,9 @@ import com.example.sao_joao_em_arcoverde.screens.more.MoreRoute
 import com.example.sao_joao_em_arcoverde.screens.schedule.ScheduleRoute
 import com.example.sao_joao_em_arcoverde.screens.artists.ArtistsRoute
 import com.example.sao_joao_em_arcoverde.screens.about.AboutAppRoute
+import com.example.sao_joao_em_arcoverde.screens.history.HistoryRoute
 import com.example.sao_joao_em_arcoverde.screens.welcome.WelcomeScreen
+import com.example.sao_joao_em_arcoverde.screens.sponsors.SponsorsRoute
 
 private enum class AppRoute {
     Welcome,
@@ -22,7 +24,9 @@ private enum class AppRoute {
     Map,
     More,
     Artists,
-    AboutApp
+    AboutApp,
+    History,
+    Sponsors
 }
 
 @Composable
@@ -168,6 +172,47 @@ fun AppNavigation() {
             )
         }
 
+        AppRoute.History -> {
+            HistoryRoute(
+                onBackClick = {
+                    currentRoute.value = AppRoute.More
+                },
+                onHomeClick = {
+                    currentRoute.value = AppRoute.Home
+                },
+                onScheduleClick = {
+                    currentRoute.value = AppRoute.Schedule
+                },
+                onMapClick = {
+                    currentRoute.value = AppRoute.Map
+                },
+                onMoreClick = {
+                    currentRoute.value = AppRoute.More
+                }
+            )
+        }
+
+        AppRoute.Sponsors -> {
+            SponsorsRoute(
+                repository = festivalRepository,
+                onBackClick = {
+                    currentRoute.value = AppRoute.More
+                },
+                onHomeClick = {
+                    currentRoute.value = AppRoute.Home
+                },
+                onScheduleClick = {
+                    currentRoute.value = AppRoute.Schedule
+                },
+                onMapClick = {
+                    currentRoute.value = AppRoute.Map
+                },
+                onMoreClick = {
+                    currentRoute.value = AppRoute.More
+                }
+            )
+        }
+
         AppRoute.More -> {
             MoreRoute(
                 repository = festivalRepository,
@@ -185,6 +230,12 @@ fun AppNavigation() {
                 },
                 onAboutAppClick = {
                     currentRoute.value = AppRoute.AboutApp
+                },
+                onHistoryClick = {
+                    currentRoute.value = AppRoute.History
+                },
+                onSponsorsClick = {
+                    currentRoute.value = AppRoute.Sponsors
                 },
                 onSearchClick = {
                     // Etapa futura: implementar pesquisa

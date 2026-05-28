@@ -8,12 +8,19 @@ import com.example.sao_joao_em_arcoverde.data.model.EmergencyContact
 import com.example.sao_joao_em_arcoverde.data.model.Sponsor
 import com.example.sao_joao_em_arcoverde.data.repository.FestivalRepository
 import com.example.sao_joao_em_arcoverde.data.static.AppInfoProvider
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
+import com.example.sao_joao_em_arcoverde.data.preferences.NotificationPreferencesRepository
+import com.example.sao_joao_em_arcoverde.notifications.FestivalNotificationScheduler
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 private data class MoreUiState(
     val isLoading: Boolean = true,
     val emergencyContacts: List<EmergencyContact> = emptyList(),
     val sponsors: List<Sponsor> = emptyList(),
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val notificationsEnabled: Boolean = false,
 )
 
 @Composable
@@ -24,9 +31,23 @@ fun MoreRoute(
     onMapClick: () -> Unit,
     onArtistsClick: () -> Unit,
     onAboutAppClick: () -> Unit,
+    onHistoryClick: () -> Unit,
+    onSponsorsClick: () -> Unit,
     onSearchClick: () -> Unit,
     onMenuClick: () -> Unit
-) {
+){
+    val context = LocalContext.current
+
+    val coroutineScope = rememberCoroutineScope()
+
+    val notificationPreferencesRepository = remember {
+        NotificationPreferencesRepository(context.applicationContext)
+    }
+
+    val notificationScheduler = remember {
+        FestivalNotificationScheduler(context.applicationContext)
+    }
+
     val uiState = remember {
         mutableStateOf(MoreUiState())
     }
@@ -35,11 +56,14 @@ fun MoreRoute(
         runCatching {
             val contacts = repository.getAllEmergencyContacts()
             val sponsors = repository.getAllSponsors()
+            val notificationsEnabled =
+                notificationPreferencesRepository.notificationsEnabledFlow.first()
 
             MoreUiState(
                 isLoading = false,
                 emergencyContacts = contacts,
-                sponsors = sponsors
+                sponsors = sponsors,
+                notificationsEnabled = notificationsEnabled
             )
         }.onSuccess { state ->
             uiState.value = state
@@ -55,13 +79,36 @@ fun MoreRoute(
         developers = AppInfoProvider.developers,
         emergencyContacts = uiState.value.emergencyContacts,
         sponsors = uiState.value.sponsors,
+        notificationsEnabled = uiState.value.notificationsEnabled,
         isLoading = uiState.value.isLoading,
         errorMessage = uiState.value.errorMessage,
+        onNotificationsEnabledChange = { enabled ->
+            uiState.value = uiState.value.copy(
+                notificationsEnabled = enabled
+            )
+
+            coroutineScope.launch {
+                notificationPreferencesRepository.setNotificationsEnabled(enabled)
+
+                val schedule = repository.getAllSchedule()
+
+                if (enabled) {
+                    notificationScheduler.scheduleMainStageReminders(schedule)
+                } else {
+                    notificationScheduler.cancelMainStageReminders(schedule)
+                }
+            }
+        },
+        onSendTestNotification = {
+            notificationScheduler.sendTestNotification()
+        },
         onHomeClick = onHomeClick,
         onScheduleClick = onScheduleClick,
         onMapClick = onMapClick,
         onArtistsClick = onArtistsClick,
         onAboutAppClick = onAboutAppClick,
+        onHistoryClick = onHistoryClick,
+        onSponsorsClick = onSponsorsClick,
         onSearchClick = onSearchClick,
         onMenuClick = onMenuClick
     )

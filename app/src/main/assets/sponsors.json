@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "id": "prefeitura_arcoverde",
+    "name": "Prefeitura Municipal de Arcoverde",
+    "category": "Realização",
+    "description": "Responsável institucional pela realização, estruturação e organização pública do São João de Arcoverde.",
+    "websiteUrl": "https://www.arcoverde.pe.gov.br/"
+  },
+  {
+    "id": "secretaria_cultura",
+    "name": "Secretaria de Cultura de Arcoverde",
+    "category": "Organização cultural",
+    "description": "Atua na organização cultural, credenciamento artístico e valorização das manifestações populares presentes na programação junina.",
+    "websiteUrl": "https://www.arcoverde.pe.gov.br/"
+  },
+  {
+    "id": "secretaria_turismo_eventos",
+    "name": "Secretaria de Turismo, Esportes e Eventos",
+    "category": "Apoio institucional",
+    "description": "Relacionada à estruturação turística, organização de eventos e apoio à experiência dos moradores e visitantes durante o período junino.",
+    "websiteUrl": "https://www.arcoverde.pe.gov.br/"
+  },
+  {
+    "id": "secretaria_desenvolvimento_economico",
+    "name": "Secretaria de Desenvolvimento Econômico",
+    "category": "Apoio econômico",
+    "description": "Atua no ordenamento de comerciantes, espaços de venda e atividades econômicas vinculadas ao período junino.",
+    "websiteUrl": "https://www.arcoverde.pe.gov.br/"
+  }
+]

@@ -14,7 +14,14 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import com.example.sao_joao_em_arcoverde.R
+import kotlinx.coroutines.delay
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -23,15 +30,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AttachMoney
+import androidx.compose.runtime.remember
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.Lightbulb
 import androidx.compose.material.icons.rounded.Map
-import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Mic
 import androidx.compose.material.icons.rounded.MusicNote
-import androidx.compose.material.icons.rounded.Place
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.TheaterComedy
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -104,7 +108,7 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(14.dp))
 
-            LiveStageCard()
+            InstitutionalCarouselCard()
 
             Spacer(modifier = Modifier.height(18.dp))
 
@@ -163,61 +167,6 @@ private fun HomeHeader(
             )
         }
 
-    }
-}
-
-@Composable
-private fun LiveStageCard(
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .border(
-                width = 1.dp,
-                color = BorderGold,
-                shape = RoundedCornerShape(22.dp)
-            ),
-        shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = SurfaceDark
-        )
-    ) {
-        Column(
-            modifier = Modifier.padding(18.dp)
-        ) {
-
-
-            Spacer(modifier = Modifier.height(18.dp))
-
-            Text(
-                text = "Prefeitura de Arcoverde",
-                color = TextPrimary,
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.height(6.dp))
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.AttachMoney,
-                    contentDescription = null,
-                    tint = GoldPrimary,
-                    modifier = Modifier.size(18.dp)
-                )
-
-                Spacer(modifier = Modifier.width(6.dp))
-
-                Text(
-                    text = "Patrocinadores",
-                    color = TextSecondary,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
     }
 }
 
@@ -514,6 +463,175 @@ private fun SectionHeader(
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold
         )
+    }
+}
+
+private data class InstitutionalLogo(
+    val name: String,
+    val subtitle: String,
+    @DrawableRes val logoResId: Int
+)
+
+@Composable
+private fun InstitutionalCarouselCard(
+    modifier: Modifier = Modifier
+) {
+    val items = listOf(
+        InstitutionalLogo(
+            name = "Prefeitura de Arcoverde",
+            subtitle = "Realização",
+            logoResId = R.drawable.prefeitura
+        ),
+        InstitutionalLogo(
+            name = "Secretaria de Cultura",
+            subtitle = "Organização cultural",
+            logoResId = R.drawable.sec_cultura
+        ),
+        InstitutionalLogo(
+            name = "Secretaria de Turismo, Esportes e Eventos",
+            subtitle = "Apoio institucional",
+            logoResId = R.drawable.sec_turismo
+        ),
+        InstitutionalLogo(
+            name = "Secretaria de Desenvolvimento Econômico",
+            subtitle = "Apoio econômico",
+            logoResId = R.drawable.sec_desenvolvimento
+        )
+    )
+
+    val currentIndex = remember {
+        mutableStateOf(0)
+    }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(10_000)
+            currentIndex.value = (currentIndex.value + 1) % items.size
+        }
+    }
+
+    val currentItem = items[currentIndex.value]
+
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = BorderGold,
+                shape = RoundedCornerShape(22.dp)
+            ),
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = SurfaceDark
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                InstitutionalLogoBox(
+                    logoResId = currentItem.logoResId,
+                    contentDescription = currentItem.name
+                )
+
+                Spacer(modifier = Modifier.width(14.dp))
+
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        text = currentItem.name,
+                        color = TextPrimary,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Black,
+                        maxLines = 2
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Text(
+                        text = currentItem.subtitle,
+                        color = GoldPrimary,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            CarouselIndicators(
+                totalItems = items.size,
+                selectedIndex = currentIndex.value
+            )
+        }
+    }
+}
+
+@Composable
+private fun InstitutionalLogoBox(
+    @DrawableRes logoResId: Int,
+    contentDescription: String,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .size(62.dp)
+            .clip(RoundedCornerShape(18.dp))
+            .background(SurfaceDarkVariant)
+            .border(
+                width = 1.dp,
+                color = BorderGold,
+                shape = RoundedCornerShape(18.dp)
+            )
+            .padding(7.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = painterResource(id = logoResId),
+            contentDescription = contentDescription,
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .size(42.dp)
+                .clip(CircleShape)
+        )
+    }
+}
+
+@Composable
+private fun CarouselIndicators(
+    totalItems: Int,
+    selectedIndex: Int,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        repeat(totalItems) { index ->
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 3.dp)
+                    .size(
+                        width = if (index == selectedIndex) 18.dp else 7.dp,
+                        height = 7.dp
+                    )
+                    .clip(RoundedCornerShape(50))
+                    .background(
+                        if (index == selectedIndex) {
+                            GoldPrimary
+                        } else {
+                            TextSecondary.copy(alpha = 0.35f)
+                        }
+                    )
+            )
+        }
     }
 }
 

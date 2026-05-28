@@ -1,0 +1,614 @@
+[
+  {
+    "id": "artist_reisado_encanto_das_caraibas",
+    "name": "Reisado Encanto das Caraíbas",
+    "genre": "Cultura Popular/Reisado",
+    "description": "Reisado Encanto das Caraíbas integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_quadrilha_junina_rainha_sertaneja",
+    "name": "Quadrilha Junina Rainha Sertaneja",
+    "genre": "Quadrilha Junina",
+    "description": "Quadrilha Junina Rainha Sertaneja integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_samba_de_coco_quebra_coco_alianca",
+    "name": "Samba de Coco Quebra Coco Aliança",
+    "genre": "Samba de Coco",
+    "description": "Samba de Coco Quebra Coco Aliança integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_cadilac_tangerina",
+    "name": "Cadilac Tangerina",
+    "genre": "Música Regional",
+    "description": "Cadilac Tangerina integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_coco_fulo_do_barro",
+    "name": "Coco Fulô do Barro",
+    "genre": "Samba de Coco/Cultura Popular",
+    "description": "Coco Fulô do Barro integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_regente_joaquim",
+    "name": "Regente Joaquim",
+    "genre": "Música Regional",
+    "description": "Regente Joaquim integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_caike_souza",
+    "name": "Caike Souza",
+    "genre": "Música Regional",
+    "description": "Caike Souza integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_samba_de_coco_trupe_de_arcoverde",
+    "name": "Samba de Coco Trupé de Arcoverde",
+    "genre": "Samba de Coco",
+    "description": "Samba de Coco Trupé de Arcoverde integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_lia_morais",
+    "name": "Lia Morais",
+    "genre": "Música Regional",
+    "description": "Lia Morais integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_vertin_moura",
+    "name": "Vertin Moura",
+    "genre": "Música Regional",
+    "description": "Vertin Moura integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_coco_raizes_seguro",
+    "name": "Coco Raízes Seguro",
+    "genre": "Samba de Coco",
+    "description": "Coco Raízes Seguro integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_motumbaxe",
+    "name": "Motumbaxé",
+    "genre": "Axé",
+    "description": "Notumbaxé integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_oba_aye",
+    "name": "Oba Ayê",
+    "genre": "Cultura Afro-brasileira",
+    "description": "Oba Ayê integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_helena_cristina",
+    "name": "Helena Cristina",
+    "genre": "Música Regional",
+    "description": "Helena Cristina integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_reisado_mirim_n_sra_do_rosario",
+    "name": "Reisado Mirim N. Sra. do Rosário",
+    "genre": "Cultura Popular/Reisado",
+    "description": "Reisado Mirim N. Sra. do Rosário integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_encantos_do_coco",
+    "name": "Encantos do Coco",
+    "genre": "Samba de Coco",
+    "description": "Encantos do Coco integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_ju_cavalcanti",
+    "name": "Jú Cavalcanti",
+    "genre": "Música Regional",
+    "description": "Jú Cavalcanti integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_gabi_da_pele_preta",
+    "name": "Gabi da Pele Preta",
+    "genre": "Música Regional",
+    "description": "Gabi da Pele Preta integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_afoxe_ile_omi_ogunte",
+    "name": "Afoxé Ya Omi Ogunté",
+    "genre": "Afoxé/Cultura Afro-brasileira",
+    "description": "Afoxé Ya Omi Ogunté integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_coco_d_malandro",
+    "name": "Coco D’Malandro",
+    "genre": "Samba de Coco",
+    "description": "Coco D’Malandro integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_transcoco",
+    "name": "Transcoco",
+    "genre": "Samba de Coco",
+    "description": "Transcoco integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_drika",
+    "name": "Drika",
+    "genre": "Música Regional",
+    "description": "Drika integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_maraca_samba_de_coco_juremaldo",
+    "name": "Maracá Samba de Coco Juremaldo",
+    "genre": "Samba de Coco",
+    "description": "Maracá Samba de Coco Juremaldo integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_toinho_arcoverde",
+    "name": "Toinho Arcoverde",
+    "genre": "Forró/Cultura Popular",
+    "description": "Toinho Arcoverde integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_forro_rabeado",
+    "name": "Forró Rabeado",
+    "genre": "Forró",
+    "description": "Forró Rabeado integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_forro_na_caixa",
+    "name": "Forró na Caixa",
+    "genre": "Forró",
+    "description": "Forró na Caixa integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_samba_de_coco_eremin",
+    "name": "Samba de Coco Erêmin",
+    "genre": "Samba de Coco",
+    "description": "Samba de Coco Erêmin integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_kelly_rosa",
+    "name": "Kelly Rosa",
+    "genre": "Música Regional",
+    "description": "Kelly Rosa integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_larissa_gois",
+    "name": "Larissa Gois",
+    "genre": "Música Regional",
+    "description": "Larissa Gois integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_jaime_mendes",
+    "name": "Jaime Mendes",
+    "genre": "Música Regional",
+    "description": "Jaime Mendes integra a programação do Polo das Artes Henry Pereira no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_forro_na_feira",
+    "name": "Forró na Feira",
+    "genre": "Forró",
+    "description": "Forró na Feira integra a programação do Arraial do Cecora no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_neguinho_arcoverde",
+    "name": "Neguinho Arcoverde",
+    "genre": "Forró",
+    "description": "Neguinho Arcoverde integra a programação do Arraial do Cecora no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_marquinhos_pernambucano",
+    "name": "Marquinhos Pernambucano",
+    "genre": "Forró",
+    "description": "Marquinhos Pernambucano integra a programação do Arraial do Cecora no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_ademir_e_banda",
+    "name": "Ademir e Banda",
+    "genre": "Forró Pé de Serra",
+    "description": "Ademir e Banda integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_silvio_regina",
+    "name": "Silvio Regina",
+    "genre": "Forró Pé de Serra",
+    "description": "Silvio Regina integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_forro_maktub",
+    "name": "Forró Maktub",
+    "genre": "Forró",
+    "description": "Forró Maktub integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_forro_de_pai_pra_filho",
+    "name": "Forró de Pai pra Filho",
+    "genre": "Forró",
+    "description": "Forró de Pai pra Filho integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_sergio_coringa_e_cilena_a_flor_sertao",
+    "name": "Sergio Coringa e Cilena a Flor Sertão",
+    "genre": "Forró",
+    "description": "Sergio Coringa e Cilena a Flor Sertão integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_cicao",
+    "name": "Cição",
+    "genre": "Forró",
+    "description": "Cição integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_ze_do_peba_e_trio_catingueira",
+    "name": "Zé do Peba e Trio Catingueira",
+    "genre": "Forró Pé de Serra",
+    "description": "Zé do Peba e Trio Catingueira integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_pau_no_xote",
+    "name": "Pau no Xote",
+    "genre": "Forró",
+    "description": "Pau no Xote integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_james_vaqueiro",
+    "name": "James Vaqueiro",
+    "genre": "Forró/Vaquejada",
+    "description": "James Vaqueiro integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_lourencao",
+    "name": "Lourenção",
+    "genre": "Forró",
+    "description": "Lourenção integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_boka_diniz",
+    "name": "Boka Diniz",
+    "genre": "Forró",
+    "description": "Boka Diniz integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_tiago_e_dineide_araujo",
+    "name": "Tiago e Dineide Araújo",
+    "genre": "Forró",
+    "description": "Tiago e Dineide Araújo integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_vaqueiroes_do_forro",
+    "name": "Vaqueirões do Forró",
+    "genre": "Forró",
+    "description": "Vaqueirões do Forró integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_ricardo_lima",
+    "name": "Ricardo Lima",
+    "genre": "Forró",
+    "description": "Ricardo Lima integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_daci_pires_e_forro_ballarte",
+    "name": "Daci Pires e Forró Ballarte",
+    "genre": "Forró",
+    "description": "Daci Pires e Forró Ballarte integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_zezinho_do_acordeon",
+    "name": "Zezinho do Acordeon",
+    "genre": "Forró",
+    "description": "Zezinho do Acordeon integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_forro_junior_saygon",
+    "name": "Forró Junior Saygon",
+    "genre": "Forró",
+    "description": "Forró Junior Saygon integra a programação do Polo Pé de Serra João Silva no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_samba_de_coco_encantos_do_coco",
+    "name": "Samba de Coco Encantos do Coco",
+    "genre": "Samba de Coco",
+    "description": "Samba de Coco Encantos do Coco integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_samba_de_coco_irmas_lopes",
+    "name": "Samba de Coco Irmãs Lopes",
+    "genre": "Samba de Coco",
+    "description": "Samba de Coco Irmãs Lopes integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_josildo_sa",
+    "name": "Josildo Sá",
+    "genre": "MPB/Regional",
+    "description": "Josildo Sá integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_valdinho_paes",
+    "name": "Valdinho Paes",
+    "genre": "Música Regional",
+    "description": "Valdinho Paes integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_samba_de_coco_raizes_de_arcoverde",
+    "name": "Samba de Coco Raízes de Arcoverde",
+    "genre": "Samba de Coco",
+    "description": "Samba de Coco Raízes de Arcoverde integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_marival_melo",
+    "name": "Marival Melo",
+    "genre": "MPB/Regional",
+    "description": "Marival Melo integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_almerio",
+    "name": "Almério",
+    "genre": "MPB/Regional",
+    "description": "Almério integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_romero_ferro",
+    "name": "Romero Ferro",
+    "genre": "Pop/MPB",
+    "description": "Romero Ferro integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_samba_de_coco_trupe",
+    "name": "Samba de Coco Trupé",
+    "genre": "Samba de Coco",
+    "description": "Samba de Coco Trupé integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_somos_forro",
+    "name": "Somos Forró",
+    "genre": "Forró",
+    "description": "Somos Forró integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_martins",
+    "name": "Martins",
+    "genre": "MPB/Regional",
+    "description": "Martins integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_samba_de_coco_d_malandro",
+    "name": "Samba de Coco D’Malandro",
+    "genre": "Samba de Coco",
+    "description": "Samba de Coco D’Malandro integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_joyce_alane",
+    "name": "Joyce Alane",
+    "genre": "MPB/Pop",
+    "description": "Joyce Alane integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_lais_senna",
+    "name": "Laís Senna",
+    "genre": "Música Regional",
+    "description": "Laís Senna integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_rafael_moura",
+    "name": "Rafael Moura",
+    "genre": "Música Regional",
+    "description": "Rafael Moura integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_transmissao_do_jogo_do_brasil",
+    "name": "Transmissão do jogo do Brasil",
+    "genre": "Transmissão",
+    "description": "Transmissão do jogo do Brasil integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_samba_de_coco_pisada_segura",
+    "name": "Samba de Coco Pisada Segura",
+    "genre": "Samba de Coco",
+    "description": "Samba de Coco Pisada Segura integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  },
+  {
+    "id": "artist_as_januarias",
+    "name": "As Januárias",
+    "genre": "Música Regional",
+    "description": "As Januárias integra a programação do Polo Raízes do Coco Lula Calixto no São João de Arcoverde 2026.",
+    "birthDate": null,
+    "imageUrl": null,
+    "isFeatured": false
+  }
+]

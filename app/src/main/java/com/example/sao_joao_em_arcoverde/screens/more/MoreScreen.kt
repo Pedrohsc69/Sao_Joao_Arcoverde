@@ -39,7 +39,14 @@ import androidx.compose.material.icons.rounded.Security
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.Sync
-import androidx.compose.material.icons.rounded.VolumeUp
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.Switch
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -74,6 +81,8 @@ import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDark
 import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDarkVariant
 import com.example.sao_joao_em_arcoverde.ui.theme.TextPrimary
 import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 
 private enum class MorePanel {
     NOTIFICATIONS,
@@ -97,15 +106,20 @@ fun MoreScreen(
     developers: List<TeamMember>,
     emergencyContacts: List<EmergencyContact>,
     sponsors: List<Sponsor>,
+    notificationsEnabled: Boolean,
     isLoading: Boolean,
     errorMessage: String?,
+    onNotificationsEnabledChange: (Boolean) -> Unit,
     onHomeClick: () -> Unit,
     onScheduleClick: () -> Unit,
     onMapClick: () -> Unit,
     onArtistsClick: () -> Unit,
     onAboutAppClick: () -> Unit,
+    onHistoryClick: () -> Unit,
+    onSponsorsClick: () -> Unit,
     onSearchClick: () -> Unit,
     onMenuClick: () -> Unit,
+    onSendTestNotification: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val selectedPanel = remember {
@@ -193,7 +207,9 @@ fun MoreScreen(
                             sponsorsCount = sponsors.size,
                             onOptionClick = { panel ->
                                 when (panel) {
+                                    MorePanel.HISTORY -> onHistoryClick()
                                     MorePanel.ARTISTS -> onArtistsClick()
+                                    MorePanel.SPONSORS -> onSponsorsClick()
                                     MorePanel.ABOUT -> onAboutAppClick()
                                     else -> selectedPanel.value = panel
                                 }
@@ -220,6 +236,9 @@ fun MoreScreen(
             panel = panel,
             emergencyContacts = emergencyContacts,
             sponsors = sponsors,
+            notificationsEnabled = notificationsEnabled,
+            onNotificationsEnabledChange = onNotificationsEnabledChange,
+            onSendTestNotification = onSendTestNotification,
             onDismiss = {
                 selectedPanel.value = null
             }
@@ -282,7 +301,7 @@ private fun MoreOptionsList(
             panel = MorePanel.NOTIFICATIONS
         ),
         MoreOption(
-            title = "História do São João",
+            title = "História",
             icon = Icons.Rounded.MenuBook,
             iconColor = GreenAccent,
             panel = MorePanel.HISTORY
@@ -300,13 +319,13 @@ private fun MoreOptionsList(
             panel = MorePanel.SECURITY_HEALTH
         ),
         MoreOption(
-            title = "Contatos de Emergência ($emergencyContactsCount)",
+            title = "Contatos de Emergência",
             icon = Icons.Rounded.Phone,
             iconColor = BlueAccent,
             panel = MorePanel.EMERGENCY_CONTACTS
         ),
         MoreOption(
-            title = "Patrocinadores ($sponsorsCount)",
+            title = "Realização e Apoio",
             icon = Icons.Rounded.Star,
             iconColor = GoldPrimary,
             panel = MorePanel.SPONSORS
@@ -502,8 +521,11 @@ private fun MorePanelBottomSheet(
     panel: MorePanel,
     emergencyContacts: List<EmergencyContact>,
     sponsors: List<Sponsor>,
+    notificationsEnabled: Boolean,
+    onNotificationsEnabledChange: (Boolean) -> Unit,
+    onSendTestNotification: () -> Unit,
     onDismiss: () -> Unit
-) {
+){
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
@@ -521,7 +543,11 @@ private fun MorePanelBottomSheet(
                 .padding(bottom = 28.dp)
         ) {
             when (panel) {
-                MorePanel.NOTIFICATIONS -> NotificationsContent()
+                MorePanel.NOTIFICATIONS -> NotificationsContent(
+                    notificationsEnabled = notificationsEnabled,
+                    onNotificationsEnabledChange = onNotificationsEnabledChange,
+                    onSendTestNotification = onSendTestNotification
+                )
 
                 MorePanel.HISTORY -> HistoryContent()
 
@@ -552,7 +578,56 @@ private fun MorePanelBottomSheet(
 }
 
 @Composable
-private fun NotificationsContent() {
+private fun NotificationsContent(
+    notificationsEnabled: Boolean,
+    onNotificationsEnabledChange: (Boolean) -> Unit,
+    onSendTestNotification: () -> Unit
+) {
+    val context = LocalContext.current
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            onNotificationsEnabledChange(true)
+        }
+    }
+
+    val testPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            onSendTestNotification()
+        }
+    }
+
+    fun hasNotificationPermission(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
+    }
+
+    fun requestEnableNotifications() {
+        if (hasNotificationPermission()) {
+            onNotificationsEnabledChange(true)
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
+    fun sendTestNotification() {
+        if (hasNotificationPermission()) {
+            onSendTestNotification()
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            testPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
     SheetTitle(
         title = "Notificações",
         icon = Icons.Rounded.Notifications,
@@ -562,7 +637,94 @@ private fun NotificationsContent() {
     Spacer(modifier = Modifier.height(14.dp))
 
     Text(
-        text = "Esta área será usada para configurar lembretes de shows, avisos da programação e alertas importantes do evento.",
+        text = "Receba um aviso 20 minutos antes das atrações do Palco Principal começarem.",
+        color = TextSecondary,
+        style = MaterialTheme.typography.bodyMedium
+    )
+
+    Spacer(modifier = Modifier.height(18.dp))
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = BorderGold,
+                shape = RoundedCornerShape(18.dp)
+            ),
+        shape = RoundedCornerShape(18.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = SurfaceDarkVariant
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = "Lembretes do Palco Principal",
+                    color = TextPrimary,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Black
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = if (notificationsEnabled) {
+                        "Ativado. O app notificará 20 minutos antes das atrações."
+                    } else {
+                        "Desativado. Nenhum lembrete será enviado."
+                    },
+                    color = TextSecondary,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            Switch(
+                checked = notificationsEnabled,
+                onCheckedChange = { checked ->
+                    if (checked) {
+                        requestEnableNotifications()
+                    } else {
+                        onNotificationsEnabledChange(false)
+                    }
+                }
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.height(14.dp))
+
+    Button(
+        onClick = {
+            sendTestNotification()
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(54.dp),
+        shape = RoundedCornerShape(18.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = GoldPrimary,
+            contentColor = BackgroundDark
+        )
+    ) {
+        Text(
+            text = "ENVIAR NOTIFICAÇÃO DE TESTE",
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Black
+        )
+    }
+
+    Spacer(modifier = Modifier.height(10.dp))
+
+    Text(
+        text = "O teste envia uma notificação imediata simulando uma atração do Palco Principal.",
         color = TextSecondary,
         style = MaterialTheme.typography.bodyMedium
     )

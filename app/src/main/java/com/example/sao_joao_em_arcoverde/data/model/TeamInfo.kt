@@ -14,3 +14,8 @@ data class FacultyInfo(
     val course: String,
     val subject: String
 )
+
+data class HistorySection(
+    val title: String,
+    val body: String
+)
