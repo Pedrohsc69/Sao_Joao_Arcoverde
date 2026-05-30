@@ -7,12 +7,25 @@ import androidx.compose.runtime.remember
 import com.example.sao_joao_em_arcoverde.data.model.MapPoint
 import com.example.sao_joao_em_arcoverde.data.model.MapPointType
 import com.example.sao_joao_em_arcoverde.data.repository.FestivalRepository
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
+import com.example.sao_joao_em_arcoverde.location.LocationController
+import com.example.sao_joao_em_arcoverde.location.UserLocation
+import kotlinx.coroutines.launch
 
 private data class MapUiState(
     val isLoading: Boolean = true,
     val mapPoints: List<MapPoint> = emptyList(),
     val selectedType: MapPointType? = null,
     val selectedPoint: MapPoint? = null,
+    val userLocation: UserLocation? = null,
+    val shouldCenterOnUser: Boolean = false,
+    val locationMessage: String? = null,
     val errorMessage: String? = null
 )
 
@@ -25,20 +38,56 @@ fun MapRoute(
     onSearchClick: () -> Unit,
     onMenuClick: () -> Unit
 ) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
     val uiState = remember {
         mutableStateOf(MapUiState())
+    }
+
+    val locationController = remember {
+        LocationController(context.applicationContext)
+    }
+
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val granted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+
+        if (granted) {
+            coroutineScope.launch {
+                val location = locationController.getCurrentLocation()
+
+                uiState.value = if (location != null) {
+                    uiState.value.copy(
+                        userLocation = location,
+                        shouldCenterOnUser = true,
+                        locationMessage = null
+                    )
+                } else {
+                    uiState.value.copy(
+                        locationMessage = "Não foi possível obter sua localização agora."
+                    )
+                }
+            }
+        } else {
+            uiState.value = uiState.value.copy(
+                locationMessage = "Permissão de localização negada."
+            )
+        }
     }
 
     LaunchedEffect(Unit) {
         runCatching {
             repository.getAllMapPoints()
         }.onSuccess { points ->
-            uiState.value = MapUiState(
+            uiState.value = uiState.value.copy(
                 isLoading = false,
                 mapPoints = points
             )
         }.onFailure { throwable ->
-            uiState.value = MapUiState(
+            uiState.value = uiState.value.copy(
                 isLoading = false,
                 errorMessage = throwable.message ?: "Erro ao carregar pontos do mapa."
             )
@@ -53,6 +102,9 @@ fun MapRoute(
         mapPoints = visiblePoints,
         selectedType = uiState.value.selectedType,
         selectedPoint = uiState.value.selectedPoint,
+        userLocation = uiState.value.userLocation,
+        shouldCenterOnUser = uiState.value.shouldCenterOnUser,
+        locationMessage = uiState.value.locationMessage,
         isLoading = uiState.value.isLoading,
         errorMessage = uiState.value.errorMessage,
         onTypeClick = { type ->
@@ -69,6 +121,47 @@ fun MapRoute(
         onDismissSelectedPoint = {
             uiState.value = uiState.value.copy(
                 selectedPoint = null
+            )
+        },
+        onLocateMeClick = {
+            val fineGranted = ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+
+            val coarseGranted = ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+
+            if (fineGranted || coarseGranted) {
+                coroutineScope.launch {
+                    val location = locationController.getCurrentLocation()
+
+                    uiState.value = if (location != null) {
+                        uiState.value.copy(
+                            userLocation = location,
+                            shouldCenterOnUser = true,
+                            locationMessage = null
+                        )
+                    } else {
+                        uiState.value.copy(
+                            locationMessage = "Não foi possível obter sua localização agora."
+                        )
+                    }
+                }
+            } else {
+                locationPermissionLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                )
+            }
+        },
+        onUserLocationCentered = {
+            uiState.value = uiState.value.copy(
+                shouldCenterOnUser = false
             )
         },
         onHomeClick = onHomeClick,

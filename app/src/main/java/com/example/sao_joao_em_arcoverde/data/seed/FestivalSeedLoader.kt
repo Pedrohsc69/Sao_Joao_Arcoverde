@@ -62,8 +62,6 @@ class FestivalSeedLoader(
     }
 
     private suspend fun seedMapPointsIfNeeded() {
-        if (database.mapPointDao().countMapPoints() > 0) return
-
         val mapPoints = readJsonFile<List<MapPoint>>("map_points.json")
 
         database.mapPointDao().insertMapPoints(
@@ -122,15 +120,9 @@ class FestivalSeedLoader(
     private suspend fun seedExtraMapPointsIfNeeded() {
         val extraMapPoints = readJsonFile<List<MapPoint>>("map_points_extra_polos.json")
 
-        val newMapPoints = extraMapPoints.filter { mapPoint ->
-            database.mapPointDao().getMapPointById(mapPoint.id) == null
-        }
-
-        if (newMapPoints.isNotEmpty()) {
-            database.mapPointDao().insertMapPoints(
-                newMapPoints.map { it.toEntity() }
-            )
-        }
+        database.mapPointDao().insertMapPoints(
+            extraMapPoints.map { it.toEntity() }
+        )
     }
 
     private inline fun <reified T> readJsonFile(fileName: String): T {

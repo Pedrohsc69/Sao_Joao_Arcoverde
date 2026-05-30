@@ -1,6 +1,5 @@
 package com.example.sao_joao_em_arcoverde.screens.map
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -24,17 +22,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import com.example.sao_joao_em_arcoverde.location.UserLocation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.DirectionsBus
 import androidx.compose.material.icons.rounded.Hotel
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.LocalHospital
-import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.MyLocation
 import androidx.compose.material.icons.rounded.Place
 import androidx.compose.material.icons.rounded.Restaurant
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Security
 import androidx.compose.material.icons.rounded.TheaterComedy
 import androidx.compose.material.icons.rounded.TravelExplore
@@ -52,7 +49,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -61,6 +57,7 @@ import com.example.sao_joao_em_arcoverde.data.model.MapPoint
 import com.example.sao_joao_em_arcoverde.data.model.MapPointType
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
+import com.example.sao_joao_em_arcoverde.ui.components.map.OsmdroidMapView
 import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
 import com.example.sao_joao_em_arcoverde.ui.theme.BlueAccent
 import com.example.sao_joao_em_arcoverde.ui.theme.BorderGold
@@ -77,18 +74,23 @@ fun MapScreen(
     mapPoints: List<MapPoint>,
     selectedType: MapPointType?,
     selectedPoint: MapPoint?,
+    userLocation: UserLocation?,
+    shouldCenterOnUser: Boolean,
+    locationMessage: String?,
     isLoading: Boolean,
     errorMessage: String?,
     onTypeClick: (MapPointType) -> Unit,
     onPointClick: (MapPoint) -> Unit,
     onDismissSelectedPoint: () -> Unit,
+    onLocateMeClick: () -> Unit,
+    onUserLocationCentered: () -> Unit,
     onHomeClick: () -> Unit,
     onScheduleClick: () -> Unit,
     onMoreClick: () -> Unit,
     onSearchClick: () -> Unit,
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier
-) {
+){
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = BackgroundDark,
@@ -122,10 +124,15 @@ fun MapScreen(
             MapContent(
                 mapPoints = mapPoints,
                 selectedType = selectedType,
+                userLocation = userLocation,
+                shouldCenterOnUser = shouldCenterOnUser,
+                locationMessage = locationMessage,
                 isLoading = isLoading,
                 errorMessage = errorMessage,
                 onTypeClick = onTypeClick,
-                onPointClick = onPointClick
+                onPointClick = onPointClick,
+                onLocateMeClick = onLocateMeClick,
+                onUserLocationCentered = onUserLocationCentered
             )
         }
     }
@@ -142,10 +149,15 @@ fun MapScreen(
 private fun MapContent(
     mapPoints: List<MapPoint>,
     selectedType: MapPointType?,
+    userLocation: UserLocation?,
+    shouldCenterOnUser: Boolean,
+    locationMessage: String?,
     isLoading: Boolean,
     errorMessage: String?,
     onTypeClick: (MapPointType) -> Unit,
-    onPointClick: (MapPoint) -> Unit
+    onPointClick: (MapPoint) -> Unit,
+    onLocateMeClick: () -> Unit,
+    onUserLocationCentered: () -> Unit
 ) {
     when {
         isLoading -> {
@@ -176,6 +188,9 @@ private fun MapContent(
         else -> {
             EventMapCard(
                 mapPoints = mapPoints,
+                userLocation = userLocation,
+                shouldCenterOnUser = shouldCenterOnUser,
+                onUserLocationCentered = onUserLocationCentered,
                 onPointClick = onPointClick
             )
 
@@ -188,7 +203,20 @@ private fun MapContent(
 
             Spacer(modifier = Modifier.height(14.dp))
 
-            LocateMeButton()
+            LocateMeButton(
+                onClick = onLocateMeClick
+            )
+
+            locationMessage?.let { message ->
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = message,
+                    color = TextSecondary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold
+                )
+            }
 
             Spacer(modifier = Modifier.height(18.dp))
 
@@ -237,15 +265,16 @@ private fun MapHeader(
 @Composable
 private fun EventMapCard(
     mapPoints: List<MapPoint>,
+    userLocation: UserLocation?,
+    shouldCenterOnUser: Boolean,
+    onUserLocationCentered: () -> Unit,
     onPointClick: (MapPoint) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val visiblePoints = mapPoints.take(8)
-
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(250.dp)
+            .height(300.dp)
             .border(
                 width = 1.dp,
                 color = BorderGold,
@@ -256,118 +285,14 @@ private fun EventMapCard(
             containerColor = SurfaceDark
         )
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(0xFF101C26))
-        ) {
-            MapGrid()
-
-            visiblePoints.forEachIndexed { index, point ->
-                MapMarker(
-                    point = point,
-                    onClick = {
-                        onPointClick(point)
-                    },
-                    modifier = Modifier.offset(
-                        x = markerOffsetX(index).dp,
-                        y = markerOffsetY(index).dp
-                    )
-                )
-            }
-        }
-    }
-}
-
-private fun markerOffsetX(index: Int): Int {
-    val values = listOf(132, 36, 214, 92, 236, 154, 22, 184)
-    return values[index % values.size]
-}
-
-private fun markerOffsetY(index: Int): Int {
-    val values = listOf(42, 112, 108, 174, 34, 142, 44, 194)
-    return values[index % values.size]
-}
-
-@Composable
-private fun MapGrid(
-    modifier: Modifier = Modifier
-) {
-    Canvas(
-        modifier = modifier.fillMaxSize()
-    ) {
-        val gridColor = Color.White.copy(alpha = 0.05f)
-        val step = 32.dp.toPx()
-
-        var x = 0f
-        while (x < size.width) {
-            drawLine(
-                color = gridColor,
-                start = Offset(x, 0f),
-                end = Offset(x, size.height),
-                strokeWidth = 1f
-            )
-            x += step
-        }
-
-        var y = 0f
-        while (y < size.height) {
-            drawLine(
-                color = gridColor,
-                start = Offset(0f, y),
-                end = Offset(size.width, y),
-                strokeWidth = 1f
-            )
-            y += step
-        }
-    }
-}
-
-@Composable
-private fun MapMarker(
-    point: MapPoint,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val metadata = point.type.metadata()
-
-    Column(
-        modifier = modifier
-            .width(92.dp)
-            .clickable(onClick = onClick),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box(
-            modifier = Modifier
-                .size(42.dp)
-                .clip(CircleShape)
-                .background(metadata.color),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = metadata.icon,
-                contentDescription = point.name,
-                tint = BackgroundDark,
-                modifier = Modifier.size(24.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(6.dp))
-                .background(BackgroundDark.copy(alpha = 0.78f))
-                .padding(horizontal = 6.dp, vertical = 3.dp)
-        ) {
-            Text(
-                text = point.name,
-                color = TextPrimary,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1
-            )
-        }
+        OsmdroidMapView(
+            mapPoints = mapPoints,
+            userLocation = userLocation,
+            shouldCenterOnUser = shouldCenterOnUser,
+            onUserLocationCentered = onUserLocationCentered,
+            onPointClick = onPointClick,
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
 
@@ -488,12 +413,11 @@ private fun LegendChip(
 
 @Composable
 private fun LocateMeButton(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Button(
-        onClick = {
-            // Etapa futura: solicitar permissão de localização e centralizar no OSMDroid.
-        },
+        onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp),

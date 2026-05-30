@@ -4,31 +4,31 @@
     "name": "Polo das Artes Henry Pereira",
     "type": "STAGE",
     "description": "Polo cultural com programação de artes, cultura popular, coco, quadrilhas e atrações regionais.",
-    "latitude": null,
-    "longitude": null
+    "latitude": -8.4196,
+    "longitude": -37.0517
   },
   {
     "id": "map_arraial_cecora",
     "name": "Arraial do Cecora",
     "type": "STAGE",
     "description": "Polo junino localizado no CECORA, com atrações matinais e programação regional.",
-    "latitude": null,
-    "longitude": null
+    "latitude": -8.4213,
+    "longitude": -37.054
   },
   {
     "id": "map_polo_pe_de_serra_joao_silva",
     "name": "Polo Pé de Serra João Silva",
     "type": "STAGE",
     "description": "Polo dedicado ao forró pé de serra e atrações regionais do São João de Arcoverde.",
-    "latitude": null,
-    "longitude": null
+    "latitude": -8.4196,
+    "longitude": -37.0517
   },
   {
     "id": "map_polo_raizes_coco_lula_calixto",
     "name": "Polo Raízes do Coco Lula Calixto",
     "type": "STAGE",
     "description": "Polo dedicado ao samba de coco, cultura popular e atrações de raiz.",
-    "latitude": null,
-    "longitude": null
+    "latitude": -8.412778,
+    "longitude": -37.05
   }
 ]
