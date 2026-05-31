@@ -8,6 +8,7 @@ import com.example.sao_joao_em_arcoverde.data.model.MapPoint
 import com.example.sao_joao_em_arcoverde.data.model.MapPointType
 import com.example.sao_joao_em_arcoverde.data.repository.FestivalRepository
 import android.Manifest
+import com.example.sao_joao_em_arcoverde.location.UserLocationResult
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -57,18 +58,36 @@ fun MapRoute(
 
         if (granted) {
             coroutineScope.launch {
-                val location = locationController.getCurrentLocation()
+                when (val result = locationController.getCurrentLocation()) {
+                    is UserLocationResult.Success -> {
+                        uiState.value = uiState.value.copy(
+                            userLocation = result.location,
+                            shouldCenterOnUser = true,
+                            locationMessage = result.location.accuracyMeters?.let {
+                                "Localização precisa: aproximadamente ${it.toInt()} metros."
+                            }
+                        )
+                    }
 
-                uiState.value = if (location != null) {
-                    uiState.value.copy(
-                        userLocation = location,
-                        shouldCenterOnUser = true,
-                        locationMessage = null
-                    )
-                } else {
-                    uiState.value.copy(
-                        locationMessage = "Não foi possível obter sua localização agora."
-                    )
+                    is UserLocationResult.LowAccuracy -> {
+                        uiState.value = uiState.value.copy(
+                            userLocation = result.location,
+                            shouldCenterOnUser = true,
+                            locationMessage = result.message
+                        )
+                    }
+
+                    UserLocationResult.PermissionDenied -> {
+                        uiState.value = uiState.value.copy(
+                            locationMessage = "Permissão de localização negada."
+                        )
+                    }
+
+                    UserLocationResult.Unavailable -> {
+                        uiState.value = uiState.value.copy(
+                            locationMessage = "Não foi possível obter sua localização agora. Verifique se o GPS está ativado."
+                        )
+                    }
                 }
             }
         } else {
@@ -136,18 +155,36 @@ fun MapRoute(
 
             if (fineGranted || coarseGranted) {
                 coroutineScope.launch {
-                    val location = locationController.getCurrentLocation()
+                    when (val result = locationController.getCurrentLocation()) {
+                        is UserLocationResult.Success -> {
+                            uiState.value = uiState.value.copy(
+                                userLocation = result.location,
+                                shouldCenterOnUser = true,
+                                locationMessage = result.location.accuracyMeters?.let {
+                                    "Localização precisa: aproximadamente ${it.toInt()} metros."
+                                }
+                            )
+                        }
 
-                    uiState.value = if (location != null) {
-                        uiState.value.copy(
-                            userLocation = location,
-                            shouldCenterOnUser = true,
-                            locationMessage = null
-                        )
-                    } else {
-                        uiState.value.copy(
-                            locationMessage = "Não foi possível obter sua localização agora."
-                        )
+                        is UserLocationResult.LowAccuracy -> {
+                            uiState.value = uiState.value.copy(
+                                userLocation = result.location,
+                                shouldCenterOnUser = true,
+                                locationMessage = result.message
+                            )
+                        }
+
+                        UserLocationResult.PermissionDenied -> {
+                            uiState.value = uiState.value.copy(
+                                locationMessage = "Permissão de localização negada."
+                            )
+                        }
+
+                        UserLocationResult.Unavailable -> {
+                            uiState.value = uiState.value.copy(
+                                locationMessage = "Não foi possível obter sua localização agora. Verifique se o GPS está ativado."
+                            )
+                        }
                     }
                 }
             } else {

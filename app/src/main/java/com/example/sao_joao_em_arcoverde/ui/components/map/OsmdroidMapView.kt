@@ -3,6 +3,8 @@ package com.example.sao_joao_em_arcoverde.ui.components.map
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
@@ -37,6 +39,18 @@ fun OsmdroidMapView(
         }
     }
 
+    val hasFittedMapPoints = remember {
+        mutableStateOf(false)
+    }
+
+    val mapPointsKey = mapPoints.joinToString(separator = "|") { point ->
+        "${point.id}:${point.latitude}:${point.longitude}"
+    }
+
+    LaunchedEffect(mapPointsKey) {
+        hasFittedMapPoints.value = false
+    }
+
     DisposableEffect(Unit) {
         mapView.onResume()
 
@@ -51,8 +65,8 @@ fun OsmdroidMapView(
             mapView
         },
         update = { map ->
-            val pointsWithCoordinates = mapPoints.filter {
-                it.latitude != null && it.longitude != null
+            val pointsWithCoordinates = mapPoints.filter { point ->
+                point.latitude != null && point.longitude != null
             }
 
             map.overlays.clear()
@@ -78,59 +92,78 @@ fun OsmdroidMapView(
                     location.latitude,
                     location.longitude
                 )
+
                 userLocationOverlay.setAccuracy(25)
                 map.overlays.add(userLocationOverlay)
-
-                if (shouldCenterOnUser) {
-                    map.controller.animateTo(
-                        GeoPoint(location.latitude, location.longitude)
-                    )
-                    map.controller.setZoom(18.0)
-                    onUserLocationCentered()
-                }
             }
 
-            if (userLocation == null || !shouldCenterOnUser) {
-                if (pointsWithCoordinates.isNotEmpty()) {
-                    if (pointsWithCoordinates.size == 1) {
-                        val onlyPoint = pointsWithCoordinates.first()
+            if (shouldCenterOnUser && userLocation != null) {
+                val userGeoPoint = GeoPoint(
+                    userLocation.latitude,
+                    userLocation.longitude
+                )
 
-                        map.controller.setZoom(17.0)
-                        map.controller.setCenter(
-                            GeoPoint(
-                                onlyPoint.latitude!!,
-                                onlyPoint.longitude!!
-                            )
-                        )
-                    } else {
-                        val latitudes = pointsWithCoordinates.mapNotNull { it.latitude }
-                        val longitudes = pointsWithCoordinates.mapNotNull { it.longitude }
+                map.controller.setZoom(18.0)
+                map.controller.animateTo(userGeoPoint)
 
-                        val boundingBox = BoundingBox(
-                            latitudes.maxOrNull() ?: -8.4199,
-                            longitudes.maxOrNull() ?: -37.0532,
-                            latitudes.minOrNull() ?: -8.4199,
-                            longitudes.minOrNull() ?: -37.0532
-                        )
+                onUserLocationCentered()
+            } else if (!hasFittedMapPoints.value) {
+                fitMapToPoints(
+                    map = map,
+                    pointsWithCoordinates = pointsWithCoordinates
+                )
 
-                        map.post {
-                            map.zoomToBoundingBox(
-                                boundingBox.increaseByScale(1.4f),
-                                true
-                            )
-                        }
-                    }
-                } else {
-                    map.controller.setZoom(15.0)
-                    map.controller.setCenter(
-                        GeoPoint(-8.4199, -37.0532)
-                    )
-                }
+                hasFittedMapPoints.value = true
             }
 
             map.invalidate()
         }
     )
+}
+
+private fun fitMapToPoints(
+    map: MapView,
+    pointsWithCoordinates: List<MapPoint>
+) {
+    when {
+        pointsWithCoordinates.isEmpty() -> {
+            map.controller.setZoom(15.0)
+            map.controller.setCenter(
+                GeoPoint(-8.4199, -37.0532)
+            )
+        }
+
+        pointsWithCoordinates.size == 1 -> {
+            val onlyPoint = pointsWithCoordinates.first()
+
+            map.controller.setZoom(17.0)
+            map.controller.setCenter(
+                GeoPoint(
+                    onlyPoint.latitude!!,
+                    onlyPoint.longitude!!
+                )
+            )
+        }
+
+        else -> {
+            val latitudes = pointsWithCoordinates.mapNotNull { it.latitude }
+            val longitudes = pointsWithCoordinates.mapNotNull { it.longitude }
+
+            val boundingBox = BoundingBox(
+                latitudes.maxOrNull() ?: -8.4199,
+                longitudes.maxOrNull() ?: -37.0532,
+                latitudes.minOrNull() ?: -8.4199,
+                longitudes.minOrNull() ?: -37.0532
+            )
+
+            map.post {
+                map.zoomToBoundingBox(
+                    boundingBox.increaseByScale(1.4f),
+                    true
+                )
+            }
+        }
+    }
 }
 
 private fun createMapView(context: Context): MapView {
@@ -142,6 +175,8 @@ private fun createMapView(context: Context): MapView {
         minZoomLevel = 13.0
         maxZoomLevel = 20.0
         controller.setZoom(16.0)
-        controller.setCenter(GeoPoint(-8.4199, -37.0532))
+        controller.setCenter(
+            GeoPoint(-8.4199, -37.0532)
+        )
     }
 }

@@ -12,13 +12,15 @@ import kotlinx.coroutines.tasks.await
 
 data class UserLocation(
     val latitude: Double,
-    val longitude: Double
+    val longitude: Double,
+    val accuracyMeters: Float? = null
 )
 
 class LocationController(
     private val context: Context
 ) {
-    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    private val fusedLocationClient =
+        LocationServices.getFusedLocationProviderClient(context)
 
     fun hasLocationPermission(): Boolean {
         val fineLocationGranted = ContextCompat.checkSelfPermission(
@@ -34,31 +36,80 @@ class LocationController(
         return fineLocationGranted || coarseLocationGranted
     }
 
+    fun hasFineLocationPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
     @SuppressLint("MissingPermission")
-    suspend fun getCurrentLocation(): UserLocation? {
+    suspend fun getCurrentLocation(): UserLocationResult {
         if (!hasLocationPermission()) {
-            return null
+            return UserLocationResult.PermissionDenied
         }
 
         val request = CurrentLocationRequest.Builder()
             .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
-            .setMaxUpdateAgeMillis(10_000)
+            .setMaxUpdateAgeMillis(0)
             .build()
 
-        val location = runCatching {
+        val currentLocation = runCatching {
             fusedLocationClient.getCurrentLocation(
                 request,
                 null
             ).await()
-        }.getOrNull() ?: runCatching {
+        }.getOrNull()
+
+        val location = currentLocation ?: runCatching {
             fusedLocationClient.lastLocation.await()
         }.getOrNull()
 
-        return location?.let {
-            UserLocation(
-                latitude = it.latitude,
-                longitude = it.longitude
+        if (location == null) {
+            return UserLocationResult.Unavailable
+        }
+
+        val accuracy = if (location.hasAccuracy()) {
+            location.accuracy
+        } else {
+            null
+        }
+
+        val userLocation = UserLocation(
+            latitude = location.latitude,
+            longitude = location.longitude,
+            accuracyMeters = accuracy
+        )
+
+        if (!hasFineLocationPermission()) {
+            return UserLocationResult.LowAccuracy(
+                location = userLocation,
+                message = "O app está usando localização aproximada. Ative a localização precisa nas permissões para melhorar a precisão."
             )
         }
+
+        if (accuracy != null && accuracy > 100f) {
+            return UserLocationResult.LowAccuracy(
+                location = userLocation,
+                message = "Localização encontrada, mas com baixa precisão: aproximadamente ${accuracy.toInt()} metros."
+            )
+        }
+
+        return UserLocationResult.Success(userLocation)
     }
+}
+
+sealed class UserLocationResult {
+    data class Success(
+        val location: UserLocation
+    ) : UserLocationResult()
+
+    data class LowAccuracy(
+        val location: UserLocation,
+        val message: String
+    ) : UserLocationResult()
+
+    data object PermissionDenied : UserLocationResult()
+
+    data object Unavailable : UserLocationResult()
 }
