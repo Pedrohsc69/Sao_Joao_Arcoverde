@@ -71,6 +71,9 @@ import com.example.sao_joao_em_arcoverde.data.model.EmergencyContactType
 import com.example.sao_joao_em_arcoverde.data.model.Sponsor
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
+import android.content.Context
+import android.content.Intent
+import androidx.compose.ui.platform.LocalContext
 import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
 import com.example.sao_joao_em_arcoverde.ui.theme.BlueAccent
 import com.example.sao_joao_em_arcoverde.ui.theme.BorderGold
@@ -419,31 +422,48 @@ private fun MoreOptionCard(
 private fun ActionButtonsRow(
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         ActionCircleButton(
-            icon = Icons.Rounded.Sync,
-            contentDescription = "Atualizar dados",
-            color = BlueAccent,
-            onClick = {
-                // Etapa futura: sincronizar ou recarregar dados locais.
-            }
-        )
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        ActionCircleButton(
             icon = Icons.Rounded.Share,
             contentDescription = "Compartilhar aplicativo",
             color = RedAccent,
             onClick = {
-                // Etapa futura: abrir intent de compartilhamento.
+                shareApp(context)
             }
         )
+
     }
+}
+
+private fun shareApp(context: Context) {
+    val appName = "São João em Arcoverde"
+
+    val shareMessage = """
+        Conheça o app $appName!
+
+        Veja a programação, artistas, mapa, polos, contatos de emergência, história da cidade e informações do São João de Arcoverde.
+
+        Em breve disponível para instalação.
+    """.trimIndent()
+
+    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_SUBJECT, appName)
+        putExtra(Intent.EXTRA_TEXT, shareMessage)
+    }
+
+    val chooserIntent = Intent.createChooser(
+        shareIntent,
+        "Compartilhar aplicativo"
+    )
+
+    context.startActivity(chooserIntent)
 }
 
 @Composable
