@@ -182,7 +182,7 @@ private fun TodayOnStageSection(
     ) {
         SectionHeader(
             title = "Hoje no Palco",
-            actionText = "Ver tudo →"
+            actionText = ""
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -416,12 +416,6 @@ private fun TipOfDayCard(
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
-
-            Icon(
-                imageVector = Icons.Rounded.ChevronRight,
-                contentDescription = null,
-                tint = TextSecondary
-            )
         }
     }
 }

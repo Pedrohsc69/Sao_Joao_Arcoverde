@@ -23,9 +23,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.BookmarkBorder
-import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Whatshot
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -340,63 +337,60 @@ private fun ScheduleCard(
             containerColor = SurfaceDark
         )
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(14.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(14.dp)
         ) {
-            Text(
-                text = item.time,
-                color = GoldPrimary,
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.Black,
-                modifier = Modifier.width(58.dp)
-            )
-
-            Column(
-                modifier = Modifier.weight(1f)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                Text(
+                    text = item.time,
+                    color = GoldPrimary,
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Black,
+                    modifier = Modifier.width(58.dp)
+                )
+
                 Text(
                     text = item.artistName,
                     color = TextPrimary,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Black,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
                 )
-
-                Spacer(modifier = Modifier.height(6.dp))
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    GenreBadge(
-                        text = item.genre,
-                        backgroundColor = GreenAccent.copy(alpha = 0.18f),
-                        contentColor = GreenAccent
-                    )
-
-                    if (item.isHeadliner) {
-                        Spacer(modifier = Modifier.width(6.dp))
-
-                        GenreBadge(
-                            text = "Headliner",
-                            backgroundColor = RedAccent.copy(alpha = 0.18f),
-                            contentColor = RedAccent
-                        )
-                    }
-                }
             }
 
-            Spacer(modifier = Modifier.width(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-            Icon(
-                imageVector = Icons.Rounded.BookmarkBorder,
-                contentDescription = "Salvar atração",
-                tint = RedAccent,
-                modifier = Modifier.size(24.dp)
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState()),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(modifier = Modifier.width(58.dp))
+
+                GenreBadge(
+                    text = item.genre,
+                    backgroundColor = GreenAccent.copy(alpha = 0.18f),
+                    contentColor = GreenAccent
+                )
+
+                if (item.isHeadliner) {
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    GenreBadge(
+                        text = "Headliner",
+                        backgroundColor = RedAccent.copy(alpha = 0.18f),
+                        contentColor = RedAccent
+                    )
+                }
+            }
         }
     }
 }
@@ -412,13 +406,15 @@ private fun GenreBadge(
         modifier = modifier
             .clip(RoundedCornerShape(50))
             .background(backgroundColor)
-            .padding(horizontal = 8.dp, vertical = 3.dp)
+            .padding(horizontal = 10.dp, vertical = 4.dp)
     ) {
         Text(
             text = text,
             color = contentColor,
             style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }

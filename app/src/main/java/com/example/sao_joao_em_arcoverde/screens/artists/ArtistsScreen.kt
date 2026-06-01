@@ -349,7 +349,6 @@ private fun ArtistCard(
         ) {
             ArtistAvatar(
                 artistName = artist.name,
-                isFeatured = artist.isFeatured,
                 size = 52
             )
 
@@ -371,16 +370,6 @@ private fun ArtistCard(
                         modifier = Modifier.weight(1f)
                     )
 
-                    if (artist.isFeatured) {
-                        Spacer(modifier = Modifier.width(6.dp))
-
-                        Icon(
-                            imageVector = Icons.Rounded.Star,
-                            contentDescription = "Destaque",
-                            tint = GoldPrimary,
-                            modifier = Modifier.size(18.dp)
-                        )
-                    }
                 }
 
                 Spacer(modifier = Modifier.height(6.dp))
@@ -401,7 +390,6 @@ private fun ArtistCard(
 @Composable
 private fun ArtistAvatar(
     artistName: String,
-    isFeatured: Boolean,
     size: Int,
     modifier: Modifier = Modifier
 ) {
@@ -415,17 +403,17 @@ private fun ArtistAvatar(
         modifier = modifier
             .size(size.dp)
             .clip(CircleShape)
-            .background(if (isFeatured) GoldPrimary else SurfaceDarkVariant)
+            .background(SurfaceDarkVariant)
             .border(
                 width = 1.dp,
-                color = if (isFeatured) GoldPrimary else BorderGold,
+                color = BorderGold,
                 shape = CircleShape
             ),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = initials.ifBlank { "?" },
-            color = if (isFeatured) BackgroundDark else TextPrimary,
+            color = TextPrimary,
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Black
         )
@@ -459,7 +447,6 @@ private fun ArtistBottomSheet(
         ) {
             ArtistAvatar(
                 artistName = artist.name,
-                isFeatured = artist.isFeatured,
                 size = 92
             )
 

@@ -1,5 +1,9 @@
 package com.example.sao_joao_em_arcoverde.screens.map
 
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import com.example.sao_joao_em_arcoverde.ui.components.map.markerDrawableResId
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,8 +24,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import com.example.sao_joao_em_arcoverde.location.UserLocation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
@@ -105,7 +109,7 @@ fun MapScreen(
         }
     ) { innerPadding ->
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .background(BackgroundDark)
                 .padding(innerPadding)
@@ -121,19 +125,27 @@ fun MapScreen(
 
             Spacer(modifier = Modifier.height(14.dp))
 
-            MapContent(
-                mapPoints = mapPoints,
-                selectedType = selectedType,
-                userLocation = userLocation,
-                shouldCenterOnUser = shouldCenterOnUser,
-                locationMessage = locationMessage,
-                isLoading = isLoading,
-                errorMessage = errorMessage,
-                onTypeClick = onTypeClick,
-                onPointClick = onPointClick,
-                onLocateMeClick = onLocateMeClick,
-                onUserLocationCentered = onUserLocationCentered
-            )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                MapContent(
+                    mapPoints = mapPoints,
+                    selectedType = selectedType,
+                    userLocation = userLocation,
+                    shouldCenterOnUser = shouldCenterOnUser,
+                    locationMessage = locationMessage,
+                    isLoading = isLoading,
+                    errorMessage = errorMessage,
+                    onTypeClick = onTypeClick,
+                    onPointClick = onPointClick,
+                    onLocateMeClick = onLocateMeClick,
+                    onUserLocationCentered = onUserLocationCentered
+                )
+
+                Spacer(modifier = Modifier.height(28.dp))
+            }
         }
     }
 
@@ -393,11 +405,11 @@ private fun LegendChip(
             .padding(horizontal = 10.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(10.dp)
-                .clip(CircleShape)
-                .background(metadata.color)
+        Image(
+            painter = painterResource(id = type.markerDrawableResId()),
+            contentDescription = metadata.label,
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.size(20.dp)
         )
 
         Spacer(modifier = Modifier.width(6.dp))
@@ -495,11 +507,9 @@ private fun QuickAccessCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val metadata = point.type.metadata()
-
     Card(
         modifier = modifier
-            .height(76.dp)
+            .height(78.dp)
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
@@ -512,24 +522,37 @@ private fun QuickAccessCard(
                 .padding(horizontal = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = metadata.icon,
-                contentDescription = point.name,
-                tint = metadata.color,
-                modifier = Modifier.size(28.dp)
+            MapPointMarkerImage(
+                point = point,
+                size = 34
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(10.dp))
 
             Text(
                 text = point.name,
                 color = TextPrimary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Black,
-                maxLines = 2
+                maxLines = 2,
+                modifier = Modifier.weight(1f)
             )
         }
     }
+}
+
+@Composable
+private fun MapPointMarkerImage(
+    point: MapPoint,
+    size: Int,
+    modifier: Modifier = Modifier
+) {
+    Image(
+        painter = painterResource(id = point.type.markerDrawableResId()),
+        contentDescription = point.name,
+        contentScale = ContentScale.Fit,
+        modifier = modifier.size(size.dp)
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -560,16 +583,20 @@ private fun MapPointBottomSheet(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(44.dp)
-                        .clip(CircleShape)
-                        .background(metadata.color),
+                        .size(54.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(SurfaceDarkVariant)
+                        .border(
+                            width = 1.dp,
+                            color = BorderGold,
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        .padding(6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        imageVector = metadata.icon,
-                        contentDescription = point.name,
-                        tint = BackgroundDark,
-                        modifier = Modifier.size(24.dp)
+                    MapPointMarkerImage(
+                        point = point,
+                        size = 42
                     )
                 }
 
@@ -678,30 +705,6 @@ private fun MapPointType.metadata(): MapPointTypeMetadata {
             label = "Outros",
             color = TextSecondary,
             icon = Icons.Rounded.Place
-        )
-    }
-}
-
-@Composable
-private fun CircleIconButton(
-    icon: ImageVector,
-    contentDescription: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .size(44.dp)
-            .clip(CircleShape)
-            .background(SurfaceDark)
-            .clickable(onClick = onClick),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = contentDescription,
-            tint = TextPrimary,
-            modifier = Modifier.size(24.dp)
         )
     }
 }

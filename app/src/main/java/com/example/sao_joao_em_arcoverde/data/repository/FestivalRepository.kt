@@ -71,6 +71,10 @@ class FestivalRepository(
         return database.scheduleDao()
             .getAllSchedule()
             .map { it.toModel() }
+            .sortedWith(
+                compareBy<Schedule> { it.date }
+                    .then(scheduleTimeComparator())
+            )
     }
 
     suspend fun getScheduleByDate(date: String): List<Schedule> {
@@ -97,13 +101,28 @@ class FestivalRepository(
             .sortedWith(scheduleTimeComparator())
     }
 
+    suspend fun getMainStageScheduleByDate(date: String): List<Schedule> {
+        ensureSeeded()
+
+        return database.scheduleDao()
+            .getScheduleByDateAndStage(
+                date = date,
+                stageName = MAIN_STAGE_NAME
+            )
+            .map { it.toModel() }
+            .sortedWith(scheduleTimeComparator())
+    }
+
     suspend fun getScheduleByArtistId(artistId: String): List<Schedule> {
         ensureSeeded()
 
         return database.scheduleDao()
             .getScheduleByArtistId(artistId)
             .map { it.toModel() }
-            .sortedWith(compareBy<Schedule> { it.date }.then(scheduleTimeComparator()))
+            .sortedWith(
+                compareBy<Schedule> { it.date }
+                    .then(scheduleTimeComparator())
+            )
     }
 
     suspend fun getHeadliners(): List<Schedule> {
@@ -112,7 +131,10 @@ class FestivalRepository(
         return database.scheduleDao()
             .getHeadliners()
             .map { it.toModel() }
-            .sortedWith(compareBy<Schedule> { it.date }.then(scheduleTimeComparator()))
+            .sortedWith(
+                compareBy<Schedule> { it.date }
+                    .then(scheduleTimeComparator())
+            )
     }
 
     suspend fun getBookmarkedSchedule(): List<Schedule> {
@@ -121,7 +143,10 @@ class FestivalRepository(
         return database.scheduleDao()
             .getBookmarkedSchedule()
             .map { it.toModel() }
-            .sortedWith(compareBy<Schedule> { it.date }.then(scheduleTimeComparator()))
+            .sortedWith(
+                compareBy<Schedule> { it.date }
+                    .then(scheduleTimeComparator())
+            )
     }
 
     suspend fun searchSchedule(query: String): List<Schedule> {
@@ -130,7 +155,10 @@ class FestivalRepository(
         return database.scheduleDao()
             .searchSchedule(query.trim())
             .map { it.toModel() }
-            .sortedWith(compareBy<Schedule> { it.date }.then(scheduleTimeComparator()))
+            .sortedWith(
+                compareBy<Schedule> { it.date }
+                    .then(scheduleTimeComparator())
+            )
     }
 
     suspend fun updateScheduleBookmark(
@@ -151,7 +179,7 @@ class FestivalRepository(
     ): List<Schedule> {
         ensureSeeded()
 
-        return getScheduleByDate(date)
+        return getMainStageScheduleByDate(date)
             .take(limit)
     }
 
@@ -239,5 +267,9 @@ class FestivalRepository(
         }
 
         return normalizedHour * 60 + minute
+    }
+
+    private companion object {
+        const val MAIN_STAGE_NAME = "Palco Principal"
     }
 }

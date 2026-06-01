@@ -17,6 +17,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.DirectedLocationOverlay
+import androidx.core.content.ContextCompat
 
 @Composable
 fun OsmdroidMapView(
@@ -77,6 +78,13 @@ fun OsmdroidMapView(
                     title = point.name
                     snippet = point.description
                     setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+
+                    setIcon(
+                        ContextCompat.getDrawable(
+                            context,
+                            point.type.markerDrawableResId()
+                        )
+                    )
 
                     setOnMarkerClickListener { _, _ ->
                         onPointClick(point)

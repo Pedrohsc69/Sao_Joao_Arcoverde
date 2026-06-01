@@ -280,12 +280,6 @@ private fun MoreHeader(
                 fontWeight = FontWeight.Light
             )
         }
-
-        CircleIconButton(
-            icon = Icons.Rounded.Search,
-            contentDescription = "Pesquisar",
-            onClick = onSearchClick
-        )
     }
 }
 
