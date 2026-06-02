@@ -30,10 +30,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.remember
-import androidx.compose.foundation.Image
+import androidx.compose.material.icons.rounded.ChevronLeft
+import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.text.style.TextOverflow
 import com.example.sao_joao_em_arcoverde.ui.components.artists.artistImageResId
 import androidx.compose.material.icons.rounded.Lightbulb
 import androidx.compose.material.icons.rounded.Map
@@ -547,11 +548,21 @@ private fun InstitutionalCarouselCard(
         mutableStateOf(0)
     }
 
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(10_000)
-            currentIndex.value = (currentIndex.value + 1) % items.size
+    fun goToPrevious() {
+        currentIndex.value = if (currentIndex.value == 0) {
+            items.lastIndex
+        } else {
+            currentIndex.value - 1
         }
+    }
+
+    fun goToNext() {
+        currentIndex.value = (currentIndex.value + 1) % items.size
+    }
+
+    LaunchedEffect(currentIndex.value) {
+        delay(10_000)
+        goToNext()
     }
 
     val currentItem = items[currentIndex.value]
@@ -559,6 +570,7 @@ private fun InstitutionalCarouselCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
+            .height(190.dp)
             .border(
                 width = 1.dp,
                 color = BorderGold,
@@ -569,51 +581,106 @@ private fun InstitutionalCarouselCard(
             containerColor = SurfaceDark
         )
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 18.dp, vertical = 14.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 InstitutionalLogoBox(
                     logoResId = currentItem.logoResId,
                     contentDescription = currentItem.name
                 )
 
-                Spacer(modifier = Modifier.width(14.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(
-                        text = currentItem.name,
-                        color = TextPrimary,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Black,
-                        maxLines = 2
-                    )
+                Text(
+                    text = currentItem.name,
+                    color = TextPrimary,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Black,
+                    textAlign = TextAlign.Center,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
 
-                    Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
-                    Text(
-                        text = currentItem.subtitle,
-                        color = GoldPrimary,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                Text(
+                    text = currentItem.subtitle,
+                    color = GoldPrimary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                CarouselIndicators(
+                    totalItems = items.size,
+                    selectedIndex = currentIndex.value,
+                    onIndicatorClick = { index ->
+                        currentIndex.value = index
+                    }
+                )
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            CarouselArrowButton(
+                icon = Icons.Rounded.ChevronLeft,
+                contentDescription = "Logo anterior",
+                onClick = {
+                    goToPrevious()
+                },
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 8.dp)
+            )
 
-            CarouselIndicators(
-                totalItems = items.size,
-                selectedIndex = currentIndex.value
+            CarouselArrowButton(
+                icon = Icons.Rounded.ChevronRight,
+                contentDescription = "Próxima logo",
+                onClick = {
+                    goToNext()
+                },
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 8.dp)
             )
         }
+    }
+}
+
+@Composable
+private fun CarouselArrowButton(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    contentDescription: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .size(34.dp)
+            .clip(CircleShape)
+            .background(BackgroundDark.copy(alpha = 0.72f))
+            .border(
+                width = 1.dp,
+                color = BorderGold.copy(alpha = 0.55f),
+                shape = CircleShape
+            )
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = contentDescription,
+            tint = GoldPrimary,
+            modifier = Modifier.size(24.dp)
+        )
     }
 }
 
@@ -625,24 +692,22 @@ private fun InstitutionalLogoBox(
 ) {
     Box(
         modifier = modifier
-            .size(62.dp)
-            .clip(RoundedCornerShape(18.dp))
+            .size(width = 82.dp, height = 82.dp)
+            .clip(RoundedCornerShape(20.dp))
             .background(SurfaceDarkVariant)
             .border(
                 width = 1.dp,
                 color = BorderGold,
-                shape = RoundedCornerShape(18.dp)
+                shape = RoundedCornerShape(20.dp)
             )
-            .padding(7.dp),
+            .padding(10.dp),
         contentAlignment = Alignment.Center
     ) {
         Image(
             painter = painterResource(id = logoResId),
             contentDescription = contentDescription,
             contentScale = ContentScale.Fit,
-            modifier = Modifier
-                .size(42.dp)
-                .clip(CircleShape)
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
@@ -651,6 +716,7 @@ private fun InstitutionalLogoBox(
 private fun CarouselIndicators(
     totalItems: Int,
     selectedIndex: Int,
+    onIndicatorClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -661,10 +727,10 @@ private fun CarouselIndicators(
         repeat(totalItems) { index ->
             Box(
                 modifier = Modifier
-                    .padding(horizontal = 3.dp)
+                    .padding(horizontal = 4.dp)
                     .size(
-                        width = if (index == selectedIndex) 18.dp else 7.dp,
-                        height = 7.dp
+                        width = if (index == selectedIndex) 24.dp else 8.dp,
+                        height = 8.dp
                     )
                     .clip(RoundedCornerShape(50))
                     .background(
@@ -674,6 +740,9 @@ private fun CarouselIndicators(
                             TextSecondary.copy(alpha = 0.35f)
                         }
                     )
+                    .clickable {
+                        onIndicatorClick(index)
+                    }
             )
         }
     }

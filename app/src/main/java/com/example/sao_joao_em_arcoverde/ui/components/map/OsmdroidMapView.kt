@@ -18,6 +18,7 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.DirectedLocationOverlay
 import androidx.core.content.ContextCompat
+import android.view.MotionEvent
 
 @Composable
 fun OsmdroidMapView(
@@ -26,6 +27,7 @@ fun OsmdroidMapView(
     shouldCenterOnUser: Boolean,
     onUserLocationCentered: () -> Unit,
     onPointClick: (MapPoint) -> Unit,
+    onMapTouchChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
@@ -62,8 +64,31 @@ fun OsmdroidMapView(
 
     AndroidView(
         modifier = modifier,
-        factory = {
-            mapView
+        factory = { context ->
+            MapView(context).apply {
+                setTileSource(TileSourceFactory.MAPNIK)
+                setMultiTouchControls(true)
+                minZoomLevel = 12.0
+                maxZoomLevel = 20.0
+
+                setOnTouchListener { view, event ->
+                    when (event.actionMasked) {
+                        MotionEvent.ACTION_DOWN,
+                        MotionEvent.ACTION_MOVE -> {
+                            onMapTouchChanged(true)
+                            view.parent?.requestDisallowInterceptTouchEvent(true)
+                        }
+
+                        MotionEvent.ACTION_UP,
+                        MotionEvent.ACTION_CANCEL -> {
+                            onMapTouchChanged(false)
+                            view.parent?.requestDisallowInterceptTouchEvent(false)
+                        }
+                    }
+
+                    false
+                }
+            }
         },
         update = { map ->
             val pointsWithCoordinates = mapPoints.filter { point ->

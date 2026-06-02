@@ -50,6 +50,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -83,7 +85,7 @@ fun MapScreen(
     locationMessage: String?,
     isLoading: Boolean,
     errorMessage: String?,
-    onTypeClick: (MapPointType) -> Unit,
+    onTypeClick: (MapPointType?) -> Unit,
     onPointClick: (MapPoint) -> Unit,
     onDismissSelectedPoint: () -> Unit,
     onLocateMeClick: () -> Unit,
@@ -95,6 +97,9 @@ fun MapScreen(
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
+    val isMapBeingTouched = remember {
+        mutableStateOf(false)
+    }
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = BackgroundDark,
@@ -128,7 +133,10 @@ fun MapScreen(
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(
+                        state = rememberScrollState(),
+                        enabled = !isMapBeingTouched.value
+                    )
             ) {
                 MapContent(
                     mapPoints = mapPoints,
@@ -141,7 +149,10 @@ fun MapScreen(
                     onTypeClick = onTypeClick,
                     onPointClick = onPointClick,
                     onLocateMeClick = onLocateMeClick,
-                    onUserLocationCentered = onUserLocationCentered
+                    onUserLocationCentered = onUserLocationCentered,
+                    onMapTouchChanged = { isTouching ->
+                        isMapBeingTouched.value = isTouching
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(28.dp))
@@ -166,10 +177,12 @@ private fun MapContent(
     locationMessage: String?,
     isLoading: Boolean,
     errorMessage: String?,
-    onTypeClick: (MapPointType) -> Unit,
+    onTypeClick: (MapPointType?) -> Unit,
     onPointClick: (MapPoint) -> Unit,
     onLocateMeClick: () -> Unit,
-    onUserLocationCentered: () -> Unit
+    onUserLocationCentered: () -> Unit,
+    onMapTouchChanged: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     when {
         isLoading -> {
@@ -203,7 +216,8 @@ private fun MapContent(
                 userLocation = userLocation,
                 shouldCenterOnUser = shouldCenterOnUser,
                 onUserLocationCentered = onUserLocationCentered,
-                onPointClick = onPointClick
+                onPointClick = onPointClick,
+                onMapTouchChanged = onMapTouchChanged
             )
 
             Spacer(modifier = Modifier.height(14.dp))
@@ -281,6 +295,7 @@ private fun EventMapCard(
     shouldCenterOnUser: Boolean,
     onUserLocationCentered: () -> Unit,
     onPointClick: (MapPoint) -> Unit,
+    onMapTouchChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -301,8 +316,9 @@ private fun EventMapCard(
             mapPoints = mapPoints,
             userLocation = userLocation,
             shouldCenterOnUser = shouldCenterOnUser,
-            onUserLocationCentered = onUserLocationCentered,
             onPointClick = onPointClick,
+            onUserLocationCentered = onUserLocationCentered,
+            onMapTouchChanged = onMapTouchChanged,
             modifier = Modifier.fillMaxSize()
         )
     }
