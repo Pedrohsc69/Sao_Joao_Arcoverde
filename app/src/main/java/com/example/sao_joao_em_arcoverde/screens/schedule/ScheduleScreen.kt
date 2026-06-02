@@ -2,6 +2,11 @@ package com.example.sao_joao_em_arcoverde.screens.schedule
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import com.example.sao_joao_em_arcoverde.ui.components.artists.artistImageResId
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +28,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.BookmarkBorder
+import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material.icons.rounded.Whatshot
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -337,60 +344,116 @@ private fun ScheduleCard(
             containerColor = SurfaceDark
         )
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(14.dp)
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            ScheduleArtistImage(
+                item = item
+            )
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Column(
+                modifier = Modifier.weight(1f)
             ) {
-                Text(
-                    text = item.time,
-                    color = GoldPrimary,
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.Black,
-                    modifier = Modifier.width(58.dp)
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = item.time,
+                        color = GoldPrimary,
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Black,
+                        modifier = Modifier.width(54.dp)
+                    )
 
-                Text(
-                    text = item.artistName,
-                    color = TextPrimary,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Black,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f)
-                )
-            }
+                    Text(
+                        text = item.artistName,
+                        color = TextPrimary,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Black,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
+                    )
 
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState()),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.width(58.dp))
-
-                GenreBadge(
-                    text = item.genre,
-                    backgroundColor = GreenAccent.copy(alpha = 0.18f),
-                    contentColor = GreenAccent
-                )
-
-                if (item.isHeadliner) {
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    GenreBadge(
-                        text = "Headliner",
-                        backgroundColor = RedAccent.copy(alpha = 0.18f),
-                        contentColor = RedAccent
+                    Icon(
+                        imageVector = Icons.Rounded.BookmarkBorder,
+                        contentDescription = "Salvar atração",
+                        tint = RedAccent,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState()),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    GenreBadge(
+                        text = item.genre,
+                        backgroundColor = GreenAccent.copy(alpha = 0.18f),
+                        contentColor = GreenAccent
+                    )
+
+                    if (item.isHeadliner) {
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        GenreBadge(
+                            text = "Headliner",
+                            backgroundColor = RedAccent.copy(alpha = 0.18f),
+                            contentColor = RedAccent
+                        )
+                    }
+                }
             }
+        }
+    }
+}
+
+@Composable
+private fun ScheduleArtistImage(
+    item: Schedule,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val imageResId = context.artistImageResId(item.artistId)
+
+    Box(
+        modifier = modifier
+            .size(width = 76.dp, height = 86.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(SurfaceDarkVariant)
+            .border(
+                width = 1.dp,
+                color = BorderGold,
+                shape = RoundedCornerShape(16.dp)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        if (imageResId != null) {
+            Image(
+                painter = painterResource(id = imageResId),
+                contentDescription = item.artistName,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Rounded.MusicNote,
+                contentDescription = item.artistName,
+                tint = GoldPrimary.copy(alpha = 0.65f),
+                modifier = Modifier.size(34.dp)
+            )
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.sao_joao_em_arcoverde.screens.artists
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,7 +27,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,12 +41,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.sao_joao_em_arcoverde.data.model.Artist
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
+import com.example.sao_joao_em_arcoverde.ui.components.artists.artistImageResId
 import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
 import com.example.sao_joao_em_arcoverde.ui.theme.BorderGold
 import com.example.sao_joao_em_arcoverde.ui.theme.GoldPrimary
@@ -329,7 +333,7 @@ private fun ArtistCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(86.dp)
+            .height(92.dp)
             .border(
                 width = 1.dp,
                 color = BorderGold,
@@ -348,8 +352,9 @@ private fun ArtistCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             ArtistAvatar(
+                artistId = artist.id,
                 artistName = artist.name,
-                size = 52
+                size = 62
             )
 
             Spacer(modifier = Modifier.width(12.dp))
@@ -357,20 +362,14 @@ private fun ArtistCard(
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = artist.name,
-                        color = TextPrimary,
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Black,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f)
-                    )
-
-                }
+                Text(
+                    text = artist.name,
+                    color = TextPrimary,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Black,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
 
                 Spacer(modifier = Modifier.height(6.dp))
 
@@ -389,10 +388,14 @@ private fun ArtistCard(
 
 @Composable
 private fun ArtistAvatar(
+    artistId: String?,
     artistName: String,
     size: Int,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val imageResId = context.artistImageResId(artistId)
+
     val initials = artistName
         .split(" ")
         .filter { it.isNotBlank() }
@@ -411,12 +414,21 @@ private fun ArtistAvatar(
             ),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = initials.ifBlank { "?" },
-            color = TextPrimary,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Black
-        )
+        if (imageResId != null) {
+            Image(
+                painter = painterResource(id = imageResId),
+                contentDescription = artistName,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        } else {
+            Text(
+                text = initials.ifBlank { "?" },
+                color = TextPrimary,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Black
+            )
+        }
     }
 }
 
@@ -446,8 +458,9 @@ private fun ArtistBottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ArtistAvatar(
+                artistId = artist.id,
                 artistName = artist.name,
-                size = 92
+                size = 118
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -481,17 +494,6 @@ private fun ArtistBottomSheet(
                 color = TextSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
-
-            if (artist.imageUrl == null) {
-                Spacer(modifier = Modifier.height(14.dp))
-
-                Text(
-                    text = "Foto não cadastrada. A tela já está preparada para receber imagem oficial/autorizada posteriormente.",
-                    color = TextSecondary,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold
-                )
-            }
         }
     }
 }

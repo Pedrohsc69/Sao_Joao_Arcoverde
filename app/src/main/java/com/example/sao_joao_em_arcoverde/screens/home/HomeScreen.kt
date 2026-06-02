@@ -18,7 +18,6 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.example.sao_joao_em_arcoverde.R
 import kotlinx.coroutines.delay
@@ -31,7 +30,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.remember
-import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.style.TextOverflow
+import com.example.sao_joao_em_arcoverde.ui.components.artists.artistImageResId
 import androidx.compose.material.icons.rounded.Lightbulb
 import androidx.compose.material.icons.rounded.Map
 import androidx.compose.material.icons.rounded.Mic
@@ -48,6 +51,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -213,6 +217,7 @@ private fun TodayOnStageSection(
                 )
             }
 
+
             else -> {
                 Row(
                     modifier = Modifier.horizontalScroll(rememberScrollState()),
@@ -220,9 +225,7 @@ private fun TodayOnStageSection(
                 ) {
                     todaySchedule.forEach { schedule ->
                         ArtistTimeCard(
-                            time = schedule.time,
-                            artist = schedule.artistName,
-                            rhythm = schedule.genre
+                            schedule = schedule
                         )
                     }
                 }
@@ -233,48 +236,95 @@ private fun TodayOnStageSection(
 
 @Composable
 private fun ArtistTimeCard(
-    time: String,
-    artist: String,
-    rhythm: String,
+    schedule: Schedule,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val imageResId = context.artistImageResId(schedule.artistId)
+
     Card(
-        modifier = modifier.width(180.dp),
-        shape = RoundedCornerShape(12.dp),
+        modifier = modifier
+            .width(210.dp)
+            .height(150.dp),
+        shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
             containerColor = SurfaceDarkVariant
         )
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(14.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Text(
-                text = time,
-                color = GoldPrimary,
-                style = MaterialTheme.typography.labelLarge
-            )
+            if (imageResId != null) {
+                Image(
+                    painter = painterResource(id = imageResId),
+                    contentDescription = schedule.artistName,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
 
-            Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(
+                                    Color.Transparent,
+                                    BackgroundDark.copy(alpha = 0.92f)
+                                )
+                            )
+                        )
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(SurfaceDarkVariant),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.MusicNote,
+                        contentDescription = null,
+                        tint = GoldPrimary.copy(alpha = 0.5f),
+                        modifier = Modifier.size(46.dp)
+                    )
+                }
+            }
 
-            Text(
-                text = artist,
-                color = TextPrimary,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .fillMaxWidth()
+                    .padding(12.dp)
+            ) {
+                Text(
+                    text = schedule.time,
+                    color = GoldPrimary,
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Black
+                )
 
-            Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
-            Text(
-                text = rhythm,
-                color = TextSecondary,
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center
-            )
+                Text(
+                    text = schedule.artistName,
+                    color = TextPrimary,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Black,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Spacer(modifier = Modifier.height(2.dp))
+
+                Text(
+                    text = schedule.genre,
+                    color = TextSecondary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
     }
 }
