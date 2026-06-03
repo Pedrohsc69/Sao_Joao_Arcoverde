@@ -4,13 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import com.example.sao_joao_em_arcoverde.data.model.EmergencyContact
-import com.example.sao_joao_em_arcoverde.data.model.Sponsor
-import com.example.sao_joao_em_arcoverde.data.repository.FestivalRepository
-import com.example.sao_joao_em_arcoverde.data.static.AppInfoProvider
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import com.example.sao_joao_em_arcoverde.data.model.EmergencyContact
+import com.example.sao_joao_em_arcoverde.data.model.Sponsor
 import com.example.sao_joao_em_arcoverde.data.preferences.NotificationPreferencesRepository
+import com.example.sao_joao_em_arcoverde.data.preferences.ThemeMode
+import com.example.sao_joao_em_arcoverde.data.preferences.ThemePreferencesRepository
+import com.example.sao_joao_em_arcoverde.data.repository.FestivalRepository
+import com.example.sao_joao_em_arcoverde.data.static.AppInfoProvider
 import com.example.sao_joao_em_arcoverde.notifications.FestivalNotificationScheduler
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -21,6 +23,7 @@ private data class MoreUiState(
     val sponsors: List<Sponsor> = emptyList(),
     val errorMessage: String? = null,
     val notificationsEnabled: Boolean = false,
+    val themeMode: ThemeMode = ThemeMode.SYSTEM
 )
 
 @Composable
@@ -35,13 +38,17 @@ fun MoreRoute(
     onSponsorsClick: () -> Unit,
     onSearchClick: () -> Unit,
     onMenuClick: () -> Unit
-){
+) {
     val context = LocalContext.current
 
     val coroutineScope = rememberCoroutineScope()
 
     val notificationPreferencesRepository = remember {
         NotificationPreferencesRepository(context.applicationContext)
+    }
+
+    val themePreferencesRepository = remember {
+        ThemePreferencesRepository(context.applicationContext)
     }
 
     val notificationScheduler = remember {
@@ -58,12 +65,15 @@ fun MoreRoute(
             val sponsors = repository.getAllSponsors()
             val notificationsEnabled =
                 notificationPreferencesRepository.notificationsEnabledFlow.first()
+            val themeMode =
+                themePreferencesRepository.themeModeFlow.first()
 
             MoreUiState(
                 isLoading = false,
                 emergencyContacts = contacts,
                 sponsors = sponsors,
-                notificationsEnabled = notificationsEnabled
+                notificationsEnabled = notificationsEnabled,
+                themeMode = themeMode
             )
         }.onSuccess { state ->
             uiState.value = state
@@ -80,6 +90,7 @@ fun MoreRoute(
         emergencyContacts = uiState.value.emergencyContacts,
         sponsors = uiState.value.sponsors,
         notificationsEnabled = uiState.value.notificationsEnabled,
+        themeMode = uiState.value.themeMode,
         isLoading = uiState.value.isLoading,
         errorMessage = uiState.value.errorMessage,
         onNotificationsEnabledChange = { enabled ->
@@ -97,6 +108,15 @@ fun MoreRoute(
                 } else {
                     notificationScheduler.cancelMainStageReminders(schedule)
                 }
+            }
+        },
+        onThemeModeChange = { themeMode ->
+            uiState.value = uiState.value.copy(
+                themeMode = themeMode
+            )
+
+            coroutineScope.launch {
+                themePreferencesRepository.updateThemeMode(themeMode)
             }
         },
         onSendTestNotification = {

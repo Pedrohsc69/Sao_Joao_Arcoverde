@@ -1,9 +1,13 @@
 package com.example.sao_joao_em_arcoverde.screens.home
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,28 +18,15 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.res.painterResource
-import com.example.sao_joao_em_arcoverde.R
-import kotlinx.coroutines.delay
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.runtime.remember
 import androidx.compose.material.icons.rounded.ChevronLeft
 import androidx.compose.material.icons.rounded.ChevronRight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.graphics.Brush
-import com.example.sao_joao_em_arcoverde.ui.components.artists.artistImageResId
 import androidx.compose.material.icons.rounded.Lightbulb
 import androidx.compose.material.icons.rounded.Map
 import androidx.compose.material.icons.rounded.Mic
@@ -48,27 +39,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.sao_joao_em_arcoverde.R
+import com.example.sao_joao_em_arcoverde.data.model.Schedule
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
-import com.example.sao_joao_em_arcoverde.data.model.Schedule
-import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
-import com.example.sao_joao_em_arcoverde.ui.theme.BlueAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.BorderGold
-import com.example.sao_joao_em_arcoverde.ui.theme.GoldPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.GreenAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.RedAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDark
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDarkVariant
-import com.example.sao_joao_em_arcoverde.ui.theme.TextPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
+import com.example.sao_joao_em_arcoverde.ui.components.artists.artistImageResId
+import com.example.sao_joao_em_arcoverde.ui.theme.LocalAppColors
+import kotlinx.coroutines.delay
 
 @Composable
 fun HomeScreen(
@@ -82,10 +74,12 @@ fun HomeScreen(
     onSearchClick: () -> Unit,
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier
-){
+) {
+    val appColors = LocalAppColors.current
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = BackgroundDark,
+        containerColor = appColors.background,
         bottomBar = {
             BottomNavBar(
                 selectedDestination = BottomNavDestination.Home,
@@ -99,11 +93,12 @@ fun HomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BackgroundDark)
+                .background(appColors.background)
                 .padding(innerPadding)
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
                 )
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
         ) {
             HomeHeader(
@@ -135,7 +130,7 @@ fun HomeScreen(
 
             TipOfDayCard()
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(48.dp))
         }
     }
 }
@@ -146,6 +141,8 @@ private fun HomeHeader(
     onSearchClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -158,7 +155,7 @@ private fun HomeHeader(
         ) {
             Text(
                 text = "SÃO JOÃO EM ARCOVERDE",
-                color = GoldPrimary,
+                color = appColors.primary,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Black,
                 letterSpacing = androidx.compose.ui.unit.TextUnit.Unspecified
@@ -166,12 +163,11 @@ private fun HomeHeader(
 
             Text(
                 text = "INÍCIO",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Light
             )
         }
-
     }
 }
 
@@ -182,6 +178,8 @@ private fun TodayOnStageSection(
     errorMessage: String?,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -196,7 +194,7 @@ private fun TodayOnStageSection(
             isLoading -> {
                 Text(
                     text = "Carregando programação...",
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -204,7 +202,7 @@ private fun TodayOnStageSection(
             errorMessage != null -> {
                 Text(
                     text = "Não foi possível carregar a programação.",
-                    color = RedAccent,
+                    color = appColors.red,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -213,11 +211,10 @@ private fun TodayOnStageSection(
             todaySchedule.isEmpty() -> {
                 Text(
                     text = "Nenhuma atração encontrada para hoje.",
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
-
 
             else -> {
                 Row(
@@ -240,6 +237,7 @@ private fun ArtistTimeCard(
     schedule: Schedule,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
     val context = LocalContext.current
     val imageResId = context.artistImageResId(schedule.artistId)
 
@@ -249,7 +247,7 @@ private fun ArtistTimeCard(
             .height(150.dp),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDarkVariant
+            containerColor = appColors.surfaceVariant
         )
     ) {
         Box(
@@ -270,7 +268,7 @@ private fun ArtistTimeCard(
                             Brush.verticalGradient(
                                 colors = listOf(
                                     Color.Transparent,
-                                    BackgroundDark.copy(alpha = 0.92f)
+                                    appColors.background.copy(alpha = 0.92f)
                                 )
                             )
                         )
@@ -279,13 +277,13 @@ private fun ArtistTimeCard(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(SurfaceDarkVariant),
+                        .background(appColors.surfaceVariant),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.MusicNote,
                         contentDescription = null,
-                        tint = GoldPrimary.copy(alpha = 0.5f),
+                        tint = appColors.primary.copy(alpha = 0.5f),
                         modifier = Modifier.size(46.dp)
                     )
                 }
@@ -299,7 +297,7 @@ private fun ArtistTimeCard(
             ) {
                 Text(
                     text = schedule.time,
-                    color = GoldPrimary,
+                    color = appColors.primary,
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Black
                 )
@@ -308,7 +306,7 @@ private fun ArtistTimeCard(
 
                 Text(
                     text = schedule.artistName,
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Black,
                     maxLines = 1,
@@ -319,7 +317,7 @@ private fun ArtistTimeCard(
 
                 Text(
                     text = schedule.genre,
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
@@ -337,12 +335,14 @@ private fun ExploreFestivalSection(
     onArtistsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
         Text(
             text = "Explore a Festa",
-            color = TextPrimary,
+            color = appColors.textPrimary,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Black
         )
@@ -355,8 +355,8 @@ private fun ExploreFestivalSection(
             ExploreCard(
                 title = "Programação",
                 icon = Icons.Rounded.Mic,
-                backgroundColor = BlueAccent.copy(alpha = 0.24f),
-                iconColor = BlueAccent,
+                backgroundColor = appColors.blue.copy(alpha = 0.18f),
+                iconColor = appColors.blue,
                 modifier = Modifier.weight(1f),
                 onClick = onScheduleClick
             )
@@ -364,8 +364,8 @@ private fun ExploreFestivalSection(
             ExploreCard(
                 title = "Mapa",
                 icon = Icons.Rounded.Map,
-                backgroundColor = GreenAccent.copy(alpha = 0.24f),
-                iconColor = GreenAccent,
+                backgroundColor = appColors.green.copy(alpha = 0.18f),
+                iconColor = appColors.green,
                 modifier = Modifier.weight(1f),
                 onClick = onMapClick
             )
@@ -376,8 +376,8 @@ private fun ExploreFestivalSection(
         ExploreCard(
             title = "Artistas",
             icon = Icons.Rounded.TheaterComedy,
-            backgroundColor = RedAccent.copy(alpha = 0.18f),
-            iconColor = RedAccent,
+            backgroundColor = appColors.red.copy(alpha = 0.14f),
+            iconColor = appColors.red,
             modifier = Modifier.fillMaxWidth(),
             onClick = onArtistsClick
         )
@@ -393,6 +393,8 @@ private fun ExploreCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = modifier
             .height(82.dp)
@@ -410,7 +412,7 @@ private fun ExploreCard(
         ) {
             Text(
                 text = title,
-                color = TextPrimary,
+                color = appColors.textPrimary,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Black,
                 modifier = Modifier.weight(1f)
@@ -430,11 +432,13 @@ private fun ExploreCard(
 private fun TipOfDayCard(
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDark
+            containerColor = appColors.surface
         )
     ) {
         Row(
@@ -446,7 +450,7 @@ private fun TipOfDayCard(
             Icon(
                 imageVector = Icons.Rounded.Lightbulb,
                 contentDescription = null,
-                tint = GoldPrimary,
+                tint = appColors.primary,
                 modifier = Modifier.size(28.dp)
             )
 
@@ -457,13 +461,13 @@ private fun TipOfDayCard(
             ) {
                 Text(
                     text = "DICA DO DIA",
-                    color = GoldPrimary,
+                    color = appColors.primary,
                     style = MaterialTheme.typography.labelLarge
                 )
 
                 Text(
                     text = "Chegue cedo para garantir um bom lugar no Palco Principal!",
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -477,6 +481,8 @@ private fun SectionHeader(
     actionText: String,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -488,7 +494,7 @@ private fun SectionHeader(
             Icon(
                 imageVector = Icons.Rounded.MusicNote,
                 contentDescription = null,
-                tint = GoldPrimary,
+                tint = appColors.primary,
                 modifier = Modifier.size(20.dp)
             )
 
@@ -496,7 +502,7 @@ private fun SectionHeader(
 
             Text(
                 text = title,
-                color = TextPrimary,
+                color = appColors.textPrimary,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Black
             )
@@ -504,7 +510,7 @@ private fun SectionHeader(
 
         Text(
             text = actionText,
-            color = GoldPrimary,
+            color = appColors.primary,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold
         )
@@ -521,6 +527,8 @@ private data class InstitutionalLogo(
 private fun InstitutionalCarouselCard(
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     val items = listOf(
         InstitutionalLogo(
             name = "Prefeitura de Arcoverde",
@@ -573,12 +581,12 @@ private fun InstitutionalCarouselCard(
             .height(190.dp)
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(22.dp)
             ),
         shape = RoundedCornerShape(22.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDark
+            containerColor = appColors.surface
         )
     ) {
         Box(
@@ -599,7 +607,7 @@ private fun InstitutionalCarouselCard(
 
                 Text(
                     text = currentItem.name,
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Black,
                     textAlign = TextAlign.Center,
@@ -611,7 +619,7 @@ private fun InstitutionalCarouselCard(
 
                 Text(
                     text = currentItem.subtitle,
-                    color = GoldPrimary,
+                    color = appColors.primary,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -662,14 +670,16 @@ private fun CarouselArrowButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = modifier
             .size(34.dp)
             .clip(CircleShape)
-            .background(BackgroundDark.copy(alpha = 0.72f))
+            .background(appColors.background.copy(alpha = 0.72f))
             .border(
                 width = 1.dp,
-                color = BorderGold.copy(alpha = 0.55f),
+                color = appColors.border.copy(alpha = 0.55f),
                 shape = CircleShape
             )
             .clickable(onClick = onClick),
@@ -678,7 +688,7 @@ private fun CarouselArrowButton(
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
-            tint = GoldPrimary,
+            tint = appColors.primary,
             modifier = Modifier.size(24.dp)
         )
     }
@@ -690,14 +700,16 @@ private fun InstitutionalLogoBox(
     contentDescription: String,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = modifier
             .size(width = 82.dp, height = 82.dp)
             .clip(RoundedCornerShape(20.dp))
-            .background(SurfaceDarkVariant)
+            .background(appColors.surfaceVariant)
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(20.dp)
             )
             .padding(10.dp),
@@ -719,6 +731,8 @@ private fun CarouselIndicators(
     onIndicatorClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -735,9 +749,9 @@ private fun CarouselIndicators(
                     .clip(RoundedCornerShape(50))
                     .background(
                         if (index == selectedIndex) {
-                            GoldPrimary
+                            appColors.primary
                         } else {
-                            TextSecondary.copy(alpha = 0.35f)
+                            appColors.textSecondary.copy(alpha = 0.35f)
                         }
                     )
                     .clickable {
@@ -755,18 +769,20 @@ private fun CircleIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = modifier
             .size(44.dp)
             .clip(CircleShape)
-            .background(SurfaceDark)
+            .background(appColors.surface)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
-            tint = TextPrimary,
+            tint = appColors.textPrimary,
             modifier = Modifier.size(24.dp)
         )
     }

@@ -34,11 +34,12 @@ import com.example.sao_joao_em_arcoverde.data.model.TeamMember
 import androidx.compose.material.icons.rounded.MenuBook
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.Phone
-import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Palette
+import com.example.sao_joao_em_arcoverde.data.preferences.ThemeMode
 import androidx.compose.material.icons.rounded.Security
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Star
-import androidx.compose.material.icons.rounded.Sync
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
@@ -73,7 +74,6 @@ import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
 import android.content.Context
 import android.content.Intent
-import androidx.compose.ui.platform.LocalContext
 import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
 import com.example.sao_joao_em_arcoverde.ui.theme.BlueAccent
 import com.example.sao_joao_em_arcoverde.ui.theme.BorderGold
@@ -89,6 +89,7 @@ import androidx.compose.material3.ButtonDefaults
 
 private enum class MorePanel {
     NOTIFICATIONS,
+    APPEARANCE,
     HISTORY,
     ARTISTS,
     SECURITY_HEALTH,
@@ -105,14 +106,50 @@ private data class MoreOption(
 )
 
 @Composable
+private fun MoreHeader(
+    onMenuClick: () -> Unit,
+    onSearchClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(
+            modifier = Modifier.weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "SÃO JOÃO EM ARCOVERDE",
+                color = GoldPrimary,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Black,
+                letterSpacing = androidx.compose.ui.unit.TextUnit.Unspecified
+            )
+
+            Text(
+                text = "MAIS OPÇÕES",
+                color = TextSecondary,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Light
+            )
+        }
+    }
+}
+
+@Composable
 fun MoreScreen(
     developers: List<TeamMember>,
     emergencyContacts: List<EmergencyContact>,
     sponsors: List<Sponsor>,
     notificationsEnabled: Boolean,
+    themeMode: ThemeMode,
     isLoading: Boolean,
     errorMessage: String?,
     onNotificationsEnabledChange: (Boolean) -> Unit,
+    onThemeModeChange: (ThemeMode) -> Unit,
     onHomeClick: () -> Unit,
     onScheduleClick: () -> Unit,
     onMapClick: () -> Unit,
@@ -124,7 +161,7 @@ fun MoreScreen(
     onMenuClick: () -> Unit,
     onSendTestNotification: () -> Unit,
     modifier: Modifier = Modifier
-) {
+){
     val selectedPanel = remember {
         mutableStateOf<MorePanel?>(null)
     }
@@ -240,46 +277,14 @@ fun MoreScreen(
             emergencyContacts = emergencyContacts,
             sponsors = sponsors,
             notificationsEnabled = notificationsEnabled,
+            themeMode = themeMode,
             onNotificationsEnabledChange = onNotificationsEnabledChange,
+            onThemeModeChange = onThemeModeChange,
             onSendTestNotification = onSendTestNotification,
             onDismiss = {
                 selectedPanel.value = null
             }
         )
-    }
-}
-
-@Composable
-private fun MoreHeader(
-    onMenuClick: () -> Unit,
-    onSearchClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
-            modifier = Modifier.weight(1f),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "SÃO JOÃO EM ARCOVERDE",
-                color = GoldPrimary,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Black,
-                letterSpacing = androidx.compose.ui.unit.TextUnit.Unspecified
-            )
-
-            Text(
-                text = "MAIS OPÇÕES",
-                color = TextSecondary,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Light
-            )
-        }
     }
 }
 
@@ -296,6 +301,12 @@ private fun MoreOptionsList(
             icon = Icons.Rounded.Notifications,
             iconColor = GoldPrimary,
             panel = MorePanel.NOTIFICATIONS
+        ),
+        MoreOption(
+            title = "Aparência",
+            icon = Icons.Rounded.Palette,
+            iconColor = BlueAccent,
+            panel = MorePanel.APPEARANCE
         ),
         MoreOption(
             title = "História",
@@ -536,7 +547,9 @@ private fun MorePanelBottomSheet(
     emergencyContacts: List<EmergencyContact>,
     sponsors: List<Sponsor>,
     notificationsEnabled: Boolean,
+    themeMode: ThemeMode,
     onNotificationsEnabledChange: (Boolean) -> Unit,
+    onThemeModeChange: (ThemeMode) -> Unit,
     onSendTestNotification: () -> Unit,
     onDismiss: () -> Unit
 ){
@@ -561,6 +574,11 @@ private fun MorePanelBottomSheet(
                     notificationsEnabled = notificationsEnabled,
                     onNotificationsEnabledChange = onNotificationsEnabledChange,
                     onSendTestNotification = onSendTestNotification
+                )
+
+                MorePanel.APPEARANCE -> AppearanceContent(
+                    selectedThemeMode = themeMode,
+                    onThemeModeChange = onThemeModeChange
                 )
 
                 MorePanel.HISTORY -> HistoryContent()
@@ -742,6 +760,130 @@ private fun NotificationsContent(
         color = TextSecondary,
         style = MaterialTheme.typography.bodyMedium
     )
+}
+
+@Composable
+private fun AppearanceContent(
+    selectedThemeMode: ThemeMode,
+    onThemeModeChange: (ThemeMode) -> Unit
+) {
+    SheetTitle(
+        title = "Aparência",
+        icon = Icons.Rounded.Palette,
+        color = BlueAccent
+    )
+
+    Spacer(modifier = Modifier.height(14.dp))
+
+    Text(
+        text = "Escolha como deseja visualizar o aplicativo. A opção Sistema acompanha automaticamente o tema configurado no aparelho.",
+        color = TextSecondary,
+        style = MaterialTheme.typography.bodyMedium
+    )
+
+    Spacer(modifier = Modifier.height(18.dp))
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        ThemeModeOptionCard(
+            title = "Sistema",
+            description = "Usa o tema atual do aparelho.",
+            selected = selectedThemeMode == ThemeMode.SYSTEM,
+            onClick = {
+                onThemeModeChange(ThemeMode.SYSTEM)
+            }
+        )
+
+        ThemeModeOptionCard(
+            title = "Claro",
+            description = "Usa o modo claro do aplicativo.",
+            selected = selectedThemeMode == ThemeMode.LIGHT,
+            onClick = {
+                onThemeModeChange(ThemeMode.LIGHT)
+            }
+        )
+
+        ThemeModeOptionCard(
+            title = "Escuro",
+            description = "Usa o modo escuro do aplicativo.",
+            selected = selectedThemeMode == ThemeMode.DARK,
+            onClick = {
+                onThemeModeChange(ThemeMode.DARK)
+            }
+        )
+    }
+}
+
+@Composable
+private fun ThemeModeOptionCard(
+    title: String,
+    description: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = if (selected) GoldPrimary else BorderGold,
+                shape = RoundedCornerShape(18.dp)
+            )
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(18.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (selected) {
+                GoldPrimary.copy(alpha = 0.16f)
+            } else {
+                SurfaceDarkVariant
+            }
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = title,
+                    color = TextPrimary,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Black
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = description,
+                    color = TextSecondary,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            if (selected) {
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clip(CircleShape)
+                        .background(GoldPrimary),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Check,
+                        contentDescription = "Selecionado",
+                        tint = BackgroundDark,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable
