@@ -51,15 +51,7 @@ import com.example.sao_joao_em_arcoverde.data.model.Artist
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
 import com.example.sao_joao_em_arcoverde.ui.components.artists.artistImageResId
-import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
-import com.example.sao_joao_em_arcoverde.ui.theme.BorderGold
-import com.example.sao_joao_em_arcoverde.ui.theme.GoldPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.GreenAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.RedAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDark
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDarkVariant
-import com.example.sao_joao_em_arcoverde.ui.theme.TextPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
+import com.example.sao_joao_em_arcoverde.ui.theme.LocalAppColors
 import java.util.Calendar
 import java.util.GregorianCalendar
 
@@ -81,9 +73,11 @@ fun ArtistsScreen(
     onMoreClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = BackgroundDark,
+        containerColor = appColors.background,
         bottomBar = {
             BottomNavBar(
                 selectedDestination = BottomNavDestination.More,
@@ -97,7 +91,7 @@ fun ArtistsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BackgroundDark)
+                .background(appColors.background)
                 .padding(innerPadding)
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
@@ -112,7 +106,7 @@ fun ArtistsScreen(
 
             Text(
                 text = "Artistas",
-                color = TextPrimary,
+                color = appColors.textPrimary,
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Black
             )
@@ -121,7 +115,7 @@ fun ArtistsScreen(
 
             Text(
                 text = "$totalArtists atrações cadastradas na programação.",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -157,6 +151,8 @@ private fun ArtistsHeader(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -175,7 +171,7 @@ private fun ArtistsHeader(
         ) {
             Text(
                 text = "SÃO JOÃO EM ARCOVERDE",
-                color = GoldPrimary,
+                color = appColors.primary,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Black,
                 letterSpacing = androidx.compose.ui.unit.TextUnit.Unspecified
@@ -183,7 +179,7 @@ private fun ArtistsHeader(
 
             Text(
                 text = "ARTISTAS",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Light
             )
@@ -199,15 +195,17 @@ private fun ArtistSearchField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(54.dp)
             .clip(RoundedCornerShape(18.dp))
-            .background(SurfaceDark)
+            .background(appColors.surface)
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(18.dp)
             )
             .padding(horizontal = 14.dp),
@@ -219,7 +217,7 @@ private fun ArtistSearchField(
             Icon(
                 imageVector = Icons.Rounded.Search,
                 contentDescription = null,
-                tint = GoldPrimary,
+                tint = appColors.primary,
                 modifier = Modifier.size(22.dp)
             )
 
@@ -231,7 +229,7 @@ private fun ArtistSearchField(
                 if (value.isBlank()) {
                     Text(
                         text = "Buscar artista ou gênero...",
-                        color = TextSecondary,
+                        color = appColors.textSecondary,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -241,10 +239,10 @@ private fun ArtistSearchField(
                     onValueChange = onValueChange,
                     singleLine = true,
                     textStyle = MaterialTheme.typography.bodyMedium.copy(
-                        color = TextPrimary,
+                        color = appColors.textPrimary,
                         fontWeight = FontWeight.Bold
                     ),
-                    cursorBrush = SolidColor(GoldPrimary),
+                    cursorBrush = SolidColor(appColors.primary),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -253,7 +251,7 @@ private fun ArtistSearchField(
                 Icon(
                     imageVector = Icons.Rounded.Close,
                     contentDescription = "Limpar busca",
-                    tint = TextSecondary,
+                    tint = appColors.textSecondary,
                     modifier = Modifier
                         .size(22.dp)
                         .clickable {
@@ -273,11 +271,13 @@ private fun ArtistsContent(
     onArtistClick: (Artist) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     when {
         isLoading -> {
             Text(
                 text = "Carregando artistas...",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -285,7 +285,7 @@ private fun ArtistsContent(
         errorMessage != null -> {
             Text(
                 text = "Não foi possível carregar os artistas.",
-                color = RedAccent,
+                color = appColors.red,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -294,7 +294,7 @@ private fun ArtistsContent(
         artists.isEmpty() -> {
             Text(
                 text = "Nenhum artista encontrado.",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -330,19 +330,21 @@ private fun ArtistCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(92.dp)
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(18.dp)
             )
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDark
+            containerColor = appColors.surface
         )
     ) {
         Row(
@@ -364,7 +366,7 @@ private fun ArtistCard(
             ) {
                 Text(
                     text = artist.name,
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Black,
                     maxLines = 1,
@@ -375,7 +377,7 @@ private fun ArtistCard(
 
                 Text(
                     text = artist.genre,
-                    color = GreenAccent,
+                    color = appColors.green,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
@@ -393,6 +395,7 @@ private fun ArtistAvatar(
     size: Int,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
     val context = LocalContext.current
     val imageResId = context.artistImageResId(artistId)
 
@@ -406,10 +409,10 @@ private fun ArtistAvatar(
         modifier = modifier
             .size(size.dp)
             .clip(CircleShape)
-            .background(SurfaceDarkVariant)
+            .background(appColors.surfaceVariant)
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = CircleShape
             ),
         contentAlignment = Alignment.Center
@@ -424,7 +427,7 @@ private fun ArtistAvatar(
         } else {
             Text(
                 text = initials.ifBlank { "?" },
-                color = TextPrimary,
+                color = appColors.textPrimary,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Black
             )
@@ -438,6 +441,7 @@ private fun ArtistBottomSheet(
     artist: Artist,
     onDismiss: () -> Unit
 ) {
+    val appColors = LocalAppColors.current
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
@@ -447,8 +451,8 @@ private fun ArtistBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = SurfaceDark,
-        contentColor = TextPrimary
+        containerColor = appColors.surface,
+        contentColor = appColors.textPrimary
     ) {
         Column(
             modifier = Modifier
@@ -467,7 +471,7 @@ private fun ArtistBottomSheet(
 
             Text(
                 text = artist.name,
-                color = TextPrimary,
+                color = appColors.textPrimary,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Black
             )
@@ -476,7 +480,7 @@ private fun ArtistBottomSheet(
 
             Text(
                 text = artist.genre,
-                color = GoldPrimary,
+                color = appColors.primary,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold
             )
@@ -491,7 +495,7 @@ private fun ArtistBottomSheet(
 
             Text(
                 text = artist.description,
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -503,20 +507,22 @@ private fun InfoBadge(
     text: String,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(50))
-            .background(GoldPrimary.copy(alpha = 0.18f))
+            .background(appColors.primary.copy(alpha = 0.18f))
             .border(
                 width = 1.dp,
-                color = GoldPrimary,
+                color = appColors.primary,
                 shape = RoundedCornerShape(50)
             )
             .padding(horizontal = 12.dp, vertical = 6.dp)
     ) {
         Text(
             text = text,
-            color = GoldPrimary,
+            color = appColors.primary,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Black
         )
@@ -556,18 +562,20 @@ private fun CircleIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = modifier
             .size(44.dp)
             .clip(CircleShape)
-            .background(SurfaceDark)
+            .background(appColors.surface)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
-            tint = TextPrimary,
+            tint = appColors.textPrimary,
             modifier = Modifier.size(24.dp)
         )
     }

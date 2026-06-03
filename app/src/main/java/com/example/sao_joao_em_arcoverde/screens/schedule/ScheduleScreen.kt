@@ -1,12 +1,8 @@
 package com.example.sao_joao_em_arcoverde.screens.schedule
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.Image
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import com.example.sao_joao_em_arcoverde.ui.components.artists.artistImageResId
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -43,6 +39,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -50,15 +49,8 @@ import com.example.sao_joao_em_arcoverde.data.model.FestivalDay
 import com.example.sao_joao_em_arcoverde.data.model.Schedule
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
-import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
-import com.example.sao_joao_em_arcoverde.ui.theme.BorderGold
-import com.example.sao_joao_em_arcoverde.ui.theme.GoldPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.GreenAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.RedAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDark
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDarkVariant
-import com.example.sao_joao_em_arcoverde.ui.theme.TextPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
+import com.example.sao_joao_em_arcoverde.ui.components.artists.artistImageResId
+import com.example.sao_joao_em_arcoverde.ui.theme.LocalAppColors
 
 @Composable
 fun ScheduleScreen(
@@ -75,9 +67,11 @@ fun ScheduleScreen(
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = BackgroundDark,
+        containerColor = appColors.background,
         bottomBar = {
             BottomNavBar(
                 selectedDestination = BottomNavDestination.Schedule,
@@ -91,7 +85,7 @@ fun ScheduleScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BackgroundDark)
+                .background(appColors.background)
                 .padding(innerPadding)
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
@@ -130,6 +124,8 @@ private fun ScheduleContent(
     errorMessage: String?,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -139,7 +135,7 @@ private fun ScheduleContent(
             isLoading -> {
                 Text(
                     text = "Carregando programação...",
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -147,7 +143,7 @@ private fun ScheduleContent(
             errorMessage != null -> {
                 Text(
                     text = "Não foi possível carregar a programação.",
-                    color = RedAccent,
+                    color = appColors.red,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -156,7 +152,7 @@ private fun ScheduleContent(
             scheduleItems.isEmpty() -> {
                 Text(
                     text = "Nenhuma atração encontrada para este dia.",
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -177,7 +173,7 @@ private fun ScheduleContent(
                     scheduleItems = scheduleItems
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(28.dp))
             }
         }
     }
@@ -189,6 +185,8 @@ private fun ScheduleHeader(
     onSearchClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -201,7 +199,7 @@ private fun ScheduleHeader(
         ) {
             Text(
                 text = "SÃO JOÃO EM ARCOVERDE",
-                color = GoldPrimary,
+                color = appColors.primary,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Black,
                 letterSpacing = androidx.compose.ui.unit.TextUnit.Unspecified
@@ -209,7 +207,7 @@ private fun ScheduleHeader(
 
             Text(
                 text = "PROGRAMAÇÃO",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Light
             )
@@ -249,9 +247,12 @@ private fun DayChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val backgroundColor = if (selected) GoldPrimary else SurfaceDark
-    val contentColor = if (selected) BackgroundDark else TextPrimary
-    val borderColor = if (selected) GoldPrimary else BorderGold
+    val appColors = LocalAppColors.current
+    val selectedContentColor = Color(0xFF201A10)
+
+    val backgroundColor = if (selected) appColors.primary else appColors.surface
+    val contentColor = if (selected) selectedContentColor else appColors.textPrimary
+    val borderColor = if (selected) appColors.primary else appColors.border
 
     Column(
         modifier = modifier
@@ -291,6 +292,8 @@ private fun StageSection(
     items: List<Schedule>,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -301,14 +304,14 @@ private fun StageSection(
                 modifier = Modifier
                     .width(4.dp)
                     .height(28.dp)
-                    .background(GoldPrimary, RoundedCornerShape(50))
+                    .background(appColors.primary, RoundedCornerShape(50))
             )
 
             Spacer(modifier = Modifier.width(10.dp))
 
             Text(
                 text = title,
-                color = GoldPrimary,
+                color = appColors.primary,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
@@ -331,17 +334,19 @@ private fun ScheduleCard(
     item: Schedule,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(18.dp)
             ),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDark
+            containerColor = appColors.surface
         )
     ) {
         Row(
@@ -365,7 +370,7 @@ private fun ScheduleCard(
                 ) {
                     Text(
                         text = item.time,
-                        color = GoldPrimary,
+                        color = appColors.primary,
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.Black,
                         modifier = Modifier.width(54.dp)
@@ -373,7 +378,7 @@ private fun ScheduleCard(
 
                     Text(
                         text = item.artistName,
-                        color = TextPrimary,
+                        color = appColors.textPrimary,
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Black,
                         maxLines = 2,
@@ -386,7 +391,7 @@ private fun ScheduleCard(
                     Icon(
                         imageVector = Icons.Rounded.BookmarkBorder,
                         contentDescription = "Salvar atração",
-                        tint = RedAccent,
+                        tint = appColors.red,
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -401,8 +406,8 @@ private fun ScheduleCard(
                 ) {
                     GenreBadge(
                         text = item.genre,
-                        backgroundColor = GreenAccent.copy(alpha = 0.18f),
-                        contentColor = GreenAccent
+                        backgroundColor = appColors.green.copy(alpha = 0.18f),
+                        contentColor = appColors.green
                     )
 
                     if (item.isHeadliner) {
@@ -410,8 +415,8 @@ private fun ScheduleCard(
 
                         GenreBadge(
                             text = "Headliner",
-                            backgroundColor = RedAccent.copy(alpha = 0.18f),
-                            contentColor = RedAccent
+                            backgroundColor = appColors.red.copy(alpha = 0.18f),
+                            contentColor = appColors.red
                         )
                     }
                 }
@@ -425,6 +430,7 @@ private fun ScheduleArtistImage(
     item: Schedule,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
     val context = LocalContext.current
     val imageResId = context.artistImageResId(item.artistId)
 
@@ -432,10 +438,10 @@ private fun ScheduleArtistImage(
         modifier = modifier
             .size(width = 76.dp, height = 86.dp)
             .clip(RoundedCornerShape(16.dp))
-            .background(SurfaceDarkVariant)
+            .background(appColors.surfaceVariant)
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(16.dp)
             ),
         contentAlignment = Alignment.Center
@@ -451,7 +457,7 @@ private fun ScheduleArtistImage(
             Icon(
                 imageVector = Icons.Rounded.MusicNote,
                 contentDescription = item.artistName,
-                tint = GoldPrimary.copy(alpha = 0.65f),
+                tint = appColors.primary.copy(alpha = 0.65f),
                 modifier = Modifier.size(34.dp)
             )
         }
@@ -487,6 +493,8 @@ private fun HighlightCard(
     scheduleItems: List<Schedule>,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     val headliner = scheduleItems.lastOrNull { it.isHeadliner }
         ?: scheduleItems.lastOrNull()
 
@@ -495,12 +503,12 @@ private fun HighlightCard(
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(18.dp)
             ),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDarkVariant
+            containerColor = appColors.surfaceVariant
         )
     ) {
         Row(
@@ -512,7 +520,7 @@ private fun HighlightCard(
             Icon(
                 imageVector = Icons.Rounded.Whatshot,
                 contentDescription = null,
-                tint = GoldPrimary,
+                tint = appColors.primary,
                 modifier = Modifier.size(30.dp)
             )
 
@@ -523,7 +531,7 @@ private fun HighlightCard(
             ) {
                 Text(
                     text = "DESTAQUE",
-                    color = RedAccent,
+                    color = appColors.red,
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Black
                 )
@@ -536,7 +544,7 @@ private fun HighlightCard(
                     } else {
                         "Confira a programação completa do dia."
                     },
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -552,18 +560,20 @@ private fun CircleIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = modifier
             .size(44.dp)
             .clip(CircleShape)
-            .background(SurfaceDark)
+            .background(appColors.surface)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
-            tint = TextPrimary,
+            tint = appColors.textPrimary,
             modifier = Modifier.size(24.dp)
         )
     }

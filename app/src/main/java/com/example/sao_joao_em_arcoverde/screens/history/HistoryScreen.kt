@@ -44,16 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.example.sao_joao_em_arcoverde.data.model.HistorySection
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
-import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
-import com.example.sao_joao_em_arcoverde.ui.theme.BlueAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.BorderGold
-import com.example.sao_joao_em_arcoverde.ui.theme.GoldPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.GreenAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.RedAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDark
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDarkVariant
-import com.example.sao_joao_em_arcoverde.ui.theme.TextPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
+import com.example.sao_joao_em_arcoverde.ui.theme.LocalAppColors
 
 @Composable
 fun HistoryScreen(
@@ -65,9 +56,11 @@ fun HistoryScreen(
     onMoreClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = BackgroundDark,
+        containerColor = appColors.background,
         bottomBar = {
             BottomNavBar(
                 selectedDestination = BottomNavDestination.More,
@@ -81,7 +74,7 @@ fun HistoryScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BackgroundDark)
+                .background(appColors.background)
                 .padding(innerPadding)
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
@@ -101,7 +94,7 @@ fun HistoryScreen(
             ) {
                 Text(
                     text = "História e Tradição",
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Black
                 )
@@ -110,7 +103,7 @@ fun HistoryScreen(
 
                 Text(
                     text = "Conheça a origem de Arcoverde e a importância cultural do seu São João.",
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium
                 )
 
@@ -130,7 +123,7 @@ fun HistoryScreen(
                     Spacer(modifier = Modifier.height(14.dp))
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(28.dp))
             }
         }
     }
@@ -140,6 +133,8 @@ fun HistoryScreen(
 private fun HistoryHeader(
     onBackClick: () -> Unit
 ) {
+    val appColors = LocalAppColors.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -158,14 +153,14 @@ private fun HistoryHeader(
         ) {
             Text(
                 text = "SÃO JOÃO EM ARCOVERDE",
-                color = GoldPrimary,
+                color = appColors.primary,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Black
             )
 
             Text(
                 text = "HISTÓRIA",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Light
             )
@@ -179,17 +174,19 @@ private fun HistoryHeader(
 private fun HeroHistoryCard(
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(24.dp)
             ),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDark
+            containerColor = appColors.surface
         )
     ) {
         Column(
@@ -202,13 +199,13 @@ private fun HeroHistoryCard(
                     modifier = Modifier
                         .size(46.dp)
                         .clip(CircleShape)
-                        .background(GoldPrimary),
+                        .background(appColors.primary),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Celebration,
                         contentDescription = null,
-                        tint = BackgroundDark,
+                        tint = appColors.background,
                         modifier = Modifier.size(26.dp)
                     )
                 }
@@ -220,7 +217,7 @@ private fun HeroHistoryCard(
                 ) {
                     Text(
                         text = "Arcoverde — Pernambuco",
-                        color = TextPrimary,
+                        color = appColors.textPrimary,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Black
                     )
@@ -229,7 +226,7 @@ private fun HeroHistoryCard(
 
                     Text(
                         text = "Cultura, memória e festa no coração do Sertão.",
-                        color = TextSecondary,
+                        color = appColors.textSecondary,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -240,7 +237,7 @@ private fun HeroHistoryCard(
 
             Text(
                 text = "A história da cidade e do São João se conectam pela força da cultura popular, da música, das tradições juninas e da participação da população arcoverdense.",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -254,17 +251,19 @@ private fun HistorySectionCard(
     iconColor: Color,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(22.dp)
             ),
         shape = RoundedCornerShape(22.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDarkVariant
+            containerColor = appColors.surfaceVariant
         )
     ) {
         Column(
@@ -284,7 +283,7 @@ private fun HistorySectionCard(
 
                 Text(
                     text = section.title,
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Black,
                     modifier = Modifier.weight(1f)
@@ -295,10 +294,22 @@ private fun HistorySectionCard(
 
             Text(
                 text = section.body,
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
+    }
+}
+
+@Composable
+private fun sectionColor(index: Int): Color {
+    val appColors = LocalAppColors.current
+
+    return when (index) {
+        0 -> appColors.blue
+        1 -> appColors.green
+        2 -> appColors.primary
+        else -> appColors.red
     }
 }
 
@@ -311,33 +322,26 @@ private fun sectionIcon(index: Int): ImageVector {
     }
 }
 
-private fun sectionColor(index: Int): Color {
-    return when (index) {
-        0 -> BlueAccent
-        1 -> GreenAccent
-        2 -> GoldPrimary
-        else -> RedAccent
-    }
-}
-
 @Composable
 private fun CircleIconButton(
     icon: ImageVector,
     contentDescription: String,
     onClick: () -> Unit
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = Modifier
             .size(44.dp)
             .clip(CircleShape)
-            .background(SurfaceDark)
+            .background(appColors.surface)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
-            tint = TextPrimary,
+            tint = appColors.textPrimary,
             modifier = Modifier.size(24.dp)
         )
     }

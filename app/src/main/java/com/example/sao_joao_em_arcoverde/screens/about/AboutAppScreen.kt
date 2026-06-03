@@ -46,15 +46,7 @@ import com.example.sao_joao_em_arcoverde.data.model.FacultyInfo
 import com.example.sao_joao_em_arcoverde.data.model.TeamMember
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
-import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
-import com.example.sao_joao_em_arcoverde.ui.theme.BlueAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.BorderGold
-import com.example.sao_joao_em_arcoverde.ui.theme.GoldPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.GreenAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDark
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDarkVariant
-import com.example.sao_joao_em_arcoverde.ui.theme.TextPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
+import com.example.sao_joao_em_arcoverde.ui.theme.LocalAppColors
 
 @Composable
 fun AboutAppScreen(
@@ -67,9 +59,11 @@ fun AboutAppScreen(
     onMoreClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = BackgroundDark,
+        containerColor = appColors.background,
         bottomBar = {
             BottomNavBar(
                 selectedDestination = BottomNavDestination.More,
@@ -83,7 +77,7 @@ fun AboutAppScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BackgroundDark)
+                .background(appColors.background)
                 .padding(innerPadding)
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
@@ -101,7 +95,7 @@ fun AboutAppScreen(
             ) {
                 Text(
                     text = "Sobre o App",
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Black
                 )
@@ -110,7 +104,7 @@ fun AboutAppScreen(
 
                 Text(
                     text = "Informações institucionais, orientação acadêmica e dados técnicos do aplicativo.",
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium
                 )
 
@@ -118,7 +112,7 @@ fun AboutAppScreen(
 
                 InfoSectionCard(
                     icon = Icons.Rounded.Info,
-                    iconColor = GoldPrimary,
+                    iconColor = appColors.primary,
                     title = "Objetivo do Aplicativo",
                     body = "O aplicativo São João em Arcoverde foi desenvolvido como um guia digital para centralizar a programação do evento, mapa com pontos úteis, contatos de emergência, informações sobre artistas e dados relevantes para moradores e visitantes."
                 )
@@ -135,7 +129,7 @@ fun AboutAppScreen(
 
                 InfoSectionCard(
                     icon = Icons.Rounded.Code,
-                    iconColor = GreenAccent,
+                    iconColor = appColors.green,
                     title = "Stack Utilizada",
                     body = "Kotlin, Jetpack Compose, Material 3, Room, DataStore Preferences, Kotlinx Serialization, Navigation Compose e OSMDroid para mapa offline."
                 )
@@ -150,6 +144,8 @@ fun AboutAppScreen(
 private fun AboutHeader(
     onBackClick: () -> Unit
 ) {
+    val appColors = LocalAppColors.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -168,14 +164,14 @@ private fun AboutHeader(
         ) {
             Text(
                 text = "SÃO JOÃO EM ARCOVERDE",
-                color = GoldPrimary,
+                color = appColors.primary,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Black
             )
 
             Text(
                 text = "SOBRE O APP",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Light
             )
@@ -189,17 +185,19 @@ private fun AboutHeader(
 private fun AdvisorCard(
     advisor: TeamMember
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(20.dp)
             ),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDark
+            containerColor = appColors.surface
         )
     ) {
         Row(
@@ -217,7 +215,7 @@ private fun AdvisorCard(
                     .clip(CircleShape)
                     .border(
                         width = 2.dp,
-                        color = GoldPrimary,
+                        color = appColors.primary,
                         shape = CircleShape
                     )
             )
@@ -229,7 +227,7 @@ private fun AdvisorCard(
             ) {
                 Text(
                     text = "Professor Orientador",
-                    color = GoldPrimary,
+                    color = appColors.primary,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Black
                 )
@@ -238,7 +236,7 @@ private fun AdvisorCard(
 
                 Text(
                     text = advisor.name,
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Black
                 )
@@ -251,17 +249,19 @@ private fun AdvisorCard(
 private fun FacultyCard(
     faculty: FacultyInfo
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(20.dp)
             ),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDark
+            containerColor = appColors.surface
         )
     ) {
         Column(
@@ -273,7 +273,7 @@ private fun FacultyCard(
                 Icon(
                     imageVector = Icons.Rounded.School,
                     contentDescription = null,
-                    tint = BlueAccent,
+                    tint = appColors.blue,
                     modifier = Modifier.size(28.dp)
                 )
 
@@ -281,7 +281,7 @@ private fun FacultyCard(
 
                 Text(
                     text = faculty.shortName,
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Black
                 )
@@ -291,7 +291,7 @@ private fun FacultyCard(
 
             Text(
                 text = faculty.fullName,
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -300,7 +300,7 @@ private fun FacultyCard(
 
             Text(
                 text = "Curso: ${faculty.course}",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -308,7 +308,7 @@ private fun FacultyCard(
 
             Text(
                 text = "Disciplina: ${faculty.subject}",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -322,17 +322,19 @@ private fun InfoSectionCard(
     title: String,
     body: String
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(20.dp)
             ),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDarkVariant
+            containerColor = appColors.surfaceVariant
         )
     ) {
         Column(
@@ -352,7 +354,7 @@ private fun InfoSectionCard(
 
                 Text(
                     text = title,
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Black
                 )
@@ -362,7 +364,7 @@ private fun InfoSectionCard(
 
             Text(
                 text = body,
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -375,18 +377,20 @@ private fun CircleIconButton(
     contentDescription: String,
     onClick: () -> Unit
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = Modifier
             .size(44.dp)
             .clip(CircleShape)
-            .background(SurfaceDark)
+            .background(appColors.surface)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
-            tint = TextPrimary,
+            tint = appColors.textPrimary,
             modifier = Modifier.size(24.dp)
         )
     }

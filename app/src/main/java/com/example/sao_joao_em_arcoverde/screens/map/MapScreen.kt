@@ -64,16 +64,8 @@ import com.example.sao_joao_em_arcoverde.data.model.MapPointType
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
 import com.example.sao_joao_em_arcoverde.ui.components.map.OsmdroidMapView
-import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
-import com.example.sao_joao_em_arcoverde.ui.theme.BlueAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.BorderGold
-import com.example.sao_joao_em_arcoverde.ui.theme.GoldPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.GreenAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.RedAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDark
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDarkVariant
-import com.example.sao_joao_em_arcoverde.ui.theme.TextPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
+import com.example.sao_joao_em_arcoverde.ui.theme.AppColors
+import com.example.sao_joao_em_arcoverde.ui.theme.LocalAppColors
 
 @Composable
 fun MapScreen(
@@ -97,12 +89,14 @@ fun MapScreen(
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
+    val appColors = LocalAppColors.current
+
     val isMapBeingTouched = remember {
         mutableStateOf(false)
     }
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = BackgroundDark,
+        containerColor = appColors.background,
         bottomBar = {
             BottomNavBar(
                 selectedDestination = BottomNavDestination.Map,
@@ -116,7 +110,7 @@ fun MapScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BackgroundDark)
+                .background(appColors.background)
                 .padding(innerPadding)
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
@@ -184,11 +178,13 @@ private fun MapContent(
     onMapTouchChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     when {
         isLoading -> {
             Text(
                 text = "Carregando pontos do mapa...",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -196,7 +192,7 @@ private fun MapContent(
         errorMessage != null -> {
             Text(
                 text = "Não foi possível carregar os pontos do mapa.",
-                color = RedAccent,
+                color = appColors.red,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -205,7 +201,7 @@ private fun MapContent(
         mapPoints.isEmpty() -> {
             Text(
                 text = "Nenhum ponto encontrado para esta categoria.",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -238,7 +234,7 @@ private fun MapContent(
 
                 Text(
                     text = message,
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -260,6 +256,8 @@ private fun MapHeader(
     onSearchClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -272,7 +270,7 @@ private fun MapHeader(
         ) {
             Text(
                 text = "SÃO JOÃO EM ARCOVERDE",
-                color = GoldPrimary,
+                color = appColors.primary,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Black,
                 letterSpacing = androidx.compose.ui.unit.TextUnit.Unspecified
@@ -280,7 +278,7 @@ private fun MapHeader(
 
             Text(
                 text = "MAPA",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Light
             )
@@ -298,18 +296,20 @@ private fun EventMapCard(
     onMapTouchChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(300.dp)
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(22.dp)
             ),
         shape = RoundedCornerShape(22.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDark
+            containerColor = appColors.surface
         )
     ) {
         OsmdroidMapView(
@@ -327,9 +327,11 @@ private fun EventMapCard(
 @Composable
 private fun EventLegendCard(
     selectedType: MapPointType?,
-    onTypeClick: (MapPointType) -> Unit,
+    onTypeClick: (MapPointType?) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     val legendTypes = listOf(
         MapPointType.STAGE,
         MapPointType.FOOD,
@@ -346,12 +348,12 @@ private fun EventLegendCard(
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(18.dp)
             ),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDark
+            containerColor = appColors.surface
         )
     ) {
         Column(
@@ -362,7 +364,7 @@ private fun EventLegendCard(
             ) {
                 Text(
                     text = "Legenda do Evento",
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Black,
                     modifier = Modifier.weight(1f)
@@ -371,7 +373,7 @@ private fun EventLegendCard(
                 Icon(
                     imageVector = Icons.Rounded.Close,
                     contentDescription = "Limpar filtro",
-                    tint = TextSecondary,
+                    tint = appColors.textSecondary,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -403,18 +405,20 @@ private fun LegendChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val metadata = type.metadata()
+    val appColors = LocalAppColors.current
+
+    val metadata = type.metadata(appColors)
 
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(50))
             .background(
                 if (selected) metadata.color.copy(alpha = 0.28f)
-                else SurfaceDarkVariant
+                else appColors.surfaceVariant
             )
             .border(
                 width = 1.dp,
-                color = if (selected) metadata.color else BorderGold,
+                color = if (selected) metadata.color else appColors.border,
                 shape = RoundedCornerShape(50)
             )
             .clickable(onClick = onClick)
@@ -432,7 +436,7 @@ private fun LegendChip(
 
         Text(
             text = metadata.label,
-            color = TextPrimary,
+            color = appColors.textPrimary,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold
         )
@@ -444,6 +448,8 @@ private fun LocateMeButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Button(
         onClick = onClick,
         modifier = modifier
@@ -451,8 +457,8 @@ private fun LocateMeButton(
             .height(56.dp),
         shape = RoundedCornerShape(18.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = GoldPrimary,
-            contentColor = BackgroundDark
+            containerColor = appColors.primary,
+            contentColor = appColors.background
         )
     ) {
         Icon(
@@ -477,6 +483,8 @@ private fun MapQuickAccessSection(
     onPointClick: (MapPoint) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     val quickPoints = mapPoints.take(6)
 
     Column(
@@ -484,7 +492,7 @@ private fun MapQuickAccessSection(
     ) {
         Text(
             text = "Pontos do Evento",
-            color = TextPrimary,
+            color = appColors.textPrimary,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Black
         )
@@ -523,13 +531,15 @@ private fun QuickAccessCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = modifier
             .height(78.dp)
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDarkVariant
+            containerColor = appColors.surfaceVariant
         )
     ) {
         Row(
@@ -547,7 +557,7 @@ private fun QuickAccessCard(
 
             Text(
                 text = point.name,
-                color = TextPrimary,
+                color = appColors.textPrimary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Black,
                 maxLines = 2,
@@ -577,7 +587,9 @@ private fun MapPointBottomSheet(
     point: MapPoint,
     onDismiss: () -> Unit
 ) {
-    val metadata = point.type.metadata()
+    val appColors = LocalAppColors.current
+
+    val metadata = point.type.metadata(appColors)
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
@@ -585,8 +597,8 @@ private fun MapPointBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = SurfaceDark,
-        contentColor = TextPrimary
+        containerColor = appColors.surface,
+        contentColor = appColors.textPrimary
     ) {
         Column(
             modifier = Modifier
@@ -601,10 +613,10 @@ private fun MapPointBottomSheet(
                     modifier = Modifier
                         .size(54.dp)
                         .clip(RoundedCornerShape(16.dp))
-                        .background(SurfaceDarkVariant)
+                        .background(appColors.surfaceVariant)
                         .border(
                             width = 1.dp,
-                            color = BorderGold,
+                            color = appColors.border,
                             shape = RoundedCornerShape(16.dp)
                         )
                         .padding(6.dp),
@@ -623,7 +635,7 @@ private fun MapPointBottomSheet(
                 ) {
                     Text(
                         text = point.name,
-                        color = TextPrimary,
+                        color = appColors.textPrimary,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Black
                     )
@@ -641,7 +653,7 @@ private fun MapPointBottomSheet(
 
             Text(
                 text = point.description,
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -653,7 +665,7 @@ private fun MapPointBottomSheet(
                 } else {
                     "Coordenadas ainda não cadastradas. Este ponto será posicionado com precisão na etapa do OSMDroid."
                 },
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -667,59 +679,59 @@ private data class MapPointTypeMetadata(
     val icon: ImageVector
 )
 
-private fun MapPointType.metadata(): MapPointTypeMetadata {
+private fun MapPointType.metadata(appColors: AppColors): MapPointTypeMetadata {
     return when (this) {
         MapPointType.STAGE -> MapPointTypeMetadata(
             label = "Palcos/Polos",
-            color = RedAccent,
+            color = appColors.red,
             icon = Icons.Rounded.TheaterComedy
         )
 
         MapPointType.FOOD -> MapPointTypeMetadata(
             label = "Alimentação",
-            color = GoldPrimary,
+            color = appColors.primary,
             icon = Icons.Rounded.Restaurant
         )
 
         MapPointType.HEALTH -> MapPointTypeMetadata(
             label = "Saúde",
-            color = GreenAccent,
+            color = appColors.green,
             icon = Icons.Rounded.LocalHospital
         )
 
         MapPointType.INFO -> MapPointTypeMetadata(
             label = "Informações",
-            color = BlueAccent,
+            color = appColors.blue,
             icon = Icons.Rounded.Info
         )
 
         MapPointType.SECURITY -> MapPointTypeMetadata(
             label = "Segurança",
-            color = RedAccent,
+            color = appColors.red,
             icon = Icons.Rounded.Security
         )
 
         MapPointType.HOTEL -> MapPointTypeMetadata(
             label = "Hotéis",
-            color = BlueAccent,
+            color = appColors.blue,
             icon = Icons.Rounded.Hotel
         )
 
         MapPointType.TOURISM -> MapPointTypeMetadata(
             label = "Turismo",
-            color = GreenAccent,
+            color = appColors.green,
             icon = Icons.Rounded.TravelExplore
         )
 
         MapPointType.TRANSPORT -> MapPointTypeMetadata(
             label = "Transporte",
-            color = GoldPrimary,
+            color = appColors.primary,
             icon = Icons.Rounded.DirectionsBus
         )
 
         MapPointType.OTHER -> MapPointTypeMetadata(
             label = "Outros",
-            color = TextSecondary,
+            color = appColors.textSecondary,
             icon = Icons.Rounded.Place
         )
     }

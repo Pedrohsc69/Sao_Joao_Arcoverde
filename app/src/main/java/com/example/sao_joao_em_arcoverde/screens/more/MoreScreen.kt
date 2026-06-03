@@ -1,5 +1,14 @@
 package com.example.sao_joao_em_arcoverde.screens.more
 
+import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -17,37 +26,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import com.example.sao_joao_em_arcoverde.data.model.TeamMember
 import androidx.compose.material.icons.rounded.MenuBook
 import androidx.compose.material.icons.rounded.Notifications
-import androidx.compose.material.icons.rounded.Phone
-import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Palette
-import com.example.sao_joao_em_arcoverde.data.preferences.ThemeMode
+import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material.icons.rounded.Security
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Star
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material3.Switch
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -55,6 +53,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -65,27 +64,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.example.sao_joao_em_arcoverde.data.model.EmergencyContact
 import com.example.sao_joao_em_arcoverde.data.model.EmergencyContactType
 import com.example.sao_joao_em_arcoverde.data.model.Sponsor
+import com.example.sao_joao_em_arcoverde.data.model.TeamMember
+import com.example.sao_joao_em_arcoverde.data.preferences.ThemeMode
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
-import android.content.Context
-import android.content.Intent
-import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
-import com.example.sao_joao_em_arcoverde.ui.theme.BlueAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.BorderGold
-import com.example.sao_joao_em_arcoverde.ui.theme.GoldPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.GreenAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.RedAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDark
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDarkVariant
-import com.example.sao_joao_em_arcoverde.ui.theme.TextPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import com.example.sao_joao_em_arcoverde.ui.theme.LocalAppColors
 
 private enum class MorePanel {
     NOTIFICATIONS,
@@ -104,40 +96,6 @@ private data class MoreOption(
     val iconColor: Color,
     val panel: MorePanel
 )
-
-@Composable
-private fun MoreHeader(
-    onMenuClick: () -> Unit,
-    onSearchClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
-            modifier = Modifier.weight(1f),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "SÃO JOÃO EM ARCOVERDE",
-                color = GoldPrimary,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Black,
-                letterSpacing = androidx.compose.ui.unit.TextUnit.Unspecified
-            )
-
-            Text(
-                text = "MAIS OPÇÕES",
-                color = TextSecondary,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Light
-            )
-        }
-    }
-}
 
 @Composable
 fun MoreScreen(
@@ -161,14 +119,15 @@ fun MoreScreen(
     onMenuClick: () -> Unit,
     onSendTestNotification: () -> Unit,
     modifier: Modifier = Modifier
-){
+) {
+    val appColors = LocalAppColors.current
     val selectedPanel = remember {
         mutableStateOf<MorePanel?>(null)
     }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = BackgroundDark,
+        containerColor = appColors.background,
         bottomBar = {
             BottomNavBar(
                 selectedDestination = BottomNavDestination.More,
@@ -182,7 +141,7 @@ fun MoreScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BackgroundDark)
+                .background(appColors.background)
                 .padding(innerPadding)
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
@@ -204,11 +163,12 @@ fun MoreScreen(
                 DevelopersSection(
                     developers = developers
                 )
+
                 Spacer(modifier = Modifier.height(22.dp))
 
                 Text(
                     text = "Mais Opções",
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Black
                 )
@@ -217,7 +177,7 @@ fun MoreScreen(
 
                 Text(
                     text = "Configurações e informações adicionais do festival.",
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium
                 )
 
@@ -227,7 +187,7 @@ fun MoreScreen(
                     isLoading -> {
                         Text(
                             text = "Carregando informações...",
-                            color = TextSecondary,
+                            color = appColors.textSecondary,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -235,7 +195,7 @@ fun MoreScreen(
                     errorMessage != null -> {
                         Text(
                             text = "Não foi possível carregar as informações adicionais.",
-                            color = RedAccent,
+                            color = appColors.red,
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Bold
                         )
@@ -266,7 +226,7 @@ fun MoreScreen(
 
                 FooterInfo()
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(48.dp))
             }
         }
     }
@@ -289,59 +249,97 @@ fun MoreScreen(
 }
 
 @Composable
+private fun MoreHeader(
+    onMenuClick: () -> Unit,
+    onSearchClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val appColors = LocalAppColors.current
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(
+            modifier = Modifier.weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "SÃO JOÃO EM ARCOVERDE",
+                color = appColors.primary,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Black,
+                letterSpacing = androidx.compose.ui.unit.TextUnit.Unspecified
+            )
+
+            Text(
+                text = "MAIS OPÇÕES",
+                color = appColors.textSecondary,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Light
+            )
+        }
+    }
+}
+
+@Composable
 private fun MoreOptionsList(
     emergencyContactsCount: Int,
     sponsorsCount: Int,
     onOptionClick: (MorePanel) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     val options = listOf(
         MoreOption(
             title = "Notificações",
             icon = Icons.Rounded.Notifications,
-            iconColor = GoldPrimary,
+            iconColor = appColors.primary,
             panel = MorePanel.NOTIFICATIONS
         ),
         MoreOption(
             title = "Aparência",
             icon = Icons.Rounded.Palette,
-            iconColor = BlueAccent,
+            iconColor = appColors.blue,
             panel = MorePanel.APPEARANCE
         ),
         MoreOption(
             title = "História",
             icon = Icons.Rounded.MenuBook,
-            iconColor = GreenAccent,
+            iconColor = appColors.green,
             panel = MorePanel.HISTORY
         ),
         MoreOption(
             title = "Artistas",
             icon = Icons.Rounded.Star,
-            iconColor = GoldPrimary,
+            iconColor = appColors.primary,
             panel = MorePanel.ARTISTS
         ),
         MoreOption(
             title = "Segurança e Saúde",
             icon = Icons.Rounded.Security,
-            iconColor = RedAccent,
+            iconColor = appColors.red,
             panel = MorePanel.SECURITY_HEALTH
         ),
         MoreOption(
             title = "Contatos de Emergência",
             icon = Icons.Rounded.Phone,
-            iconColor = BlueAccent,
+            iconColor = appColors.blue,
             panel = MorePanel.EMERGENCY_CONTACTS
         ),
         MoreOption(
             title = "Realização e Apoio",
             icon = Icons.Rounded.Star,
-            iconColor = GoldPrimary,
+            iconColor = appColors.primary,
             panel = MorePanel.SPONSORS
         ),
         MoreOption(
             title = "Sobre o App",
             icon = Icons.Rounded.Info,
-            iconColor = BlueAccent,
+            iconColor = appColors.blue,
             panel = MorePanel.ABOUT
         )
     )
@@ -367,19 +365,21 @@ private fun MoreOptionCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(62.dp)
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(18.dp)
             )
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDark
+            containerColor = appColors.surface
         )
     ) {
         Row(
@@ -407,7 +407,7 @@ private fun MoreOptionCard(
 
             Text(
                 text = option.title,
-                color = TextPrimary,
+                color = appColors.textPrimary,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Black,
                 modifier = Modifier.weight(1f)
@@ -416,7 +416,7 @@ private fun MoreOptionCard(
             Icon(
                 imageVector = Icons.Rounded.ChevronRight,
                 contentDescription = null,
-                tint = TextSecondary,
+                tint = appColors.textSecondary,
                 modifier = Modifier.size(22.dp)
             )
         }
@@ -427,6 +427,7 @@ private fun MoreOptionCard(
 private fun ActionButtonsRow(
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
     val context = LocalContext.current
 
     Row(
@@ -437,12 +438,11 @@ private fun ActionButtonsRow(
         ActionCircleButton(
             icon = Icons.Rounded.Share,
             contentDescription = "Compartilhar aplicativo",
-            color = RedAccent,
+            color = appColors.red,
             onClick = {
                 shareApp(context)
             }
         )
-
     }
 }
 
@@ -479,14 +479,16 @@ private fun ActionCircleButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = modifier
             .size(48.dp)
             .clip(CircleShape)
-            .background(SurfaceDarkVariant)
+            .background(appColors.surfaceVariant)
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = CircleShape
             )
             .clickable(onClick = onClick),
@@ -505,13 +507,15 @@ private fun ActionCircleButton(
 private fun FooterInfo(
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = "ARCOVERDE — PERNAMBUCO",
-            color = GoldPrimary,
+            color = appColors.primary,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Black
         )
@@ -524,7 +528,7 @@ private fun FooterInfo(
             Icon(
                 imageVector = Icons.Rounded.Home,
                 contentDescription = null,
-                tint = TextSecondary,
+                tint = appColors.textSecondary,
                 modifier = Modifier.size(18.dp)
             )
 
@@ -532,7 +536,7 @@ private fun FooterInfo(
 
             Text(
                 text = "VERSÃO 3.4.0 (2026)",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -552,7 +556,8 @@ private fun MorePanelBottomSheet(
     onThemeModeChange: (ThemeMode) -> Unit,
     onSendTestNotification: () -> Unit,
     onDismiss: () -> Unit
-){
+) {
+    val appColors = LocalAppColors.current
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
@@ -560,8 +565,8 @@ private fun MorePanelBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = SurfaceDark,
-        contentColor = TextPrimary
+        containerColor = appColors.surface,
+        contentColor = appColors.textPrimary
     ) {
         Column(
             modifier = Modifier
@@ -586,7 +591,7 @@ private fun MorePanelBottomSheet(
                 MorePanel.ARTISTS -> {
                     Text(
                         text = "A tela de artistas é aberta em uma página própria.",
-                        color = TextSecondary,
+                        color = appColors.textSecondary,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -615,6 +620,7 @@ private fun NotificationsContent(
     onNotificationsEnabledChange: (Boolean) -> Unit,
     onSendTestNotification: () -> Unit
 ) {
+    val appColors = LocalAppColors.current
     val context = LocalContext.current
 
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -663,14 +669,14 @@ private fun NotificationsContent(
     SheetTitle(
         title = "Notificações",
         icon = Icons.Rounded.Notifications,
-        color = GoldPrimary
+        color = appColors.primary
     )
 
     Spacer(modifier = Modifier.height(14.dp))
 
     Text(
         text = "Receba um aviso 20 minutos antes das atrações do Palco Principal começarem.",
-        color = TextSecondary,
+        color = appColors.textSecondary,
         style = MaterialTheme.typography.bodyMedium
     )
 
@@ -681,12 +687,12 @@ private fun NotificationsContent(
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(18.dp)
             ),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDarkVariant
+            containerColor = appColors.surfaceVariant
         )
     ) {
         Row(
@@ -700,7 +706,7 @@ private fun NotificationsContent(
             ) {
                 Text(
                     text = "Lembretes do Palco Principal",
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Black
                 )
@@ -713,7 +719,7 @@ private fun NotificationsContent(
                     } else {
                         "Desativado. Nenhum lembrete será enviado."
                     },
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -742,8 +748,8 @@ private fun NotificationsContent(
             .height(54.dp),
         shape = RoundedCornerShape(18.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = GoldPrimary,
-            contentColor = BackgroundDark
+            containerColor = appColors.primary,
+            contentColor = appColors.background
         )
     ) {
         Text(
@@ -757,7 +763,7 @@ private fun NotificationsContent(
 
     Text(
         text = "O teste envia uma notificação imediata simulando uma atração do Palco Principal.",
-        color = TextSecondary,
+        color = appColors.textSecondary,
         style = MaterialTheme.typography.bodyMedium
     )
 }
@@ -767,17 +773,19 @@ private fun AppearanceContent(
     selectedThemeMode: ThemeMode,
     onThemeModeChange: (ThemeMode) -> Unit
 ) {
+    val appColors = LocalAppColors.current
+
     SheetTitle(
         title = "Aparência",
         icon = Icons.Rounded.Palette,
-        color = BlueAccent
+        color = appColors.blue
     )
 
     Spacer(modifier = Modifier.height(14.dp))
 
     Text(
         text = "Escolha como deseja visualizar o aplicativo. A opção Sistema acompanha automaticamente o tema configurado no aparelho.",
-        color = TextSecondary,
+        color = appColors.textSecondary,
         style = MaterialTheme.typography.bodyMedium
     )
 
@@ -823,21 +831,23 @@ private fun ThemeModeOptionCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = if (selected) GoldPrimary else BorderGold,
+                color = if (selected) appColors.primary else appColors.border,
                 shape = RoundedCornerShape(18.dp)
             )
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (selected) {
-                GoldPrimary.copy(alpha = 0.16f)
+                appColors.primary.copy(alpha = 0.16f)
             } else {
-                SurfaceDarkVariant
+                appColors.surfaceVariant
             }
         )
     ) {
@@ -852,7 +862,7 @@ private fun ThemeModeOptionCard(
             ) {
                 Text(
                     text = title,
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Black
                 )
@@ -861,7 +871,7 @@ private fun ThemeModeOptionCard(
 
                 Text(
                     text = description,
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -871,13 +881,13 @@ private fun ThemeModeOptionCard(
                     modifier = Modifier
                         .size(32.dp)
                         .clip(CircleShape)
-                        .background(GoldPrimary),
+                        .background(appColors.primary),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Check,
                         contentDescription = "Selecionado",
-                        tint = BackgroundDark,
+                        tint = appColors.background,
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -888,17 +898,19 @@ private fun ThemeModeOptionCard(
 
 @Composable
 private fun HistoryContent() {
+    val appColors = LocalAppColors.current
+
     SheetTitle(
         title = "História do São João",
         icon = Icons.Rounded.MenuBook,
-        color = GreenAccent
+        color = appColors.green
     )
 
     Spacer(modifier = Modifier.height(14.dp))
 
     Text(
         text = "Conteúdo histórico ainda será complementado pelo grupo. Esta seção pode apresentar a tradição junina de Arcoverde, seus polos culturais, artistas locais e a importância da festa para o sertão pernambucano.",
-        color = TextSecondary,
+        color = appColors.textSecondary,
         style = MaterialTheme.typography.bodyMedium
     )
 }
@@ -907,17 +919,19 @@ private fun HistoryContent() {
 private fun SecurityHealthContent(
     emergencyContacts: List<EmergencyContact>
 ) {
+    val appColors = LocalAppColors.current
+
     SheetTitle(
         title = "Segurança e Saúde",
         icon = Icons.Rounded.Security,
-        color = RedAccent
+        color = appColors.red
     )
 
     Spacer(modifier = Modifier.height(14.dp))
 
     Text(
         text = "Em caso de emergência, procure apoio das equipes no evento ou acione os canais oficiais abaixo.",
-        color = TextSecondary,
+        color = appColors.textSecondary,
         style = MaterialTheme.typography.bodyMedium
     )
 
@@ -938,10 +952,12 @@ private fun SecurityHealthContent(
 private fun EmergencyContactsContent(
     emergencyContacts: List<EmergencyContact>
 ) {
+    val appColors = LocalAppColors.current
+
     SheetTitle(
         title = "Contatos de Emergência",
         icon = Icons.Rounded.Phone,
-        color = BlueAccent
+        color = appColors.blue
     )
 
     Spacer(modifier = Modifier.height(14.dp))
@@ -955,10 +971,12 @@ private fun EmergencyContactsContent(
 private fun SponsorsContent(
     sponsors: List<Sponsor>
 ) {
+    val appColors = LocalAppColors.current
+
     SheetTitle(
         title = "Patrocinadores",
         icon = Icons.Rounded.Star,
-        color = GoldPrimary
+        color = appColors.primary
     )
 
     Spacer(modifier = Modifier.height(14.dp))
@@ -966,7 +984,7 @@ private fun SponsorsContent(
     if (sponsors.isEmpty()) {
         Text(
             text = "Nenhum patrocinador cadastrado até o momento. Quando o arquivo sponsors.json for preenchido, esta seção será atualizada automaticamente.",
-            color = TextSecondary,
+            color = appColors.textSecondary,
             style = MaterialTheme.typography.bodyMedium
         )
     } else {
@@ -982,17 +1000,19 @@ private fun SponsorsContent(
 
 @Composable
 private fun AboutAppContent() {
+    val appColors = LocalAppColors.current
+
     SheetTitle(
         title = "Sobre o App",
         icon = Icons.Rounded.Info,
-        color = BlueAccent
+        color = appColors.blue
     )
 
     Spacer(modifier = Modifier.height(14.dp))
 
     Text(
         text = "Aplicativo desenvolvido pelo Grupo 6 como guia digital do São João de Arcoverde. O app reúne programação, mapa, pontos úteis, contatos de emergência e informações adicionais do festival.",
-        color = TextSecondary,
+        color = appColors.textSecondary,
         style = MaterialTheme.typography.bodyMedium
     )
 
@@ -1000,7 +1020,7 @@ private fun AboutAppContent() {
 
     Text(
         text = "Stack: Kotlin, Jetpack Compose, Material 3, Navigation, Room, DataStore, Kotlinx Serialization e OSMDroid.",
-        color = TextSecondary,
+        color = appColors.textSecondary,
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = FontWeight.Bold
     )
@@ -1010,10 +1030,12 @@ private fun AboutAppContent() {
 private fun ContactList(
     contacts: List<EmergencyContact>
 ) {
+    val appColors = LocalAppColors.current
+
     if (contacts.isEmpty()) {
         Text(
             text = "Nenhum contato cadastrado.",
-            color = TextSecondary,
+            color = appColors.textSecondary,
             style = MaterialTheme.typography.bodyMedium
         )
         return
@@ -1033,11 +1055,13 @@ private fun ContactCard(
     contact: EmergencyContact,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDarkVariant
+            containerColor = appColors.surfaceVariant
         )
     ) {
         Column(
@@ -1045,7 +1069,7 @@ private fun ContactCard(
         ) {
             Text(
                 text = "${contact.name} — ${contact.phone}",
-                color = TextPrimary,
+                color = appColors.textPrimary,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Black
             )
@@ -1054,7 +1078,7 @@ private fun ContactCard(
 
             Text(
                 text = contact.description,
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -1066,11 +1090,13 @@ private fun SponsorCard(
     sponsor: Sponsor,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDarkVariant
+            containerColor = appColors.surfaceVariant
         )
     ) {
         Column(
@@ -1078,7 +1104,7 @@ private fun SponsorCard(
         ) {
             Text(
                 text = sponsor.name,
-                color = TextPrimary,
+                color = appColors.textPrimary,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Black
             )
@@ -1087,7 +1113,7 @@ private fun SponsorCard(
 
             Text(
                 text = sponsor.category,
-                color = GoldPrimary,
+                color = appColors.primary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -1097,7 +1123,7 @@ private fun SponsorCard(
 
                 Text(
                     text = description,
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -1111,6 +1137,8 @@ private fun SheetTitle(
     icon: ImageVector,
     color: Color
 ) {
+    val appColors = LocalAppColors.current
+
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -1124,7 +1152,7 @@ private fun SheetTitle(
             Icon(
                 imageVector = icon,
                 contentDescription = title,
-                tint = BackgroundDark,
+                tint = appColors.background,
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -1133,33 +1161,9 @@ private fun SheetTitle(
 
         Text(
             text = title,
-            color = TextPrimary,
+            color = appColors.textPrimary,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Black
-        )
-    }
-}
-
-@Composable
-private fun CircleIconButton(
-    icon: ImageVector,
-    contentDescription: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .size(44.dp)
-            .clip(CircleShape)
-            .background(SurfaceDark)
-            .clickable(onClick = onClick),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = contentDescription,
-            tint = TextPrimary,
-            modifier = Modifier.size(24.dp)
         )
     }
 }
@@ -1169,12 +1173,14 @@ private fun DevelopersSection(
     developers: List<TeamMember>,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
         Text(
             text = "Desenvolvedores",
-            color = TextPrimary,
+            color = appColors.textPrimary,
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Black
         )
@@ -1183,7 +1189,7 @@ private fun DevelopersSection(
 
         Text(
             text = "Equipe responsável pelo desenvolvimento do aplicativo.",
-            color = TextSecondary,
+            color = appColors.textSecondary,
             style = MaterialTheme.typography.bodyMedium
         )
 
@@ -1207,18 +1213,20 @@ private fun DeveloperCard(
     member: TeamMember,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = modifier
             .width(148.dp)
             .height(168.dp)
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(20.dp)
             ),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDark
+            containerColor = appColors.surface
         )
     ) {
         Column(
@@ -1236,7 +1244,7 @@ private fun DeveloperCard(
                     .clip(CircleShape)
                     .border(
                         width = 2.dp,
-                        color = GoldPrimary,
+                        color = appColors.primary,
                         shape = CircleShape
                     )
             )
@@ -1245,7 +1253,7 @@ private fun DeveloperCard(
 
             Text(
                 text = member.name,
-                color = TextPrimary,
+                color = appColors.textPrimary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Black,
                 maxLines = 2
@@ -1255,7 +1263,7 @@ private fun DeveloperCard(
 
             Text(
                 text = member.role,
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )

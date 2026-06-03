@@ -1,6 +1,8 @@
 package com.example.sao_joao_em_arcoverde.ui.components
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Home
@@ -15,10 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDarkVariant
-import com.example.sao_joao_em_arcoverde.ui.theme.GoldPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDark
-import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
+import androidx.compose.foundation.shape.RoundedCornerShape
+import com.example.sao_joao_em_arcoverde.ui.theme.LocalAppColors
 
 enum class BottomNavDestination {
     Home,
@@ -36,9 +36,18 @@ fun BottomNavBar(
     onMoreClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     NavigationBar(
-        modifier = modifier.height(74.dp),
-        containerColor = SurfaceDarkVariant,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(74.dp)
+            .border(
+                width = 1.dp,
+                color = appColors.border.copy(alpha = 0.38f),
+                shape = RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp)
+            ),
+        containerColor = appColors.surfaceVariant,
         tonalElevation = 0.dp
     ) {
         NavigationBarItem(
@@ -117,9 +126,9 @@ fun BottomNavBar(
 
 @Composable
 private fun bottomNavItemColors() = NavigationBarItemDefaults.colors(
-    selectedIconColor = GoldPrimary,
-    selectedTextColor = GoldPrimary,
-    indicatorColor = SurfaceDark,
-    unselectedIconColor = TextSecondary,
-    unselectedTextColor = TextSecondary
+    selectedIconColor = LocalAppColors.current.primary,
+    selectedTextColor = LocalAppColors.current.primary,
+    indicatorColor = LocalAppColors.current.surface,
+    unselectedIconColor = LocalAppColors.current.textSecondary,
+    unselectedTextColor = LocalAppColors.current.textSecondary
 )

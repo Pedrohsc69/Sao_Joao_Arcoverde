@@ -47,16 +47,7 @@ import com.example.sao_joao_em_arcoverde.R
 import com.example.sao_joao_em_arcoverde.data.model.Sponsor
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavBar
 import com.example.sao_joao_em_arcoverde.ui.components.BottomNavDestination
-import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
-import com.example.sao_joao_em_arcoverde.ui.theme.BlueAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.BorderGold
-import com.example.sao_joao_em_arcoverde.ui.theme.GoldPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.GreenAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.RedAccent
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDark
-import com.example.sao_joao_em_arcoverde.ui.theme.SurfaceDarkVariant
-import com.example.sao_joao_em_arcoverde.ui.theme.TextPrimary
-import com.example.sao_joao_em_arcoverde.ui.theme.TextSecondary
+import com.example.sao_joao_em_arcoverde.ui.theme.LocalAppColors
 
 @Composable
 fun SponsorsScreen(
@@ -70,9 +61,11 @@ fun SponsorsScreen(
     onMoreClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = BackgroundDark,
+        containerColor = appColors.background,
         bottomBar = {
             BottomNavBar(
                 selectedDestination = BottomNavDestination.More,
@@ -86,7 +79,7 @@ fun SponsorsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BackgroundDark)
+                .background(appColors.background)
                 .padding(innerPadding)
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
@@ -104,7 +97,7 @@ fun SponsorsScreen(
             ) {
                 Text(
                     text = "Realização e Apoio",
-                    color = TextPrimary,
+                    color = appColors.textPrimary,
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Black
                 )
@@ -113,7 +106,7 @@ fun SponsorsScreen(
 
                 Text(
                     text = "Instituições relacionadas à realização, organização e apoio ao São João de Arcoverde.",
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium
                 )
 
@@ -127,7 +120,7 @@ fun SponsorsScreen(
                     isLoading -> {
                         Text(
                             text = "Carregando informações...",
-                            color = TextSecondary,
+                            color = appColors.textSecondary,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -135,7 +128,7 @@ fun SponsorsScreen(
                     errorMessage != null -> {
                         Text(
                             text = "Não foi possível carregar realização e apoios.",
-                            color = RedAccent,
+                            color = appColors.red,
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Bold
                         )
@@ -144,7 +137,7 @@ fun SponsorsScreen(
                     sponsors.isEmpty() -> {
                         Text(
                             text = "Nenhuma informação cadastrada.",
-                            color = TextSecondary,
+                            color = appColors.textSecondary,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -168,6 +161,8 @@ fun SponsorsScreen(
 private fun SponsorsHeader(
     onBackClick: () -> Unit
 ) {
+    val appColors = LocalAppColors.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -186,14 +181,14 @@ private fun SponsorsHeader(
         ) {
             Text(
                 text = "SÃO JOÃO EM ARCOVERDE",
-                color = GoldPrimary,
+                color = appColors.primary,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Black
             )
 
             Text(
                 text = "REALIZAÇÃO",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -207,17 +202,19 @@ private fun SponsorsHeader(
 private fun SponsorsHeroCard(
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(24.dp)
             ),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDark
+            containerColor = appColors.surface
         )
     ) {
         Column(
@@ -230,10 +227,10 @@ private fun SponsorsHeroCard(
                     modifier = Modifier
                         .size(54.dp)
                         .clip(CircleShape)
-                        .background(SurfaceDarkVariant)
+                        .background(appColors.surfaceVariant)
                         .border(
                             width = 1.dp,
-                            color = GoldPrimary,
+                            color = appColors.primary,
                             shape = CircleShape
                         ),
                     contentAlignment = Alignment.Center
@@ -255,7 +252,7 @@ private fun SponsorsHeroCard(
                 ) {
                     Text(
                         text = "São João de Arcoverde",
-                        color = TextPrimary,
+                        color = appColors.textPrimary,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Black
                     )
@@ -264,7 +261,7 @@ private fun SponsorsHeroCard(
 
                     Text(
                         text = "Evento público realizado com atuação institucional do município.",
-                        color = TextSecondary,
+                        color = appColors.textSecondary,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -275,7 +272,7 @@ private fun SponsorsHeroCard(
 
             Text(
                 text = "Até o momento, não foi localizada uma lista oficial de patrocinadores privados. Por isso, esta seção apresenta realização e apoios institucionais confirmáveis.",
-                color = TextSecondary,
+                color = appColors.textSecondary,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -287,6 +284,7 @@ private fun SponsorInfoCard(
     sponsor: Sponsor,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
     val metadata = sponsorMetadata(sponsor.category)
     val logoResId = sponsorLogoResId(sponsor.id)
 
@@ -295,12 +293,12 @@ private fun SponsorInfoCard(
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(22.dp)
             ),
         shape = RoundedCornerShape(22.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceDarkVariant
+            containerColor = appColors.surfaceVariant
         )
     ) {
         Column(
@@ -323,7 +321,7 @@ private fun SponsorInfoCard(
                 ) {
                     Text(
                         text = sponsor.name,
-                        color = TextPrimary,
+                        color = appColors.textPrimary,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Black
                     )
@@ -344,7 +342,7 @@ private fun SponsorInfoCard(
 
                 Text(
                     text = description,
-                    color = TextSecondary,
+                    color = appColors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -360,14 +358,16 @@ private fun SponsorLogoBox(
     contentDescription: String,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = modifier
             .size(58.dp)
             .clip(RoundedCornerShape(16.dp))
-            .background(SurfaceDark)
+            .background(appColors.surface)
             .border(
                 width = 1.dp,
-                color = BorderGold,
+                color = appColors.border,
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(6.dp),
@@ -409,26 +409,29 @@ private data class SponsorMetadata(
     val color: Color
 )
 
+@Composable
 private fun sponsorMetadata(category: String): SponsorMetadata {
+    val appColors = LocalAppColors.current
+
     return when {
         category.contains("Realização", ignoreCase = true) -> SponsorMetadata(
             icon = Icons.Rounded.Handshake,
-            color = GoldPrimary
+            color = appColors.primary
         )
 
         category.contains("cultural", ignoreCase = true) -> SponsorMetadata(
             icon = Icons.Rounded.Star,
-            color = GreenAccent
+            color = appColors.green
         )
 
         category.contains("econômico", ignoreCase = true) -> SponsorMetadata(
             icon = Icons.Rounded.Storefront,
-            color = BlueAccent
+            color = appColors.blue
         )
 
         else -> SponsorMetadata(
             icon = Icons.Rounded.Handshake,
-            color = GoldPrimary
+            color = appColors.primary
         )
     }
 }
@@ -439,18 +442,20 @@ private fun CircleIconButton(
     contentDescription: String,
     onClick: () -> Unit
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = Modifier
             .size(44.dp)
             .clip(CircleShape)
-            .background(SurfaceDark)
+            .background(appColors.surface)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
-            tint = TextPrimary,
+            tint = appColors.textPrimary,
             modifier = Modifier.size(24.dp)
         )
     }
