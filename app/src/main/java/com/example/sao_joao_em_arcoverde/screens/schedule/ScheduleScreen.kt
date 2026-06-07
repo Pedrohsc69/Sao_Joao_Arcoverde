@@ -385,15 +385,6 @@ private fun ScheduleCard(
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f)
                     )
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Icon(
-                        imageVector = Icons.Rounded.BookmarkBorder,
-                        contentDescription = "Salvar atração",
-                        tint = appColors.red,
-                        modifier = Modifier.size(24.dp)
-                    )
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))

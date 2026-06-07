@@ -1,32 +1,32 @@
 package com.example.sao_joao_em_arcoverde.navigation
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
-import com.example.sao_joao_em_arcoverde.data.local.AppDatabase
-import com.example.sao_joao_em_arcoverde.data.repository.FestivalRepository
-import com.example.sao_joao_em_arcoverde.data.seed.FestivalSeedLoader
-import com.example.sao_joao_em_arcoverde.screens.home.HomeRoute
-import com.example.sao_joao_em_arcoverde.screens.map.MapRoute
-import com.example.sao_joao_em_arcoverde.screens.more.MoreRoute
-import com.example.sao_joao_em_arcoverde.screens.schedule.ScheduleRoute
-import com.example.sao_joao_em_arcoverde.screens.artists.ArtistsRoute
-import com.example.sao_joao_em_arcoverde.screens.about.AboutAppRoute
-import com.example.sao_joao_em_arcoverde.screens.history.HistoryRoute
-import com.example.sao_joao_em_arcoverde.screens.welcome.WelcomeScreen
-import com.example.sao_joao_em_arcoverde.screens.sponsors.SponsorsRoute
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import com.example.sao_joao_em_arcoverde.data.local.AppDatabase
 import com.example.sao_joao_em_arcoverde.data.preferences.AppPreferencesRepository
-import com.example.sao_joao_em_arcoverde.ui.theme.BackgroundDark
-import com.example.sao_joao_em_arcoverde.ui.theme.GoldPrimary
+import com.example.sao_joao_em_arcoverde.data.repository.FestivalRepository
+import com.example.sao_joao_em_arcoverde.data.seed.FestivalSeedLoader
+import com.example.sao_joao_em_arcoverde.screens.about.AboutAppRoute
+import com.example.sao_joao_em_arcoverde.screens.artists.ArtistsRoute
+import com.example.sao_joao_em_arcoverde.screens.history.HistoryRoute
+import com.example.sao_joao_em_arcoverde.screens.home.HomeRoute
+import com.example.sao_joao_em_arcoverde.screens.map.MapRoute
+import com.example.sao_joao_em_arcoverde.screens.more.MoreRoute
+import com.example.sao_joao_em_arcoverde.screens.schedule.ScheduleRoute
+import com.example.sao_joao_em_arcoverde.screens.sponsors.SponsorsRoute
+import com.example.sao_joao_em_arcoverde.screens.welcome.WelcomeScreen
+import com.example.sao_joao_em_arcoverde.ui.components.transition.FireTransitionOverlay
+import com.example.sao_joao_em_arcoverde.ui.theme.LocalAppColors
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -45,7 +45,6 @@ private enum class AppRoute {
 @Composable
 fun AppNavigation() {
     val context = LocalContext.current
-
     val coroutineScope = rememberCoroutineScope()
 
     val appPreferencesRepository = remember {
@@ -74,6 +73,10 @@ fun AppNavigation() {
         mutableStateOf<AppRoute?>(null)
     }
 
+    val isFireTransitionVisible = remember {
+        mutableStateOf(false)
+    }
+
     LaunchedEffect(Unit) {
         val hasSeenWelcome = appPreferencesRepository.hasSeenWelcomeFlow.first()
 
@@ -90,22 +93,27 @@ fun AppNavigation() {
         }
 
         AppRoute.Welcome -> {
-            WelcomeScreen(
-                onStartClick = {
-                    coroutineScope.launch {
-                        appPreferencesRepository.setHasSeenWelcome(true)
-                        currentRoute.value = AppRoute.Home
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                WelcomeScreen(
+                    onStartClick = {
+                        isFireTransitionVisible.value = true
                     }
-                }
-            )
-        }
+                )
 
-        AppRoute.Welcome -> {
-            WelcomeScreen(
-                onStartClick = {
-                    currentRoute.value = AppRoute.Home
-                }
-            )
+                FireTransitionOverlay(
+                    visible = isFireTransitionVisible.value,
+                    onAnimationFinished = {
+                        isFireTransitionVisible.value = false
+
+                        coroutineScope.launch {
+                            appPreferencesRepository.setHasSeenWelcome(true)
+                            currentRoute.value = AppRoute.Home
+                        }
+                    }
+                )
+            }
         }
 
         AppRoute.Home -> {
@@ -123,7 +131,6 @@ fun AppNavigation() {
                 onMoreClick = {
                     currentRoute.value = AppRoute.More
                 },
-
                 onSearchClick = {
                     // Etapa futura: implementar pesquisa
                 },
@@ -294,14 +301,16 @@ fun AppNavigation() {
 
 @Composable
 private fun NavigationLoadingScreen() {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BackgroundDark),
+            .background(appColors.background),
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
-            color = GoldPrimary
+            color = appColors.primary
         )
     }
 }
